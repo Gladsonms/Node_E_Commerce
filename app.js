@@ -3,10 +3,12 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
+var db=require('./config/connection')
 var hbs =require('express-handlebars')
 
 var session = require('express-session')
+
+
 
 var adminRouter = require('./routes/admin');
 var usersRouter = require('./routes/users');
@@ -31,6 +33,17 @@ app.use(session({
   saveUninitialized: true,
   cookie: { secure: true }
 }))
+
+db.connect((err)=>{
+  if(err)
+  {
+       console.log("Datbase  connection erreor"+err);
+  }
+else
+  {
+  console.log("databse connect succefully");
+}
+})
 
 app.use('/', usersRouter);
 app.use('/admin', adminRouter);
