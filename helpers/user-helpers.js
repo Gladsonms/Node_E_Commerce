@@ -2,6 +2,8 @@ var db=require('../config/connection')
 var collection=require("../config/collections")
 const bcyrpt=require('bcrypt')
 const { response } = require('express')
+const { get } = require('../routes/admin')
+const { USER_COLLECTIONS } = require('../config/collections')
 module.exports={
    doSignup:(userData)=>{
        return new Promise(async(resolve,reject)=>{
@@ -18,30 +20,39 @@ module.exports={
            let loginStatus=false;
            let response={}
            let user=await db.get().collection(collection.USER_COLLECTIONS).findOne({email:userData.email})
-          console.log(user +"data");
-           console.log(userData);
-           console.log(user.email);
+        
            if(user)
            {
-             bcyrpt.compare(userData.password,user.password).then((Status)=>{
-               if(Status)
+             bcyrpt.compare(userData.password,user.password).then((status)=>{
+               if(status)
                {
                    console.log("login success");
                    response.user=user
-                   response.Status=true;
-                  resolve(response)
+                   response.status=true;
+                   resolve(response)
                }  
                else{
-                   console.log("login fail");
-                   resolve({Status:false})
+                   console.log("login fail________________");
+                   resolve({status:false})
+                 
                }
                
+             }).catch(()=>{
+                 console.log("error");
              })
            }
            else{
                console.log("login failed");
-               resolve({Status:false})
-           }
-       })
-   }
+               resolve({status:false})
+            }
+            console.log("working");
+       });
+   },
+   getUserDetails:(userId)=>{
+    return new Promise(async(resolve,reject)=>{
+      let users=await  db.get().collection(collection.USER_COLLECTIONS).find().toArray()
+      resolve(users)
+    });
 }
+}
+ 

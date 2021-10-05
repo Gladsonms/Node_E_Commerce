@@ -1,4 +1,6 @@
+const { response } = require('express');
 var express = require('express');
+const userHelpers = require('../helpers/user-helpers');
 var router = express.Router();
 
 var adminUsername="admin";
@@ -27,6 +29,7 @@ router.post('/adminLogin',function(req,res,next){
     req.session.isLoggedIn=true;
     console.log("login succes");
     res.redirect('/admin/home')
+    console.log(req.session.isLoggedIn);
    
   }else{
     console.log("login failed");
@@ -34,8 +37,18 @@ router.post('/adminLogin',function(req,res,next){
   }
 
 })
-router.get('/home', function(req, res, next) {
+router.get('/home', function(req, res) {
   res.render('admin/home',{admin:true});
 });
+router.get('/usermanagment',function(req,res){
+  userHelpers.getUserDetails().then((users)=>{
+    console.log("sdhjksdsdsdsdsad");
+    console.log(users);
+    res.render('admin/userManagment',{admin:true,users})
+   
+  }).catch((err)=>{
+    console.log(err);
+  })
+})
 
 module.exports = router;

@@ -129,10 +129,20 @@
 										<li>
 											<a href="page-contact.html" style="color:black">Contact</a>
 										</li>
-										
+										{{#if user}}
 										<li>
+											<a href="/logout" style="color:black">Logout</a>
+										</li>
+										{{else}}
+											<li>
 											<a href="/login" style="color:black">Login</a>
 										</li>
+										{{/if}}
+										{{#if user}}
+											<li>
+											<a href="page-about-us.html" style="color:black">My profile</a>
+										</li>
+										{{/if}}
 									</ul>
 								</div>
 							</div>
