@@ -1,9 +1,18 @@
 var express = require('express');
+const { restart } = require('nodemon');
 var router = express.Router();
 var userHelper = require("../helpers/user-helpers")
 
+const checkUserAuth=(req,res,next)=>{
+if(req.session.isLoggedIn){
+  res.render('user/index')
+}
+else{
+  next()
+}
+}
 /* GET users listing. */
-router.get('/', function (req, res, next) {
+router.get('/',checkUserAuth, function (req, res, next) {
   let user=req.session.user
  // console.log(user);
   res.render('user/index',{user});

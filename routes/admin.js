@@ -1,23 +1,27 @@
 const { response } = require('express');
 var express = require('express');
+const session = require('express-session');
 const userHelpers = require('../helpers/user-helpers');
 var router = express.Router();
+
+const checkAuth = (req,res,next)=>{
+  if(req.session.isLoggedIn)
+  {
+    res.render('admin/home',{admin:true});
+  }
+  else{
+    next()
+  }
+}
 
 var adminUsername="admin";
 var adminPassword ="admin";
 
-router.get('/', function(req, res, next) {
-  // if(req.session.isLoggedIn)
-  // {
-    
-    // res.redirect("/admin/home")
-  // }
-  // else
-  // {
 
+router.get('/',checkAuth, function(req, res, next) {
+    
     res.render('admin/adminlogin',{rejectHeader:true});
-    //res.header('Cache-control','private, no-cache,no-store,max-age=0,must-revalidate,pre-check=0,post-check=0')
-  //}
+   
 
 });
 router.post('/adminLogin',function(req,res,next){
@@ -61,6 +65,7 @@ router.post('/usermanagment/disableuser',async(req,res)=>{
   console.log("got it");
   userHelpers.disableUser(req.params.id,req.body).then(()=>{
     console.log("user disabled");
+    res.redirect('/admin/usermanagment')
   })
 })
 router.get('/usermanagment/enableuser',async(req,res)=>{
@@ -75,6 +80,7 @@ router.post('/usermanagment/enableuser',async(req,res)=>{
   console.log("Enable page poat");
   userHelpers.enableUser(req.params.id,req.body).then(()=>{
     console.log("user enabled succesfully");
+    res.redirect('/admin/usermanagment')
   })
 })
 router.get('/productmanagment',function(req,res){
@@ -85,5 +91,13 @@ router.get('/productmanagment/adddproduct',function(req,res){
 })
 router.post('/productmanagmnet/addproduct',function(req,res){
   console.log(req.body);
+})
+router.get('/categorymangament',function(req,res){
+  res.render('admin/categoryManagment',{admin:true})
+})
+router.get('/logout',function(req,res){
+  req.session.isLoggedIn=false;
+  req.session.destroy()
+  res.redirect('/admin/adminLogin')
 })
 module.exports = router;
