@@ -5,7 +5,7 @@
 								<h2 class="title"><span>Create Account</span></h2>
 							</div>
 						
-							<form action="/signup" method="POST" >
+							<form action="/signup" method="POST" id="Signupform">
 								<div class="form-group">
 									<label>User Name</label>
 									<input type="text" value="" name="username">
@@ -14,18 +14,23 @@
 								
 								<div class="form-group">
 									<label>Email</label>
-									<input type="email" value="" name="email">
+									<input type="email" value="" name="email" id="email">
 								</div>
 								<div class="form-group">
 									<label>Phone number</label>
-									<input type="number" value="" name="number">
+									<input type="number" value="" name="number" id="number">
 								</div>
 								
+							
 								<div class="form-group">
 									<label>Password</label>
-									<input type="password" value="" name="password">
+									<input type="password" value="" name="password" id="password">
 								</div>
 								
+									<div class="form-group">
+									<label>Confirm Password</label>
+									<input type="password" value="" name="confirmPassword" id="confirmPassword">
+								</div>
 								<div class="form-group text-center">
 									<input type="submit" class="btn btn-primary" value="Create Account">
 								</div>
@@ -38,7 +43,63 @@
 										<a href="/Login">Already have an account?  Login</a>
 									</div>
 								</div>
+							
 							</form>
 						</div>
 					</div>
 				</div>
+				   {{!-- <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+
+<script>
+		jQuery.valiadtor.setDeafaults({
+		debug:false,
+		sucess: function(label){
+			label.attr('id','valid')
+		},
+	})
+	 $("#Signupform").validate({
+            rules: {
+                username: {
+                    required: true
+                },
+                email: {
+                    required: true,
+                    email: true
+                },
+				number:{
+                    required:true,
+					number:true
+					
+				},
+                password: "required",
+                confirmPassword: {
+                    equalTo: "#password"
+                },
+            },
+			  messages: {
+                username: {
+                    required: "Please enter an username"
+                },
+                email: {
+                    required: "Please provide an email"
+                },
+                number: {
+                    required: "Please provide an phone number"
+                },
+                password: {
+                    required: "Please provide a password"
+                },
+                confirmPassword: {
+                    required: "Please provide a password",
+                    equalTo: "Wrong Password"
+                }
+            }
+	 });
+	  function nameFn() {
+            let name = $("#name").val();
+            name = name.replace(/  +/g, ' ');
+            $("#name").val(name);
+        }
+</script> --}}

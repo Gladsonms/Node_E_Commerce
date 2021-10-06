@@ -49,6 +49,41 @@ router.get('/usermanagment',function(req,res){
   }).catch((err)=>{
     console.log(err);
   })
-})
+});
+router.get('/usermanagment/disableuser',async(req,res)=>{
+  let userId=req.query.id
+  console.log(userId);
+  let user=await userHelpers.disableUser(userId)
 
+})
+router.post('/usermanagment/disableuser',async(req,res)=>{
+  console.log(req.query.id);
+  console.log("got it");
+  userHelpers.disableUser(req.params.id,req.body).then(()=>{
+    console.log("user disabled");
+  })
+})
+router.get('/usermanagment/enableuser',async(req,res)=>{
+ 
+  let userId=req.query.id
+  console.log(userId);
+  let user=await userHelpers.enableUser(userId)
+
+})
+router.post('/usermanagment/enableuser',async(req,res)=>{
+  console.log(req.query.id);
+  console.log("Enable page poat");
+  userHelpers.enableUser(req.params.id,req.body).then(()=>{
+    console.log("user enabled succesfully");
+  })
+})
+router.get('/productmanagment',function(req,res){
+res.render('admin/productsManagment',{admin:true})
+})
+router.get('/productmanagment/adddproduct',function(req,res){
+  res.render('admin/addProducts',{admin:true})
+})
+router.post('/productmanagmnet/addproduct',function(req,res){
+  console.log(req.body);
+})
 module.exports = router;

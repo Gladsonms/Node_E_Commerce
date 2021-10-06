@@ -10,19 +10,7 @@
                     <div class="page-title mb-2 mb-sm-0">
                         <h1>Editable Table</h1>
                     </div>
-                    <div class="ml-auto d-flex align-items-center">
-                        <nav>
-                            <ol class="breadcrumb p-0 m-b-0">
-                                <li class="breadcrumb-item">
-                                    <a href="index.html"><i class="ti ti-home"></i></a>
-                                </li>
-                                <li class="breadcrumb-item">
-                                    Tables
-                                </li>
-                                <li class="breadcrumb-item active text-primary" aria-current="page">Editable Table</li>
-                            </ol>
-                        </nav>
-                    </div>
+                    
                 </div>
                 <!-- end page title -->
             </div>
@@ -45,15 +33,27 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
                                      {{#each users}}
+                                    <tr>
                                         <td>{{this.username}}</td>
                                         <td>{{this.email}}</td>
                                         <td>{{this.number}}</td>
-                                        <td><input type="button" value="Disable" class="btn btn-warning"></td>
+                                        <td>
+                                            {{#if this.status}}
+                                            <button class="btn btn-warning">
+                                         <a href="/admin/usermanagment/disableuser?id={{this._id}}">Disable</a>
+                                        </button>
+                                         {{else}}
+                                                      <button class="btn btn-success">
+                                         <a href="/admin/usermanagment/enableuser?id={{this._id}}">Enable</a>
+                                        </button>
+                                       
+                                              {{/if}}
+                                               </td>
+                                        {{!-- <td><input type="button" value="Disable" class="btn btn-warning"></td> --}}
                                         {{!-- <td><input type="button" value="Enable" class="btn btn-sucess"></td> --}}
+                                   </tr>
                                         {{/each}}
-                                   
                                 </tbody>
                             </table>
 

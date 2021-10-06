@@ -14,7 +14,7 @@ var adminRouter = require('./routes/admin');
 var usersRouter = require('./routes/users');
 
 var app = express();
-
+var fileUpload=require('express-fileupload')
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
@@ -44,7 +44,7 @@ else
   console.log("databse connect succefully");
 }
 })
-
+app.use(fileUpload())
 app.use('/', usersRouter);
 app.use('/admin', adminRouter);
 

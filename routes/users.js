@@ -5,7 +5,7 @@ var userHelper = require("../helpers/user-helpers")
 /* GET users listing. */
 router.get('/', function (req, res, next) {
   let user=req.session.user
-  console.log(user);
+ // console.log(user);
   res.render('user/index',{user});
 });
 router.get('/login', function (req, res, next) {
@@ -17,13 +17,14 @@ router.get('/signup', function (req, res, next) {
 router.post('/signup', function (req, res, next) {
   userHelper.doSignup(req.body).then((response) => {
     console.log(response);
+     res.redirect('/login')
   })
 })
 router.post('/login', function (req, res, next) {
   console.log("got it 1");
   userHelper.doLogin(req.body).then((response) => {
     console.log("got it");
-
+      //  console.log("new check"+user);
     if (response.status) {
       req.session.loggedIn = true;
       req.session.user = response.user
