@@ -43,7 +43,7 @@ router.post('/login', function (req, res, next) {
 
     } else {
 
-      res.redirect('/login');
+      res.render('user/login',{err:"Invalid email or password"});
     }
 
   })

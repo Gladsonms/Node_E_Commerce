@@ -18,11 +18,13 @@
 							<div class="block-title">
 								<h2 class="title"><span>Login</span></h2>
 							</div>
-						
-							<form action="/login" method="POST" >
+						  <p class="text-danger">{{err}}</p>
+							<form action="/login" method="POST" id="loginform">
 								<div class="form-group">
 									<label>Email</label>
-									<input type="email" value="" name="email">
+									<input type="email" value="" name="email" id="email"
+									required
+                        pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}" oninput="this.value = this.value.replace(/\s/g,'');">
 								</div>
 								
 								<div class="form-group">
@@ -43,7 +45,7 @@
 							<div class="form-group text-center">
 									<div class="link">
 										{{!-- <a href="#">Forgot your password?</a>  --}}
-										<a href="/login">Dont have an account?  Login</a>
+										<a href="/signup">Dont have an account?  Sign Up</a>
 									</div>
 								</div>
 							</form>
@@ -51,4 +53,32 @@
 					</div>
 				</div>
 			</div>
+			 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+   
+<script>
+	jQuery.validator.setDefaults({
+		debug: false,
+		sucess: function (label) {
+			label.attr('id', 'valid')
+		},
+	});
+	$("#loginform").validate({
+		rules: {
 			
+			email: {
+				required: true,
+				email: true
+			},
+			
+			
+		},
+		messages: {
+			
+			email: {
+				required: "Please provide an email"
+			}
+	});
+	
+</script>

@@ -59,19 +59,16 @@ module.exports={
     });
 },
 disableUser:(userId)=>{
-    return new Promise(async(resolve,reject)=>{
-       
-        console.log("working");
+    return new Promise((resolve,reject)=>{
         db.get().collection(collection.USER_COLLECTIONS).updateOne({_id:ObjectId(userId)},[{$set:{status:{"$not":"status"}}}]).then((response)=>{
-          resolve();     
-          console.log(response);       
+          resolve(response);      
         })
     })
 },
 enableUser:(userId)=>{
-    return new Promise(async(resolve,rejcet)=>{
+    return new Promise((resolve,rejcet)=>{
         console.log("enbale user");
-        db.get().collection(collection.USER_COLLECTIONS).updateOne({_id:ObjectId(userId)},[{$set:{status:true}}]).then((response)=>{
+       db.get().collection(collection.USER_COLLECTIONS).updateOne({_id:ObjectId(userId)},[{$set:{status:true}}]).then((response)=>{
             resolve()
             console.log(response);
             console.log("done");

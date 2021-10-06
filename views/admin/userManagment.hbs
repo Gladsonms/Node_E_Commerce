@@ -40,13 +40,18 @@
                                         <td>{{this.number}}</td>
                                         <td>
                                             {{#if this.status}}
-                                            <button class="btn btn-warning">
-                                         <a href="/admin/usermanagment/disableuser?id={{this._id}}">Disable</a>
+                                            <form action="/admin/usermanagment/disableuser?id={{this._id}}" method="POST">
+                                                <button class="btn btn-warning">
+                                         Disable
                                         </button>
+                                            </form>
+                                            
                                          {{else}}
+                                           <form action="/admin/usermanagment/enableuser?id={{this._id}}" method="POST">
                                                       <button class="btn btn-success">
-                                         <a href="/admin/usermanagment/enableuser?id={{this._id}}">Enable</a>
+                                         Enable
                                         </button>
+                                        </form>
                                        
                                               {{/if}}
                                                </td>
