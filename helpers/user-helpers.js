@@ -36,7 +36,7 @@ module.exports={
                    resolve(response)
                }  
                else{
-                   console.log("login fail________________");
+                  
                    resolve({status:false})
                  
                }
@@ -60,20 +60,21 @@ module.exports={
 },
 disableUser:(userId)=>{
     return new Promise((resolve,reject)=>{
-        db.get().collection(collection.USER_COLLECTIONS).updateOne({_id:ObjectId(userId)},[{$set:{status:{"$not":"status"}}}]).then((response)=>{
+        db.get().collection(collection.USER_COLLECTIONS).updateOne({_id:ObjectId(userId)},[{$set:{status:false}}]).then((response)=>{
           resolve(response);      
         })
     })
 },
 enableUser:(userId)=>{
     return new Promise((resolve,rejcet)=>{
-        console.log("enbale user");
+       
        db.get().collection(collection.USER_COLLECTIONS).updateOne({_id:ObjectId(userId)},[{$set:{status:true}}]).then((response)=>{
             resolve()
-            console.log(response);
-            console.log("done");
+       
         })
     })
+},
+
 }
-}
+
  

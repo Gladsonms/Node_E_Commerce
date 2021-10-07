@@ -2,7 +2,8 @@ var express = require('express');
 const { restart } = require('nodemon');
 var router = express.Router();
 var userHelper = require("../helpers/user-helpers")
-
+require('../helpers/auth')
+const passport=require('passport')
 const checkUserAuth=(req,res,next)=>{
 if(req.session.isLoggedIn){
   res.render('user/index')
@@ -30,9 +31,9 @@ router.post('/signup', function (req, res, next) {
   })
 })
 router.post('/login', function (req, res, next) {
-  console.log("got it 1");
+  
   userHelper.doLogin(req.body).then((response) => {
-    console.log("got it");
+  
       //  console.log("new check"+user);
     if (response.status) {
       req.session.loggedIn = true;
@@ -48,6 +49,19 @@ router.post('/login', function (req, res, next) {
 
   })
 })
+
+router.get('/auth/google',(req,res)=>{
+  passport.authenticate('google',{scope: ['email','profile']})
+  console.log("got google auth");
+})
+
+router.get('/google/callback',(req,res)=>{
+passport.authenticate('google',{
+  successRedirect :"/",
+  failureRedirect:'/login'
+})
+})
+
 router.post('/logout',function (req,res,next){
   req.session.destroy()
   res.header('Cache-control','private, no-cache,no-store,max-age=0,must-revalidate,pre-check=0,post-check=0')

@@ -19,28 +19,23 @@
                             {{!-- <input type="password" class="form-control" id="inputPassword4"
                                 placeholder="Password"> --}}
                             <select id="inputCategory" class="form-control" name="category">
-                                <option selected="">Rice</option>
-                                <option>Ontario</option>
-                                <option>Toronto</option>
+                                <option selected="">Fruits and Vegetables </option>
+                                <option>Dairy and Bakery</option>
+                                <option> Staples</option>
                             </select>
                         </div>
                     </div>
 
 
-
-                    <div class="form-group">
-                        <label for="exampleFormControlTextarea1">Description</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="description"></textarea>
-                    </div>
-
+                 
 
                     <div class="form-row">
                         <div class="form-group col-md-8">
                             <label for="subCategory">Sub Category</label>
                             <select id="inputsubCategory" class="form-control" name="subCategory">
-                                <option selected="">Select State</option>
-                                <option>Ontario</option>
-                                <option>Toronto</option>
+                                <option selected="">Select sub Category</option>
+                                <option> Staples</option>
+                                <option>Fresh Vegetables</option>
                             </select>
                         </div>
 
@@ -49,10 +44,18 @@
                             <input type="text" class="form-control" id="inputPrice" name="price">
                         </div>
                         <div class="form-group col-md-2">
-                            <label for="inputquantity" name="Quantity">Quantity</label>
+                            <label for="inputquantity" name="quantity">Quantity</label>
                             <input type="text" class="form-control" id="inputQuantity">
                         </div>
                     </div>
+                      <div class="form-row ">
+
+                    <div class="form-group col-md-12">
+                        <label for="exampleFormControlTextarea1">Description</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="description"></textarea>
+                    </div>
+                   </div>
+
                     {{!-- <div class="form-row">
                         <div class="form-group col-md-12">
                             <label for="inputprice">Additonal information</label>
@@ -68,7 +71,7 @@
                                         <div class="input-group">
                                             <span class="input-group-btn">
                                                 <span class="btn btn-default btn-file">
-                                                    Browse… <input type="file" id="imgInp">
+                                                    Browse… <input type="file" id="imgInp" name="productimage1">
                                                 </span>
                                             </span>
                                             <input type="text" class="form-control" readonly>
@@ -82,12 +85,12 @@
                                         <div class="input-group">
                                             <span class="input-group-btn">
                                                 <span class="btn btn-default btn-file">
-                                                    Browse… <input type="file" id="imgInp">
+                                                    Browse… <input type="file" id="imgInp2" name="productimage2">
                                                 </span>
                                             </span>
                                             <input type="text" class="form-control" readonly>
                                         </div>
-                                        <img id='img-upload' />
+                                        <img id='img-upload2' />
                                     </div>
                                 </div>
                             </div>
@@ -100,12 +103,12 @@
                                         <div class="input-group">
                                             <span class="input-group-btn">
                                                 <span class="btn btn-default btn-file">
-                                                    Browse… <input type="file" id="imgInp">
+                                                    Browse… <input type="file" id="imgInp3" name="productimage3">
                                                 </span>
                                             </span>
                                             <input type="text" class="form-control" readonly>
                                         </div>
-                                        <img id='img-upload' />
+                                        <img id='img-upload3' />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -114,12 +117,12 @@
                                         <div class="input-group">
                                             <span class="input-group-btn">
                                                 <span class="btn btn-default btn-file">
-                                                    Browse… <input type="file" id="imgInp">
+                                                    Browse… <input type="file" id="imgInp4" name="productimage4">
                                                 </span>
                                             </span>
                                             <input type="text" class="form-control" readonly>
                                         </div>
-                                        <img id='img-upload' />
+                                        <img id='img-upload4' />
                                     </div>
                                 </div>
                             </div>
@@ -132,6 +135,7 @@
             </div>
         </div>
     </div>
+    
 </div>
 <style>
     .btn-file {
@@ -155,11 +159,12 @@
         display: block;
     }
 
-    #img-upload {
+    #img-upload ,#img-upload2,#img-upload3,#img-upload4 {
         width: 100%;
     }
 </style>
 <script>
+    //image 1
     $(document).ready(function () {
         $(document).on('change', '.btn-file :file', function () {
             var input = $(this),
@@ -196,5 +201,114 @@
         });
     });
 
+//image 2
+    $(document).ready(function () {
+        $(document).on('change', '.btn-file :file', function () {
+            var input = $(this),
+                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            input.trigger('fileselect', [label]);
+        });
 
+        $('.btn-file :file').on('fileselect', function (event, label) {
+
+            var input = $(this).parents('.input-group').find(':text'),
+                log = label;
+
+            if (input.length) {
+                input.val(log);
+            } else {
+                if (log) alert(log);
+            }
+
+        });
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#img-upload2').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#imgInp2").change(function () {
+            readURL(this);
+        });
+    });
+
+//image 3
+    $(document).ready(function () {
+        $(document).on('change', '.btn-file :file', function () {
+            var input = $(this),
+                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            input.trigger('fileselect', [label]);
+        });
+
+        $('.btn-file :file').on('fileselect', function (event, label) {
+
+            var input = $(this).parents('.input-group').find(':text'),
+                log = label;
+
+            if (input.length) {
+                input.val(log);
+            } else {
+                if (log) alert(log);
+            }
+
+        });
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#img-upload3').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#imgInp3").change(function () {
+            readURL(this);
+        });
+    });
+
+    //image 3
+    $(document).ready(function () {
+        $(document).on('change', '.btn-file :file', function () {
+            var input = $(this),
+                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            input.trigger('fileselect', [label]);
+        });
+
+        $('.btn-file :file').on('fileselect', function (event, label) {
+
+            var input = $(this).parents('.input-group').find(':text'),
+                log = label;
+
+            if (input.length) {
+                input.val(log);
+            } else {
+                if (log) alert(log);
+            }
+
+        });
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#img-upload4').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#imgInp4").change(function () {
+            readURL(this);
+        });
+    });
 </script>

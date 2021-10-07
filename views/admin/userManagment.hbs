@@ -28,7 +28,7 @@
                                       
                                         <th scope="col">Name</th>
                                         <th scope="col">Email</th>
-                                        <th scope="col">phone number</th>
+                                        {{!-- <th scope="col">phone number</th> --}}
                                         <th scope="col">Option</th>
                                     </tr>
                                 </thead>
@@ -37,18 +37,18 @@
                                     <tr>
                                         <td>{{this.username}}</td>
                                         <td>{{this.email}}</td>
-                                        <td>{{this.number}}</td>
+                                        {{!-- <td>{{this.number}}</td> --}}
                                         <td>
                                             {{#if this.status}}
                                             <form action="/admin/usermanagment/disableuser?id={{this._id}}" method="POST">
-                                                <button class="btn btn-warning">
+                                                <button class="btn btn-warning"  onclick="return confirm('Are you sure to disable {{this.username}} ? ')">
                                          Disable
                                         </button>
                                             </form>
                                             
                                          {{else}}
                                            <form action="/admin/usermanagment/enableuser?id={{this._id}}" method="POST">
-                                                      <button class="btn btn-success">
+                                                      <button class="btn btn-success" onclick="alert ('{{this.username}} Enabled Succesfully')">
                                          Enable
                                         </button>
                                         </form>
