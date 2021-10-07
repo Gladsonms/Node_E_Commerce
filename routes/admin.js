@@ -2,6 +2,7 @@ const { response } = require('express');
 var express = require('express');
 const session = require('express-session');
 const userHelpers = require('../helpers/user-helpers');
+const productHelpers = require('../helpers/product-helpers');
 var router = express.Router();
 
 const checkAuth = (req, res, next) => {
@@ -74,12 +75,21 @@ router.get('/productmanagment/adddproduct', function (req, res) {
   res.render('admin/addProducts', { admin: true })
 })
 router.post('/productmanagmnet/addproduct', function (req, res) {
-  console.log(req.body);
-  console.log(req.files.productimage1);
-  console.log(req.files.productimage2);
-  console.log(req.files.productimage3);
-  console.log(req.files.productimage4);
-})
+  productHelpers.addProduct(req.body).then((data)=>{
+
+    let id=""+data
+    let image1 =req.files.productimage1;
+    let image2 =req.files.productimage2;
+    let image3=req.files.productimage3;
+    let image4 =req.files.productimage4;
+    image1.mv('./public/product-images/product-image1/'+id+'.jpg')
+    image2.mv('./public/product-images/product-image2/'+id+'.jpg')
+    image3.mv('./public/product-images/product-image3/'+id+'.jpg')
+    image4.mv('./public/product-images/product-image4/'+id+'.jpg')  
+    res.render('admin/addProducts', { admin: true })
+  })
+  })
+
 router.get('/categorymangament', function (req, res) {
   res.render('admin/categoryManagment', { admin: true })
 })
