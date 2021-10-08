@@ -17,7 +17,7 @@ const checkAuth = (req, res, next) => {
 var adminUsername = "admin";
 var adminPassword = "admin";
 
-
+//login
 router.get('/', checkAuth, function (req, res, next) {
 
   res.render('admin/adminlogin', { rejectHeader: true });
@@ -40,9 +40,13 @@ router.post('/adminLogin', function (req, res, next) {
   }
 
 })
+
+//home
 router.get('/home', function (req, res) {
   res.render('admin/home', { admin: true });
 });
+
+//usermangment
 router.get('/usermanagment', function (req, res) {
   userHelpers.getUserDetails().then((users) => {
 
@@ -68,9 +72,26 @@ router.post('/usermanagment/enableuser', async (req, res) => {
     res.redirect('/admin/usermanagment')
   })
 })
-router.get('/productmanagment', function (req, res) {
-  res.render('admin/productsManagment', { admin: true })
+
+//product mangment
+router.get('/productmanagment', function (req, res,next) {
+  
+  productHelpers.getAllProducts().then((products)=>{
+    console.log(products );
+    res.render('admin/productsManagment', { admin: true ,products})
+  })
 })
+
+router.post('/productmangment/deleteproduct/:id',function (req,res,next){
+  console.log('came ')
+  let productId=req.params.id
+  console.log(productId);
+ 
+    productHelpers.deleteProduct(productId).then((response)=>{
+    res.render('admin/productsManagment', { admin: true })
+  })
+})
+
 router.get('/productmanagment/adddproduct', function (req, res) {
   res.render('admin/addProducts', { admin: true })
 })
@@ -90,9 +111,14 @@ router.post('/productmanagmnet/addproduct', function (req, res) {
   })
   })
 
+
+  //category mangmnet
 router.get('/categorymangament', function (req, res) {
   res.render('admin/categoryManagment', { admin: true })
 })
+
+
+//logout
 router.get('/logout', function (req, res) {
   req.session.isLoggedIn = false;
   req.session.destroy()

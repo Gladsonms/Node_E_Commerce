@@ -1,37 +1,58 @@
-<table class="table col-md-8" style="margin-left: 26em;
-    margin-top: 4em;
-">
+<div class="co ">
+    <table class="table col-md-8" style="margin-left: 19em;
+    margin-top: 4em;width: 90em;
+" id="table_id">
 
  <div class="card-header pt-5">
                                         <h4 class="card-title">All Products</h4>
-                                        <button class="btn btn-primary float-right"><a href="/admin/productmanagment/adddproduct">Add products</a></button>
+                                        <button class="btn btn-primary float-right mb-3"><a href="/admin/productmanagment/adddproduct">Add products</a></button>
                                     </div>
-    <thead>
+    <thead class="">
         <tr>
-            <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
+            <th scope="col">Product</th>
+            <th scope="col">Price</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Category</th>
+            <th scope="col">Sub category</th>
+            <th scope="col">Image</th>
+            <th scope="col">Options</th>
         </tr>
     </thead>
     <tbody>
+        {{#each products}}
         <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
+           
+            <td>{{this.product}}</td>
+            <td>{{this.price}}</td>
+            <td>{{this.quantity}}</td>
+            <td>{{this.category}}</td>
+            <td>{{this.subCategory}}</td>
+            <td><img src="/pproduct-images/product-image1/{{this._id}}.jpg" alt="image" srcset="" style="width: 50px;height: 50px;"></td>
+            <td>
+                                            
+                                            <form  action="/admin/productmangment/deleteproduct/{{this._id}}" method="POST">
+                                                <button class="btn btn-danger"  onclick="return confirm('Are you sure to delete {{this.product}} ? ')">
+                                         Delete
+                                        </button>
+                                            </form>
+                                            
+                                       
+                                           <form action="/admin/productmangment/editproduct/{{this._id}}" method="POST">
+                                                      <button class="btn btn-success mt-3">
+                                         Edit
+                                        </button>
+                                        </form>
+                                       
+                                       
+                                               </td>
+            {{!-- <td>{{this.subCategory}}</td> --}}
         </tr>
-        <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-        </tr>
-        <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
-        </tr>
+        {{/each}}
     </tbody>
 </table>
+</div>
+<script>
+    $(document).ready( function () {
+    $('#table_id').DataTable();
+} );
+</script>

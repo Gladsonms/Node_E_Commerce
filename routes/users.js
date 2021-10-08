@@ -2,6 +2,7 @@ var express = require('express');
 const { restart } = require('nodemon');
 var router = express.Router();
 var userHelper = require("../helpers/user-helpers")
+const productHelpers = require('../helpers/product-helpers');
 require('../helpers/auth')
 const passport=require('passport')
 const checkUserAuth=(req,res,next)=>{
@@ -15,8 +16,12 @@ else{
 /* GET users listing. */
 router.get('/',checkUserAuth, function (req, res, next) {
   let user=req.session.user
- // console.log(user);
-  res.render('user/index',{user});
+  productHelpers.getAllProducts().then((products)=>{
+     
+    res.render('user/index',{user,products});
+  })
+ 
+
 });
 router.get('/login', function (req, res, next) {
   res.render('user/login')
