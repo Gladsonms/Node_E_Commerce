@@ -2,6 +2,7 @@ var db=require('../config/connection')
 var collection=require("../config/collections")
 var ObjectId = require("mongodb").ObjectId;
 const { ObjectID } = require('bson');
+const { response } = require('express');
 module.exports = {
     addProduct:(product,callback)=>{
         return new Promise(async(resolve,reject)=>{
@@ -31,5 +32,24 @@ module.exports = {
           console.log(err);
             })
         })
+    },
+    getProductDetails:(productId)=>{
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collection.PRODUCT_COLLECTIONS).findOne({_id:ObjectId(productId)}).then((products)=>{
+            
+              resolve(products)
+            })
+        })
+    },
+    updateProducts:(productId,productDetails)=>{
+        
+        return new Promise(async(resolve,reject)=>{
+
+            console.log("update product ");     
+          await  db.get().collection(collection.PRODUCT_COLLECTIONS).updateOne({_id:ObjectId(productId)},{$set:{product:productDetails.product,category:productDetails.category,subCategory:productDetails.subCategory,price:productDetails.price,quantity:productDetails.quantity,description:productDetails.description}})
+        }).then((response)=>{
+            resolve()
+        })
+
     }
 }

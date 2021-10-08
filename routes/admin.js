@@ -91,6 +91,23 @@ router.post('/productmangment/deleteproduct/:id',function (req,res,next){
     res.render('admin/productsManagment', { admin: true })
   })
 })
+router.get('/productmangmnet/editproduct/:id',async (req,res)=>{
+ let products=await productHelpers.getProductDetails(req.params.id)
+ 
+ console.log(products);
+ res.render('admin/editProduct',{admin:true,products})
+
+
+})
+router.post('/productmanagmnet/editproduct/:id',(req,res)=>{
+  console.log("edit product");
+  productHelpers.updateProducts(req.params.id,req.body).then(()=>{
+    res.redirect('/admin/productmanagment')
+     })
+})
+// router.post('/productmanagmnet/editproduct/:id',(req,res)=>{
+//   console.log("asxvhxhas");
+// })
 
 router.get('/productmanagment/adddproduct', function (req, res) {
   res.render('admin/addProducts', { admin: true })
@@ -110,6 +127,8 @@ router.post('/productmanagmnet/addproduct', function (req, res) {
     res.render('admin/addProducts', { admin: true })
   })
   })
+
+  
 
 
   //category mangmnet

@@ -27,7 +27,7 @@
             <td>{{this.quantity}}</td>
             <td>{{this.category}}</td>
             <td>{{this.subCategory}}</td>
-            <td><img src="/pproduct-images/product-image1/{{this._id}}.jpg" alt="image" srcset="" style="width: 50px;height: 50px;"></td>
+            <td><img src="/product-images/product-image1/{{this._id}}.jpg" alt="image" srcset="" style="width: 50px;height: 50px;"></td>
             <td>
                                             
                                             <form  action="/admin/productmangment/deleteproduct/{{this._id}}" method="POST">
@@ -37,11 +37,11 @@
                                             </form>
                                             
                                        
-                                           <form action="/admin/productmangment/editproduct/{{this._id}}" method="POST">
-                                                      <button class="btn btn-success mt-3">
+                                           <a class="btn btn-warning" href="/admin/productmangmnet/editproduct/{{this._id}}" >
+                                                      
                                          Edit
-                                        </button>
-                                        </form>
+                                        
+                                        </a>
                                        
                                        
                                                </td>
