@@ -8,7 +8,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <form action="/admin/productmanagmnet/editproduct/{{products._id}}" method="POST" >
+                <form action="/admin/productmanagmnet/editproduct/{{products._id}}" method="POST" enctype="multipart/form-data" >
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="inputProduct">Product Name  </label>
@@ -82,7 +82,7 @@
                                             </span>
                                             <input type="text" class="form-control" readonly>
                                         </div>
-                                        <img id='img-upload' />
+                                        <img id='img-upload' src="/product-images/product-image1/{{products._id}}.jpg" />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -96,7 +96,7 @@
                                             </span>
                                             <input type="text" class="form-control" readonly>
                                         </div>
-                                        <img id='img-upload2' />
+                                        <img id='img-upload2' src="/product-images/product-image2/{{products._id}}.jpg"  />
                                     </div>
                                 </div>
                             </div>
@@ -114,7 +114,7 @@
                                             </span>
                                             <input type="text" class="form-control" readonly>
                                         </div>
-                                        <img id='img-upload3' />
+                                        <img id='img-upload3' src="/product-images/product-image3/{{products._id}}.jpg"  />
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -128,7 +128,7 @@
                                             </span>
                                             <input type="text" class="form-control" readonly>
                                         </div>
-                                        <img id='img-upload4' />
+                                        <img id='img-upload4'  src="/product-images/product-image4/{{products._id}}.jpg"   />
                                     </div>
                                 </div>
                             </div>
@@ -136,7 +136,7 @@
                     </div>
 
 
-                    <button type="submit" class="btn btn-primary">Add Product</button>
+                    <button type="submit" class="btn btn-primary">Edit Product</button>
                 </form>
             </div>
         </div>

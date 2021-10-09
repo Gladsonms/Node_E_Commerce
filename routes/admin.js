@@ -94,15 +94,32 @@ router.post('/productmangment/deleteproduct/:id',function (req,res,next){
 router.get('/productmangmnet/editproduct/:id',async (req,res)=>{
  let products=await productHelpers.getProductDetails(req.params.id)
  
- console.log(products);
+
  res.render('admin/editProduct',{admin:true,products})
 
 
 })
 router.post('/productmanagmnet/editproduct/:id',(req,res)=>{
-  console.log("edit product");
+  let id=req.params.id
+  console.log(id);
   productHelpers.updateProducts(req.params.id,req.body).then(()=>{
     res.redirect('/admin/productmanagment')
+
+    let image1 =req.files.productimage1;
+    let image2 =req.files.productimage2;
+    let image3=req.files.productimage3;
+    let image4 =req.files.productimage4;
+    console.log("start");
+    console.log(image1);
+    console.log(image2);
+    console.log(image3);
+    console.log(image4);
+    console.log("end");
+    image1.mv('./public/product-images/product-image1/'+id+'.jpg',(err)=>{if(!err){res.render("admin/addProducts")}else{console.log(err)}})
+    image2.mv('./public/product-images/product-image2/'+id+'.jpg',(err)=>{if(!err){res.render("admin/addProducts")}else{console.log(err)}})
+    image3.mv('./public/product-images/product-image3/'+id+'.jpg',(err)=>{if(!err){res.render("admin/addProducts")}else{console.log(err)}})
+    image4.mv('./public/product-images/product-image4/'+id+'.jpg',(err)=>{if(!err){res.render("admin/addProducts")}else{console.log(err)}})  
+    //res.render('admin/addProducts', { admin: true })
      })
 })
 // router.post('/productmanagmnet/editproduct/:id',(req,res)=>{
@@ -120,10 +137,10 @@ router.post('/productmanagmnet/addproduct', function (req, res) {
     let image2 =req.files.productimage2;
     let image3=req.files.productimage3;
     let image4 =req.files.productimage4;
-    image1.mv('./public/product-images/product-image1/'+id+'.jpg')
-    image2.mv('./public/product-images/product-image2/'+id+'.jpg')
-    image3.mv('./public/product-images/product-image3/'+id+'.jpg')
-    image4.mv('./public/product-images/product-image4/'+id+'.jpg')  
+    image1.mv('./public/product-images/product-image1/'+id+'.jpg',(err)=>{if(!err){res.render("admin/addProducts")}else{console.log(err)}})
+    image2.mv('./public/product-images/product-image2/'+id+'.jpg',(err)=>{if(!err){res.render("admin/addProducts")}else{console.log(err)}})
+    image3.mv('./public/product-images/product-image3/'+id+'.jpg',(err)=>{if(!err){res.render("admin/addProducts")}else{console.log(err)}})
+    image4.mv('./public/product-images/product-image4/'+id+'.jpg',(err)=>{if(!err){res.render("admin/addProducts")}else{console.log(err)}})  
     res.render('admin/addProducts', { admin: true })
   })
   })

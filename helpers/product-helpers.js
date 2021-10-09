@@ -45,10 +45,12 @@ module.exports = {
         
         return new Promise(async(resolve,reject)=>{
 
-            console.log("update product ");     
-          await  db.get().collection(collection.PRODUCT_COLLECTIONS).updateOne({_id:ObjectId(productId)},{$set:{product:productDetails.product,category:productDetails.category,subCategory:productDetails.subCategory,price:productDetails.price,quantity:productDetails.quantity,description:productDetails.description}})
-        }).then((response)=>{
+            
+          await  db.get().collection(collection.PRODUCT_COLLECTIONS).updateOne({_id:ObjectId(productId)},{$set:{product:productDetails.product,category:productDetails.category,subCategory:productDetails.subCategory,price:productDetails.price,quantity:productDetails.quantity,description:productDetails.description}}).then((response)=>{
             resolve()
+           
+        })
+            console.log(response);
         })
 
     }

@@ -17,7 +17,7 @@ else{
 router.get('/',checkUserAuth, function (req, res, next) {
   let user=req.session.user
   productHelpers.getAllProducts().then((products)=>{
-     
+    //res.header('Cache-control','private, no-cache,no-store,max-age=0,must-revalidate,pre-check=0,post-check=0')   
     res.render('user/index',{user,products});
   })
  
@@ -72,5 +72,16 @@ router.post('/logout',function (req,res,next){
   res.header('Cache-control','private, no-cache,no-store,max-age=0,must-revalidate,pre-check=0,post-check=0')
   res.redirect('/login')
 })
+
+
+// router.get('/productdetails/:id',function(req,res,next){
+//   productHelpers.getProductDetails(id).then((product)=>{
+//     let id=req.params.id
+    
+//     console.log(id);
+
+
+//   })
+// })
 
 module.exports = router;
