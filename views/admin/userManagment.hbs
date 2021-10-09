@@ -41,15 +41,15 @@
                                         <td>
                                             {{#if this.status}}
                                             <form action="/admin/usermanagment/disableuser?id={{this._id}}" method="POST">
-                                                <button class="btn btn-warning"  onclick="return confirm('Are you sure to disable {{this.username}} ? ')">
-                                         Disable
+                                                <button class="btn btn-warning"  onclick="return confirm('Are you sure to Block {{this.username}} ? ')">
+                                         Block
                                         </button>
                                             </form>
                                             
                                          {{else}}
                                            <form action="/admin/usermanagment/enableuser?id={{this._id}}" method="POST">
-                                                      <button class="btn btn-success" onclick="alert ('{{this.username}} Enabled Succesfully')">
-                                         Enable
+                                                      <button class="btn btn-success" onclick="alert ('{{this.username}} Unblocked Succesfully')">
+                                         Unblock
                                         </button>
                                         </form>
                                        

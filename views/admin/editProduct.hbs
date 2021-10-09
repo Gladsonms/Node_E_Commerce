@@ -12,13 +12,13 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="inputProduct">Product Name  </label>
-                            <input type="text" class="form-control" id="inputProduct"  name="product" value="{{products.product}}">
+                            <input type="text" class="form-control" id="inputProduct"  name="product" value="{{products.product}}" required>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="CATEGORY">Category</label>
                             {{!-- <input type="password" class="form-control" id="inputPassword4"
                                 placeholder="Password"> --}}
-                            <select id="inputCategory" class="form-control" name="category">
+                            <select id="inputCategory" class="form-control" name="category" required>
                                  <option selected="">{{products.category}} </option>
                                 <option >Fruits and Vegetables </option>
                                 <option>Dairy and Bakery</option>
@@ -33,7 +33,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-8">
                             <label for="subCategory">sub Category</label>
-                            <select id="inputsubCategory" class="form-control" name="subCategory">
+                            <select id="inputsubCategory" class="form-control" name="subCategory" required>
                                 <option selected="">{{products.subCategory}}</option>
                                 <option>  Fresh Fruits</option>
                                 <option>Fresh Vegetables</option>
@@ -47,18 +47,18 @@
 
                         <div class="form-group col-md-2">
                             <label for="inputprice">Price</label>
-                            <input type="text" class="form-control" id="inputPrice" name="price" value="{{products.price}}">
+                            <input type="number" class="form-control" id="inputPrice" name="price" value="{{products.price}}" required>
                         </div>
                         <div class="form-group col-md-2">
                             <label for="inputquantity" name="quantity">Quantity</label>
-                            <input type="text" class="form-control" id="inputQuantity" name="quantity"  value="{{products.quantity}}">
+                            <input type="number" class="form-control" id="inputQuantity" name="quantity"  value="{{products.quantity}}" required>
                         </div>
                     </div>
                       <div class="form-row ">
 
                     <div class="form-group col-md-12">
                         <label for="exampleFormControlTextarea1">Description</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="description" >{{products.description}}</textarea>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="description" >{{products.description}}</textarea required>
                     </div>
                    </div>
 

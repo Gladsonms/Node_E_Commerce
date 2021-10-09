@@ -2,12 +2,12 @@
 				<!-- Breadcrumb -->
 				<div id="breadcrumb">
 					<div class="container">
-						<h2 class="title">Organic Strawberry Fruits</h2>
+						<h2 class="title mt-5">{{products.product}}</h2>
 						
 						<ul class="breadcrumb">
 							<li><a href="#" title="Home">Home</a></li>
-							<li><a href="#" title="Fruit">Fruit</a></li>
-							<li><span>Tomato</span></li>
+							<li><a href="#" title="Fruit">{{products.category}}</a></li>
+							<li><span>{{products.subCategory}}</span></li>
 						</ul>
 					</div>
 				</div>
@@ -252,20 +252,20 @@
 								<div class="products-block layout-5">
 									<div class="product-item">
 										<div class="product-title">
-											Organic Strawberry Fruits
+											{{products.product}}
 										</div>
 													
 										<div class="row">
 											<div class="product-left col-md-5 col-sm-5 col-xs-12">
 												<div class="product-image horizontal">
 													<div class="main-image">
-														<img class="img-responsive" src="img/product/2.jpg" alt="Product Image">
+														<img class="img-responsive" src="/product-images/product-image1/{{products._id}}.jpg" alt="Product Image">
 													</div>
 													<div class="thumb-images owl-theme owl-carousel">
-														<img class="img-responsive" src="img/product/33.jpg" alt="Product Image">
-														<img class="img-responsive" src="img/product/3.jpg" alt="Product Image">
-														<img class="img-responsive" src="img/product/7.jpg" alt="Product Image">
-														<img class="img-responsive" src="img/product/30.jpg" alt="Product Image">
+														<img class="img-responsive" src="/product-images/product-image1/{{products._id}}.jpg" alt="Product Image">
+														<img class="img-responsive" src="/product-images/product-image2/{{products._id}}.jpg" alt="Product Image">
+														<img class="img-responsive" src="/product-images/product-image3/{{products._id}}.jpg" alt="Product Image">
+														<img class="img-responsive" src="/product-images/product-image4/{{products._id}}.jpg" alt="Product Image">
 													</div>
 												</div>
 											</div>
@@ -273,8 +273,8 @@
 											<div class="product-right col-md-7 col-sm-7 col-xs-12">
 												<div class="product-info">
 													<div class="product-price">
-														<span class="sale-price">$80.00</span>
-														<span class="base-price">$90.00</span>
+														<span class="sale-price">₹{{products.price}}</span>
+														<span class="base-price">₹{{products.price}}</span>
 													</div>
 													
 													<div class="product-stock">
@@ -282,9 +282,9 @@
 													</div>
 													
 													<div class="product-short-description">
-														Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sapien urna, commodo ut molestie vitae, feugiat tincidunt ligula. Nam gravida nulla in convallis condimentum.
+													{{products.description}}
 													</div>
-													
+{{!-- 													
 													<div class="product-variants border-bottom">
 														<div class="product-variants-item">
 															<span class="control-label">Size :</span>
@@ -327,7 +327,7 @@
 															</ul>
 														</div>
 													</div>
-													
+													 --}}
 													<div class="product-add-to-cart border-bottom">
 														<div class="product-quantity">
 															<span class="control-label">QTY :</span>
@@ -347,7 +347,10 @@
 																<i class="fa fa-shopping-basket" aria-hidden="true"></i>
 																<span>Add To Cart</span>
 															</a>
-															
+																<a class="add-to-cart" href="#">
+																<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+																<span>Buy Now</span>
+															</a>
 															<a class="add-wishlist" href="#">
 																<i class="fa fa-heart" aria-hidden="true"></i>												
 															</a>

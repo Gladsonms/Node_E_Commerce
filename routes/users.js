@@ -4,7 +4,8 @@ var router = express.Router();
 var userHelper = require("../helpers/user-helpers")
 const productHelpers = require('../helpers/product-helpers');
 require('../helpers/auth')
-const passport=require('passport')
+const passport=require('passport');
+const userHelpers = require('../helpers/user-helpers');
 const checkUserAuth=(req,res,next)=>{
 if(req.session.isLoggedIn){
   res.render('user/index')
@@ -74,14 +75,12 @@ router.post('/logout',function (req,res,next){
 })
 
 
-// router.get('/productdetails/:id',function(req,res,next){
-//   productHelpers.getProductDetails(id).then((product)=>{
-//     let id=req.params.id
-    
-//     console.log(id);
+router.get('/productdetails/:id',async function (req,res,next){
+let products= await productHelpers.getProductDetails(req.params.id)
+console.log(products);
+  res.render('user/productDetails',{products})
 
-
-//   })
-// })
+  
+})
 
 module.exports = router;
