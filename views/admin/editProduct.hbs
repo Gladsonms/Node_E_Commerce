@@ -12,13 +12,13 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="inputProduct">Product Name  </label>
-                            <input type="text" class="form-control" id="inputProduct"  name="product" value="{{products.product}}" required>
+                            <input type="text" class="form-control" id="inputProduct"  name="product" value="{{products.product}}" >
                         </div>
                         <div class="form-group col-md-6">
                             <label for="CATEGORY">Category</label>
                             {{!-- <input type="password" class="form-control" id="inputPassword4"
                                 placeholder="Password"> --}}
-                            <select id="inputCategory" class="form-control" name="category" required>
+                            <select id="inputCategory" class="form-control" name="category" >
                                  <option selected="">{{products.category}} </option>
                                 <option >Fruits and Vegetables </option>
                                 <option>Dairy and Bakery</option>
@@ -33,7 +33,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-8">
                             <label for="subCategory">sub Category</label>
-                            <select id="inputsubCategory" class="form-control" name="subCategory" required>
+                            <select id="inputsubCategory" class="form-control" name="subCategory" >
                                 <option selected="">{{products.subCategory}}</option>
                                 <option>  Fresh Fruits</option>
                                 <option>Fresh Vegetables</option>

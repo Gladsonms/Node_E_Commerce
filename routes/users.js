@@ -82,5 +82,8 @@ console.log(products);
 
   
 })
+router.get('/cart',(req,res)=>{
+  res.render('user/cart')
+})
 
 module.exports = router;

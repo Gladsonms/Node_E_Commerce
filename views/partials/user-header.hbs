@@ -145,7 +145,8 @@
 					<!-- Logo -->
 					<div class="logo">
 						<a href="home-3.html">
-							<img class="img-responsive" src="img/logo.png" alt="Logo">
+					       
+						<img class="img-responsive" src="img/logo.png" alt="Logo">
 						</a>
 					</div>
 
@@ -164,6 +165,7 @@
 					</div>
 
 					<!-- Cart -->
+					{{#if user}}
 					<div class="block-cart dropdown">
 						<div class="cart-title">
 							<i class="fa fa-shopping-basket" aria-hidden="true"></i>
@@ -174,27 +176,7 @@
 							<div class="cart-content">
 								<table>
 									<tbody>
-										<tr>
-											<td class="product-image">
-												<a href="product-detail-left-sidebar.html">
-													<img src="img/product/7.jpg" alt="Product">
-												</a>
-											</td>
-											<td>
-												<div class="product-name">
-													<a href="product-detail-left-sidebar.html">Organic Strawberry
-														Fruits</a>
-												</div>
-												<div>
-													2 x <span class="product-price">$28.98</span>
-												</div>
-											</td>
-											<td class="action">
-												<a class="remove" href="#">
-													<i class="fa fa-trash-o" aria-hidden="true"></i>
-												</a>
-											</td>
-										</tr>
+									
 
 										<tr>
 											<td class="product-image">
@@ -225,7 +207,7 @@
 										<tr>
 											<td colspan="3">
 												<div class="cart-button">
-													<a class="btn btn-primary" href="product-cart.html"
+													<a class="btn btn-primary" href="/cart"
 														title="View Cart">View Cart</a>
 													<a class="btn btn-primary" href="product-checkout.html"
 														title="Checkout">Checkout</a>
@@ -237,6 +219,7 @@
 							</div>
 						</div>
 					</div>
+					{{/if}}
 
 
 					<!-- My Account -->

@@ -3,6 +3,7 @@ var express = require('express');
 const session = require('express-session');
 const userHelpers = require('../helpers/user-helpers');
 const productHelpers = require('../helpers/product-helpers');
+const { addCategory } = require('../helpers/product-helpers');
 var router = express.Router();
 
 const checkAuth = (req, res, next) => {
@@ -149,9 +150,33 @@ router.post('/productmanagmnet/addproduct', function (req, res) {
 
 
   //category mangmnet
+
 router.get('/categorymangament', function (req, res) {
-  res.render('admin/categoryManagment', { admin: true })
+ 
+  // productHelpers.getCategory().then((category)=>{
+ 
+  // res.render('admin/categoryManagment', { admin: true ,category})
+ 
+
+  // })
+  res.render('admin/categoryManagment', { admin: true})
 })
+
+router.post('/categorymangament/addcategory',(req,res)=>{
+      productHelpers.addCategory(req.body).then((data)=>{
+       
+      })
+})
+
+router.get('/subcategorymangament', function (req, res) {
+  res.render('admin/subcategoryManagment', { admin: true })
+})
+
+
+router.post('/subcategorymangament/',(req,res)=>{
+  productHelpers
+})
+
 
 
 //logout

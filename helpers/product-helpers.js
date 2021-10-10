@@ -3,6 +3,7 @@ var collection=require("../config/collections")
 var ObjectId = require("mongodb").ObjectId;
 const { ObjectID } = require('bson');
 const { response } = require('express');
+const { Forbidden } = require('http-errors');
 module.exports = {
     addProduct:(product,callback)=>{
         return new Promise(async(resolve,reject)=>{
@@ -53,5 +54,24 @@ module.exports = {
             console.log(response);
         })
 
+    },
+    addCategory:(category)=>{
+        return new Promise(async(resolve,reject)=>{
+        let id = await db.get().collection(collection.CATEGORY_COLLECTIONS).insertOne(category)
+        resolve(id.insertedId)
+        })
+    },
+    getCategory:()=>{
+        
+        return new Promise(async(resolve,reject)=>{
+            let category= await db.get().collection(collection.CATEGORY_COLLECTIONS).find({}).toArray()
+            console.log(category);
+        })
+
+    },
+    addsubCategory:(subcategory)=>{
+        return new Promise(async(resolve,reject)=>{
+            let id=await db.get().collection(collection.CATEGORY_COLLECTIONS).updateOne({})
+        })
     }
 }

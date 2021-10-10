@@ -1,26 +1,26 @@
+
 <div class="form-row" style=" margin-top: 23px;
     margin-left: 357px;
     padding-bottom: 31px;
 ">
-    <form action="/admin/categorymangament/addcategory" method="POST">
-      <h3 class="text-center">Category</h3>
-  <div class="form-group col-md-6">
-    <label for="inputCategory">Category</label>
-    <input type="text" class="form-control" id="inputCategory" name="category">
-  </div>
-  {{!-- <div class="form-group col-md-4">
-    <label for="inputSubcategory">Sub category</label>
-    <select id="inputSubcategory" class="form-control">
+    <form action="/admin/categorymangament/addsubCategory" method="POST">
+      <h3 class="text-center">Sub  Category</h3>
+  <div class="form-group col-md-4">
+    <label for="inputSubcategory"> category</label>
+    <select id="inputSubcategory" name="category" class="form-control">
       <option selected>Choose...</option>
-      <option>...</option>
+      <option> Fruits and Vegetables </option>
     </select>
-  </div> --}}
+  </div>
+  <div class="form-group col-md-6">
+    <label for="inputCategory">Sub Category</label>
+    <input type="text" class="form-control" id="inputCategory" name="subcategory">
+  </div>
   <div class="form-group col-md-2 mt-4">
-    <button type="submit" class="btn btn-primary">Add category</button>
+    <button type="submit" class="btn btn-primary">Sub category</button>
   </div>
   </form>
 </div>
-
 
 <div>
   <div class="row editable-wrapper" style="    margin-left: 17em;">

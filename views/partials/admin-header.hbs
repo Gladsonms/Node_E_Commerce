@@ -33,8 +33,13 @@
                             <li><a href="/admin/usermanagment" aria-expanded="false"><i class="fa fa-users"></i><span class="nav-title">User Mangment</span></a> </li>
                           
                              <li><a href="/admin/productmanagment" aria-expanded="false"><i class="fa fa-shopping-bag"></i><span class="nav-title">Product Managment</span></a> </li>
-                          
-                            <li><a href="/admin/categorymangament" aria-expanded="false"><i class="nav-icon ti ti-email"></i><span class="nav-title">Category Managment</span></a> </li>
+                            <li><a class="has-arrow" href="javascript:void(0)" aria-expanded="false"><i class="nav-icon ti ti-calendar"></i><span class="nav-title">Category Managment</span></a>
+                                <ul aria-expanded="false">
+                                    <li> <a href='/admin/categorymangament'> Category</a> </li>
+                                    <li> <a href='/admin/subcategorymangament'> sub Category</a> </li>
+                                </ul>
+                            </li>
+                            {{!-- <li><a href="/admin/categorymangament" aria-expanded="false"><i class="nav-icon ti ti-email"></i><span class="nav-title">Category Managment</span></a> </li> --}}
                             <li><a href="app-chat.html" aria-expanded="false"><i class="nav-icon ti ti-comment"></i><span class="nav-title">Order Mangamnet</span></a> </li>
                           
                             <li><a href="app-chat.html" aria-expanded="false"><i class="nav-icon ti ti-comment"></i><span class="nav-title">Offer Managment</span></a> </li>
