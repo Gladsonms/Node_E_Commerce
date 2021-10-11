@@ -71,27 +71,43 @@ module.exports = {
     },
     addsubCategory: (data) => {
         return new Promise(async (resolve, reject) => {
-            console.log(data);
-            console.log(data.subcategory);
+           
+           
             let category = data.category
             let subcategory=data.subcategory
-            let checkSubCategory = await db.get().collection(collection.CATEGORY_COLLECTIONS).find().toArray()
-            checkSubCategory.forEach((i) => {
-                if (i.subcategory) {
+            console.log(category, subcategory,"thi si cheki")
+            // let checkSubCategory = await db.get().collection(collection.CATEGORY_COLLECTIONS).find({category:data.category}).toArray()
+
+           let checkSubCategory = await db.get().collection(collection.CATEGORY_COLLECTIONS).findOne({subcategory:{$in:[data.subcategory]}})
+           console.log(checkSubCategory,"---------------------")
+           if(checkSubCategory){
+               reject("already exist")
+           }else{
+           await db.get().collection(collection.CATEGORY_COLLECTIONS).updateOne({category:data.category},{$push:{subcategory:data.subcategory}})
+           resolve(true)
+           }
+           
+           
+           
+           
+           
+           
+//            checkSubCategory.forEach((i) => {
+//                 if (i.subcategory) {
                    
-                    db.get().collection(collection.CATEGORY_COLLECTIONS).updateOne({ category: data.category }, { $push: { subcategory: {$each:[data.subcategory]} } })
-                        console.log("there is sub cat");
-                }
-                else {
-                    // db.get().collection(collection.CATEGORY_COLLECTIONS).updateOne({ category: data.category },
-                    //     { $set: { subcategory: { $each: [subcategory] } } })
-                    db.get().collection(collection.CATEGORY_COLLECTIONS).updateOne({category: data.category},
-{$push:{subcategory:{$each:[data.subcategory]}}})
+//                     db.get().collection(collection.CATEGORY_COLLECTIONS).updateOne({ category: data.category }, { $push: { subcategory: {$each:[data.subcategory]} } })
+//                         console.log("there is sub cat");
+//                 }
+//                 else {
+                   
+//                     db.get().collection(collection.CATEGORY_COLLECTIONS).updateOne({category: data.category},
+// {$push:{subcategory:{$each:[data.subcategory]}}})
 
-                    console.log("there is no sub cat");
-                }
+//                     console.log("there is no sub cat");
+//                 }
+                
 
-            })
+//             })
 
 
 

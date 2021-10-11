@@ -172,16 +172,17 @@ router.post('/categorymangament/addcategory',(req,res)=>{
 
 router.get('/subcategorymangament',async(req,res)=>{
  await productHelpers.getCategory().then((category)=>{
-    
-   console.log(category);
-    res.render('admin/subcategoryManagment', { admin: true,category })
+     res.render('admin/subcategoryManagment', { admin: true,category })
   })
 })
 
 
 router.post('/categorymangament/addsubCategory',(req,res)=>{
+ 
  productHelpers.addsubCategory(req.body).then(()=>{
-
+ res.redirect('/subcategorymangament')
+ }).catch(err=>{
+  res.redirect('/subcategorymangament')
  })
 })
 
