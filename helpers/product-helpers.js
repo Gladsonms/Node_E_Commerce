@@ -65,13 +65,21 @@ module.exports = {
         
         return new Promise(async(resolve,reject)=>{
             let category= await db.get().collection(collection.CATEGORY_COLLECTIONS).find({}).toArray()
-            console.log(category);
+           resolve(category)
         })
 
     },
-    addsubCategory:(subcategory)=>{
+    addsubCategory:(data)=>{
         return new Promise(async(resolve,reject)=>{
-            let id=await db.get().collection(collection.CATEGORY_COLLECTIONS).updateOne({})
+            console.log(data);
+            console.log(data.subcategory);
+         let   subCategory=data.subcategory
+          //  let id=await db.get().collection(collection.CATEGORY_COLLECTIONS).updateOne({category:data.category},{$set:{subcategory:{$each:{datasubcategory}}}})
+          db.get().collection(collection.CATEGORY_COLLECTIONS).updateOne({category:data.category},
+{$addToSet:{subcategory:{$each:[subCategory]}}})
+
+console.log("Sub cattegory added");
         })
+
     }
 }

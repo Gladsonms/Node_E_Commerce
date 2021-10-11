@@ -9,7 +9,9 @@
     <label for="inputSubcategory"> category</label>
     <select id="inputSubcategory" name="category" class="form-control">
       <option selected>Choose...</option>
-      <option> Fruits and Vegetables </option>
+    {{#each category}}
+      <option> {{this.category}} </option>
+    {{/each}}
     </select>
   </div>
   <div class="form-group col-md-6">

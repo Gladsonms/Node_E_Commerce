@@ -168,13 +168,21 @@ router.post('/categorymangament/addcategory',(req,res)=>{
       })
 })
 
-router.get('/subcategorymangament', function (req, res) {
-  res.render('admin/subcategoryManagment', { admin: true })
+
+
+router.get('/subcategorymangament',async(req,res)=>{
+ await productHelpers.getCategory().then((category)=>{
+    
+   console.log(category);
+    res.render('admin/subcategoryManagment', { admin: true,category })
+  })
 })
 
 
-router.post('/subcategorymangament/',(req,res)=>{
-  productHelpers
+router.post('/categorymangament/addsubCategory',(req,res)=>{
+ productHelpers.addsubCategory(req.body).then(()=>{
+
+ })
 })
 
 
