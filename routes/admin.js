@@ -146,6 +146,15 @@ router.post('/productmanagmnet/addproduct', function (req, res) {
   })
   })
 
+  router.post('/getCategory',(req,res)=>{
+    console.log(req.body);
+    productHelpers.sortCategory(req.body.Category).then((sorttedCategory)=>{
+   console.log(sorttedCategory);
+   console.log("get category");
+   res.json({sorttedCategory})
+    })
+  })
+
   
 
 

@@ -69,6 +69,15 @@ module.exports = {
         })
 
     },
+    sortCategory : (data) =>{
+        
+        return new Promise(async (resolve,reject)=>{
+   let sorttedCategory = await db.get().collection(collection.CATEGORY_COLLECTIONS).findOne({category:data},{subCategory:1})
+   //console.log("sorrtedCategory");
+   //console.log(sorttedCategory);
+   resolve(sorttedCategory)
+        })
+    },
     addsubCategory: (data) => {
         return new Promise(async (resolve, reject) => {
            

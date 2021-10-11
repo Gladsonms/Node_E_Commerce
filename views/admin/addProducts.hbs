@@ -35,13 +35,7 @@
                             <label for="subCategory">Sub Category</label>
                             <select id="inputsubCategory" class="form-control" name="subCategory">
                                 <option selected="">Select sub Category</option>
-                                <option>  Fresh Fruits</option>
-                                <option>Fresh Vegetables</option>
-                                <option value="">Herbs and Seasonings</option>
-                                <option value="">Exotic Fruits and Vegetables</option>
-                                <option value="">Fresh Flowers</option>
-                                <option value=""> Dairy</option>
-                                <option value="">Toast and Khari</option>
+                                
                             </select>
                         </div>
 
@@ -170,6 +164,30 @@
     }
 </style>
 <script>
+     document.getElementById('inputCategory').onchange=e=>{
+         console.log(e.target.value)
+     Category=e.target.value
+    $.ajax({
+        url:'/admin/getCategory',
+        method:"POST",
+        data:{Category},
+        success: (res)=>{
+            console.log("success")
+             //console.log(res)
+             console.log("____________")
+             console.log(res.sorttedCategory.subcategory.length)
+             console.log("____________")
+             for(let i=0;i<res.sorttedCategory.subcategory.length;i++){
+            let element =   `<option>"${res.sorttedCategory.subcategory[i]}"</option>`
+            document.getElementById("inputsubCategory").innerHTML+=element
+             }
+        }
+    })
+     }
+
+    
+
+
     //image 1
     $(document).ready(function () {
         $(document).on('change', '.btn-file :file', function () {
