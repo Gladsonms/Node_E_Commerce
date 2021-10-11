@@ -6,6 +6,14 @@ const productHelpers = require('../helpers/product-helpers');
 require('../helpers/auth')
 const passport=require('passport');
 const userHelpers = require('../helpers/user-helpers');
+const verifyLogin = (req, res, next) => {
+  if (req.session.isloggedIn) {
+    next();
+  } else {
+    res.redirect("/login");
+  }
+};
+
 const checkUserAuth=(req,res,next)=>{
 if(req.session.isLoggedIn){
   res.render('user/index')
@@ -82,8 +90,15 @@ console.log(products);
 
   
 })
+
+//cart
 router.get('/cart',(req,res)=>{
   res.render('user/cart')
 })
 
+router.get('/cart/:id ',verifyLogin,(req,res)=>{
+  userHelpers.addToCart(req.params.id,req.session.user._id).then(()=>{
+    //res.redirect('/')
+  })
+})
 module.exports = router;

@@ -1,10 +1,11 @@
 var db=require('../config/connection')
 var collection=require("../config/collections")
 const bcyrpt=require('bcrypt')
+var ObjectId = require("mongodb").ObjectId
 const { response } = require('express')
 const { get } = require('../routes/admin')
 const { USER_COLLECTIONS } = require('../config/collections')
-const { ObjectID, ObjectId } = require('bson')
+//const { ObjectID, ObjectId } = require('bson')
 module.exports={
    doSignup:(userData)=>{
        {userData}
@@ -74,7 +75,23 @@ enableUser:(userId)=>{
         })
     })
 },
+addToCart:(proId,userId)=>{
+    return new Promise(async(resolve,rejcet)=>{
+        let userCart =await db.get().collection(collection.CART_COLLECTIONS).findOne({user:ObjectID(userId)})
+        if(userCart){
 
+        }
+        else{
+            let cartObj={
+                user:ObjectID(userId),
+                products:[ObjectID(proId)]
+            }
+            db.get().collection(collection.CART_COLLECTIONS).insertOne(cartObj).then((response)=>{
+                 resolve()
+            })
+        }
+    })
+}
 }
 
  
