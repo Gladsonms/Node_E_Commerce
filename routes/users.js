@@ -9,6 +9,7 @@ const {OAuth2Client} = require('google-auth-library');
 const  CLIENT_ID = "367337184905-5g58ji2bdun23ep367986hqrnonn7tfm.apps.googleusercontent.com"
 const client = new OAuth2Client(CLIENT_ID);
 const userHelpers = require('../helpers/user-helpers');
+const { session } = require('passport');
 const checkUserAuth=(req,res,next)=>{
   if(req.session.loggedIn){
     res.redirect('/')
@@ -28,7 +29,7 @@ const verifyLogin = (req, res, next) => {
 
 
 /* GET users listing. */
-router.get('/',checkUserAuth ,function (req, res, next) {
+router.get('/' ,function (req, res, next) {
   let user=req.session.user
   productHelpers.getAllProducts().then((products)=>{
     console.log(products.product);
@@ -142,7 +143,11 @@ console.log(products);
 })
 
 //cart
-router.get('/cart',(req,res)=>{
+router.get('/cart',async (req,res)=>{
+  let product=await userHelpers.getCartProducts(req.session.user._id)
+  console.log("____cart______");
+  console.log(products);
+  console.log("cart");
   res.render('user/cart')
 })
 

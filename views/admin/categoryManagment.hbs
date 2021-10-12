@@ -41,18 +41,18 @@
               </thead>
              
               <tbody>
+                {{#each category}}
                 <tr>
-                  <td>gladson</td>
-                  <td>gladson</td>
-                  <td>gladson</td>
-                  <td>gladson</td>
+                  <td>{{this.category}}</td>
+                  <td>1</td>
+                  <td>2</td>
+                  <td>2</td>
+                  {{!-- <td>{{this.}}</td>
+                  <td>{{this.}}</td>
+                  <td>{{this.}}</td> --}}
                 </tr>
-                 <tr>
-                  <td>blesson</td>
-                  <td>blesson</td>
-                  <td>blesson</td>
-                  <td>blesson</td>
-                </tr>
+                {{/each}}
+                
               </tbody>
             </table>
 
