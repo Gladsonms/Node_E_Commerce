@@ -5,6 +5,9 @@ var userHelper = require("../helpers/user-helpers")
 const productHelpers = require('../helpers/product-helpers');
 require('../helpers/auth')
 const passport=require('passport');
+const {OAuth2Client} = require('google-auth-library');
+const  CLIENT_ID = "367337184905-5g58ji2bdun23ep367986hqrnonn7tfm.apps.googleusercontent.com"
+const client = new OAuth2Client(CLIENT_ID);
 const userHelpers = require('../helpers/user-helpers');
 const verifyLogin = (req, res, next) => {
   if (req.session.isloggedIn) {
@@ -23,7 +26,7 @@ else{
 }
 }
 /* GET users listing. */
-router.get('/',checkUserAuth, function (req, res, next) {
+router.get('/',checkUserAuth,checkAuthenticated ,function (req, res, next) {
   let user=req.session.user
   productHelpers.getAllProducts().then((products)=>{
     //res.header('Cache-control','private, no-cache,no-store,max-age=0,must-revalidate,pre-check=0,post-check=0')   
@@ -63,21 +66,61 @@ router.post('/login', function (req, res, next) {
 
   })
 })
+function checkAuthenticated(req, res, next){
 
-router.get('/auth/google',(req,res)=>{
-  passport.authenticate('google',{scope: ['email','profile']})
-  console.log("got google auth");
+  let token = req.cookies['session-token'];
+
+  let user = {};
+  async function verify() {
+      const ticket = await client.verifyIdToken({
+          idToken: token,
+          audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
+      });
+      const payload = ticket.getPayload();
+      user.name = payload.name;
+      user.email = payload.email;
+      user.picture = payload.picture;
+    }
+    verify()
+    .then(()=>{
+        req.user = user;
+        next();
+    })
+    .catch(err=>{
+        res.redirect('/login')
+    })
+
+}
+
+router.post('/googlelogin',(req,res)=>{
+  
+  let token = req.body.token
+  
+  async function verify() {
+    const ticket = await client.verifyIdToken({
+        idToken: token,
+        audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
+        // Or, if multiple clients access the backend:
+        //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+    });
+    const payload = ticket.getPayload();
+    const userid = payload['sub'];
+    console.log(payload);
+    // If request specified a G Suite domain:
+    // const domain = payload['hd'];
+  }
+  verify()
+  .then(()=>{
+    res.cookie('session-token',token);
+    res.send('SUCCESS')
+  }).catch(console.error);
 })
 
-router.get('/google/callback',(req,res)=>{
-passport.authenticate('google',{
-  successRedirect :"/",
-  failureRedirect:'/login'
-})
-})
+
 
 router.post('/logout',function (req,res,next){
   req.session.destroy()
+  res.clearCookie('session-token')
   res.header('Cache-control','private, no-cache,no-store,max-age=0,must-revalidate,pre-check=0,post-check=0')
   res.redirect('/login')
 })
