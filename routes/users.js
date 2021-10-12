@@ -9,33 +9,36 @@ const {OAuth2Client} = require('google-auth-library');
 const  CLIENT_ID = "367337184905-5g58ji2bdun23ep367986hqrnonn7tfm.apps.googleusercontent.com"
 const client = new OAuth2Client(CLIENT_ID);
 const userHelpers = require('../helpers/user-helpers');
+const checkUserAuth=(req,res,next)=>{
+  if(req.session.loggedIn){
+    res.redirect('/')
+  }
+  else{
+    next()
+  }
+  
+  }
 const verifyLogin = (req, res, next) => {
-  if (req.session.isloggedIn) {
+  if (req.session.loggedIn) {
     next();
   } else {
-    res.redirect("/login");
+    res.redirect('/login');
   }
 };
 
-const checkUserAuth=(req,res,next)=>{
-if(req.session.isLoggedIn){
-  res.render('user/index')
-}
-else{
-  next()
-}
-}
+
 /* GET users listing. */
-router.get('/',checkUserAuth,checkAuthenticated ,function (req, res, next) {
+router.get('/',checkUserAuth ,function (req, res, next) {
   let user=req.session.user
   productHelpers.getAllProducts().then((products)=>{
+    console.log(products.product);
     //res.header('Cache-control','private, no-cache,no-store,max-age=0,must-revalidate,pre-check=0,post-check=0')   
     res.render('user/index',{user,products});
   })
- 
+   
 
 });
-router.get('/login', function (req, res, next) {
+router.get('/login',checkUserAuth, function (req, res, next) {
   res.render('user/login')
 })
 router.get('/signup', function (req, res, next) {
@@ -45,6 +48,9 @@ router.post('/signup', function (req, res, next) {
   userHelper.doSignup(req.body).then((response) => {
     console.log(response);
      res.redirect('/login')
+    //  req.session.loggedIn = true;
+    //  req.session.user = response
+    //  res
   })
 })
 router.post('/login', function (req, res, next) {
@@ -92,7 +98,7 @@ function checkAuthenticated(req, res, next){
 
 }
 
-router.post('/googlelogin',(req,res)=>{
+router.post('/googlelogin',checkAuthenticated,(req,res)=>{
   
   let token = req.body.token
   
@@ -119,9 +125,10 @@ router.post('/googlelogin',(req,res)=>{
 
 
 router.post('/logout',function (req,res,next){
-  req.session.destroy()
-  res.clearCookie('session-token')
-  res.header('Cache-control','private, no-cache,no-store,max-age=0,must-revalidate,pre-check=0,post-check=0')
+  //req.session.destroy()
+  //res.clearCookie('session-token')
+     req.session.user = null;
+    req.session.loggedIn=false; 
   res.redirect('/login')
 })
 
@@ -139,9 +146,10 @@ router.get('/cart',(req,res)=>{
   res.render('user/cart')
 })
 
-router.get('/cart/:id ',verifyLogin,(req,res)=>{
+router.get('/add-to-cart/:id',verifyLogin,(req,res)=>{
+  
   userHelpers.addToCart(req.params.id,req.session.user._id).then(()=>{
-    //res.redirect('/')
+    res.redirect('/')
   })
 })
 module.exports = router;

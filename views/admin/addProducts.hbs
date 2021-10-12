@@ -20,9 +20,9 @@
                                 placeholder="Password"> --}}
                             <select id="inputCategory" class="form-control" name="category">
                                  <option selected="">Select Category </option>
-                                <option >Fruits and Vegetables </option>
-                                <option>Dairy and Bakery</option>
-                                <option> Staples</option>
+                                 {{#each category}}
+                                <option >{{this.category}} </option>
+                                {{/each}}
                             </select>
                         </div>
                     </div>

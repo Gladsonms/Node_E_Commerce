@@ -58,9 +58,10 @@ router.get('/usermanagment', function (req, res) {
   })
 });
 
+
 router.post('/usermanagment/disableuser', async (req, res) => {
 
-  userHelpers.disableUser(req.query.id, req.body).then((response) => {
+  userHelpers.disableUser(req.body.id).then((response) => {
 
     res.redirect('/admin/usermanagment');
   })
@@ -128,7 +129,13 @@ router.post('/productmanagmnet/editproduct/:id',(req,res)=>{
 // })
 
 router.get('/productmanagment/adddproduct', function (req, res) {
-  res.render('admin/addProducts', { admin: true })
+  productHelpers.getCategory().then((category)=>{
+             console.log("____________");
+             console.log(category);
+    
+    res.render('admin/addProducts', { admin: true,category})
+
+  })
 })
 router.post('/productmanagmnet/addproduct', function (req, res) {
   productHelpers.addProduct(req.body).then((data)=>{

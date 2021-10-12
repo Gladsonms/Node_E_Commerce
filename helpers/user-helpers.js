@@ -13,7 +13,7 @@ module.exports={
            userData.status=true;
            userData.password=await bcyrpt.hash(userData.password,10)
            db.get().collection(collection.USER_COLLECTIONS).insertOne(userData).then((data)=>{
-               //resolve(data.ops[0])
+               resolve(data)
            })
        })
   
@@ -74,21 +74,25 @@ enableUser:(userId)=>{
        
         })
     })
-},
+},  
 addToCart:(proId,userId)=>{
     return new Promise(async(resolve,rejcet)=>{
-        let userCart =await db.get().collection(collection.CART_COLLECTIONS).findOne({user:ObjectID(userId)})
+        let userCart =await db.get().collection(collection.CART_COLLECTIONS).findOne({user:ObjectId(userId)})
+        console.log(userCart);
+
         if(userCart){
 
         }
         else{
+           
             let cartObj={
-                user:ObjectID(userId),
-                products:[ObjectID(proId)]
+                user:ObjectId(userId),
+                products:[ObjectId(proId)]
             }
             db.get().collection(collection.CART_COLLECTIONS).insertOne(cartObj).then((response)=>{
                  resolve()
             })
+            
         }
     })
 }
