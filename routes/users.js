@@ -29,12 +29,21 @@ const verifyLogin = (req, res, next) => {
 
 
 /* GET users listing. */
-router.get('/' ,function (req, res, next) {
+router.get('/' ,async function (req, res, next) {
   let user=req.session.user
-  productHelpers.getAllProducts().then((products)=>{
+  
+ 
+  console.log(cartCount);
+  if(req.session.user)
+  {
+
+    var cartCount=await userHelpers.getCartCount(req.session.user._id)
+  } 
+  productHelpers.getAllProducts().then(async(products)=>{
     console.log(products.product);
-    //res.header('Cache-control','private, no-cache,no-store,max-age=0,must-revalidate,pre-check=0,post-check=0')   
-    res.render('user/index',{user,products});
+    
+   
+    res.render('user/index',{user,products,cartCount});
   })
    
 
@@ -62,6 +71,7 @@ router.post('/login', function (req, res, next) {
     if (response.status) {
       req.session.loggedIn = true;
       req.session.user = response.user
+      req.session.user_id=response._id
       console.log(req.session.loggedIn);
 
       res.redirect('/')
@@ -146,8 +156,8 @@ console.log(products);
 router.get('/cart',async (req,res)=>{
   let products=await userHelpers.getCartProducts(req.session.user._id)
 
-  res.render('user/cart',{products,user:session.user})
-  console.log(session.user);
+  res.render('user/cart',{products,user:req.session.user})
+  console.log(req.session.user);
 })
 
 
