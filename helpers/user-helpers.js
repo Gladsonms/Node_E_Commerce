@@ -119,7 +119,7 @@ module.exports = {
   },
   getCartProducts: (userId) => {
     return new Promise(async (resolve, reject) => {
-      let cart = await db
+      let cartItems = await db
         .get()
         .collection(collection.CART_COLLECTIONS)
         .aggregate([
@@ -130,11 +130,11 @@ module.exports = {
           },
           {
               $lookup:{
-                  from:'PRODUCT',
-                  let:{prolist:'$products'},
+                  from:collection.PRODUCT_COLLECTIONS,
+                  let:{prodlist:'$products'},
                   pipeline:[
                       {
-                          $match:{$expr:{$in:['$_id','$prolist']}}
+                          $match:{$expr:{$in:['$_id','$$prodlist']}}
                       }
                   ],
                   as:'cartItems'
@@ -142,7 +142,7 @@ module.exports = {
               }
           }
         ]).toArray()
-        resolve(cartItem)
+        resolve(cartItems[0].cartItems) 
     });
   },
 };

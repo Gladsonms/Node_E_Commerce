@@ -144,17 +144,23 @@ console.log(products);
 
 //cart
 router.get('/cart',async (req,res)=>{
-  let product=await userHelpers.getCartProducts(req.session.user._id)
-  console.log("____cart______");
-  console.log(products);
-  console.log("cart");
-  res.render('user/cart')
+  let products=await userHelpers.getCartProducts(req.session.user._id)
+
+  res.render('user/cart',{products,user:session.user})
+  console.log(session.user);
 })
+
+
 
 router.get('/add-to-cart/:id',verifyLogin,(req,res)=>{
   
   userHelpers.addToCart(req.params.id,req.session.user._id).then(()=>{
     res.redirect('/')
   })
+})
+
+router.get('/cart/checkout',(req,res)=>{
+  l
+  res.render('user/checkout')
 })
 module.exports = router;

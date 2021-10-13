@@ -253,6 +253,6 @@ router.post("/categorymangament/addsubCategory", (req, res) => {
 router.get("/logout", function (req, res) {
   req.session.isLoggedIn = false;
   req.session.destroy();
-  res.redirect("/admin/adminLogin");
+  res.redirect("/admin");
 });
 module.exports = router;
