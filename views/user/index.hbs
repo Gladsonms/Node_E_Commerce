@@ -59,13 +59,15 @@
 														</div>
 														
 														<div class="product-buttoncnxlkc" style="margin-top: 1.3em;">
-															<a class="btn btn-primary" href="/add-to-cart/{{this._id}}">
+															{{!-- <a class="btn btn-primary" href="/add-to-cart/{{this._id}}">
 																<i class="fa fa-shopping-basket" aria-hidden="true">Add to Cart</i>
-															</a>
+															</a> --}}
+
+                                                            <button class="btn btn-primary" onclick="addToCart('{{this._id}}')">
+																<i class="fa fa-shopping-basket" aria-hidden="true">Add to Cart</i>
+															</button>
 															
-															<!-- <a class="abtn btn-primary" href="#">
-																<i class="fa fa-heart" aria-hidden="true"></i>												
-															</a> -->
+															
 															
 															<a class="btn btn-primary" href="#">
 																<i class="fa fa-heart" aria-hidden="true"></i>
@@ -824,3 +826,23 @@
 
 
 </div>
+<script>
+	function  addToCart(proId){
+		$.ajax({
+			url:'/add-to-cart/'+proId,
+			method:'get',
+			success:(respone)=>{
+				location.href='/'
+				if(respone.status)
+				{
+					let count=$('#cart-count').html()
+					count=parseInt(count)
+					$('#cart-count').html(count)
+				}
+                  alert("Item added succefully")
+			}
+
+
+		})
+	}
+</script>

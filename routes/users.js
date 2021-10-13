@@ -41,7 +41,7 @@ router.get('/' ,async function (req, res, next) {
   } 
   productHelpers.getAllProducts().then(async(products)=>{
     console.log(products.product);
-    
+    console.log(cartCount);
    
     res.render('user/index',{user,products,cartCount});
   })
@@ -162,15 +162,15 @@ router.get('/cart',async (req,res)=>{
 
 
 
-router.get('/add-to-cart/:id',verifyLogin,(req,res)=>{
-  
+router.get('/add-to-cart/:id',(req,res)=>{
+  console.log("ajax api caall");
   userHelpers.addToCart(req.params.id,req.session.user._id).then(()=>{
-    res.redirect('/')
+    res.json({status:true})
   })
 })
 
 router.get('/cart/checkout',(req,res)=>{
-  l
+  
   res.render('user/checkout')
 })
 module.exports = router;
