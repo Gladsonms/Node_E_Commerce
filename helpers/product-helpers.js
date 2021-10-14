@@ -5,7 +5,7 @@ const { ObjectID } = require('bson');
 const { response } = require('express');
 const { Forbidden } = require('http-errors');
 module.exports = {
-    addProduct: (product, callback) => {
+    addProduct: (productDetails, callback) => {
         productDetails = {
             product:productDetails.product,
             description:productDetails.description,
