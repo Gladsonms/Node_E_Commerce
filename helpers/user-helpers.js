@@ -222,5 +222,41 @@ module.exports = {
       }
 
     })
-  }
+  },
+  // getTottalAmount=(userId)=>{
+  //   return new Promise(async(resolve,reject)=>{
+  //            let  cartItem=db.get().collection(collection.CART_COLLECTIONS).aggregate([
+  //              {
+  //                $match:{user:(ObjectId(userId))}
+  //             },
+  //             {
+  //               $unwind:"products"
+  //             },
+  //             {
+  //               $project:{
+  //                 item:'$products.item',
+  //                 quantity:'$products.quantity'
+  //               }
+  //             },
+  //             {
+  //               $lookup:{
+  //                 from:collection.PRODUCT_COLLECTIONS,
+  //                 localField:'item',
+  //                 foreignField:'_id',
+  //                 as:'product'
+  //               },
+  //               $project:{
+  //                 item:1,quantity:1,product:{$arrayElemAt:['$products',0]}
+  //               }
+  //             },
+  //             {
+  //               $project:{
+  //                 total:{$sum:{$multiply:['$qunatity','$product.price']}}
+  //               }
+  //             }
+  //            ]).toArray
+  //   })
+
+  //   resolve(cartItems)
+  // }
 }

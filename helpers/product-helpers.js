@@ -6,9 +6,18 @@ const { response } = require('express');
 const { Forbidden } = require('http-errors');
 module.exports = {
     addProduct: (product, callback) => {
+        productDetails = {
+            product:productDetails.product,
+            description:productDetails.description,
+            category:productDetails.category,
+            subCategory:productDetails.subCategory,
+            price:parseInt(productDetails.price),
+            quantity:parseInt(productDetails.quantity)
+
+        }
         return new Promise(async (resolve, reject) => {
 
-            let id = await db.get().collection(collection.PRODUCT_COLLECTIONS).insertOne(product)
+            let id = await db.get().collection(collection.PRODUCT_COLLECTIONS).insertOne(productDetails)
 
             resolve(id.insertedId)
 
