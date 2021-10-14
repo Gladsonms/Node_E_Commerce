@@ -106,7 +106,7 @@ module.exports = {
           db.get()
             .collection(collection.CART_COLLECTIONS)
             .updateOne(
-              { "products.item": ObjectId(proId) },
+              {user:ObjectId(userId), "products.item": ObjectId(proId) },
               {
                 $inc: { "products.$.quantity": 1 },
               }
@@ -194,4 +194,33 @@ module.exports = {
       //console.log(count);
     });
   },
-};
+  changeProductQauntity :(details)=>{
+   let count=parseInt(details.count)
+   let quantity=parseInt(details.quantity)
+    
+    return new Promise ( (resolve,reject)=>{
+      if(details.count==-1 && details.quantity==1)
+      {
+        db.get().collection(collection.CART_COLLECTIONS).updateOne({_id:ObjectId(details.cart)},{$pull:{products:{item:ObjectId(details.product)}}}).then((response)=>{
+          resolve({removeProduct:true})
+        })
+      }
+      else{
+
+        db.get()
+        .collection(collection.CART_COLLECTIONS)
+        .updateOne(
+          {_id:ObjectId(details.cart), "products.item": ObjectId(details.product) },
+          {
+            $inc: {"products.$.quantity":count },
+          }
+          )
+          .then((response) => {
+            resolve(true);
+           
+        });
+      }
+
+    })
+  }
+}

@@ -207,7 +207,7 @@ router.post("/productmanagmnet/addproduct", function (req, res) {
         }
       }
     );
-    res.render("admin/addProducts", { admin: true });
+    res.render("admin/addProducts", { admin: true});
   });
 });
 

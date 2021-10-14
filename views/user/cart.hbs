@@ -49,10 +49,13 @@
 											<div class="product-quantity">
 												<div class="qty">
 													<div class="input-group">
-														<input type="text" name="qty" value="{{this.quantity}}" data-min="1">
+														{{!-- <span id="{{this.product._id}}">{{this.quantity}}</span> --}}
+														<input type="text" id="{{this.product._id}}" name="qty" value="{{this.quantity}}" data-min="1">
+														
 														<span class="adjust-qty">
-															<button class="adjust-btn plus">+</button>
-															<button class="adjust-btn minus">-</button>
+															<button class="adjust-btn plus" onclick="changeQuantity('{{this._id}}','{{this.product._id}}',1);">+</button>
+															{{!-- <p>{{this.quantity}}</p> --}}
+															<button class="adjust-btn minus" onclick="changeQuantity('{{this._id}}','{{this.product._id}}',-1);">-</button>
 														</span>
 													</div>
 												</div>
@@ -62,8 +65,9 @@
 										{{this.product.price}}
 										</td>
 											<td class="product-remove">
-											<a title="Remove this item" class="remove" href="#">
+											 <span class="btn btn-danger"><a title="Remove this item" class="remove" href="#">
 												<i class="fa fa-trash"></i>
+												</span>
 											</a>
 										</td>
 									</tr>
@@ -100,3 +104,32 @@
 				</div>
 			</div>
 			
+
+			<script>
+				function changeQuantity(cartId,proId,count){
+				let quantity=parseInt(document.getElementById(proId).innerHTML)
+				count=parseInt(count)
+                       $.ajax({
+						   url:'/change-product-quantity',
+						  
+						   data:{
+							   cart:cartId,
+							   product:proId,
+							   count:count,
+							   quantity:quantity,
+						   },
+						    method:'post',
+						   success:(response=>{
+							   if(response.removeProduct)
+							   {
+								   alert("Product Removed From cart")
+								location.reload()
+							   }
+							   else {
+								   document.getElementById(proId).innerHTML=quantity+count
+								   location.reload()
+							   }
+						   })
+					   })
+				}
+			</script>

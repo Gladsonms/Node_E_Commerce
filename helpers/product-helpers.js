@@ -101,22 +101,7 @@ module.exports = {
            
            
            
-//            checkSubCategory.forEach((i) => {
-//                 if (i.subcategory) {
-                   
-//                     db.get().collection(collection.CATEGORY_COLLECTIONS).updateOne({ category: data.category }, { $push: { subcategory: {$each:[data.subcategory]} } })
-//                         console.log("there is sub cat");
-//                 }
-//                 else {
-                   
-//                     db.get().collection(collection.CATEGORY_COLLECTIONS).updateOne({category: data.category},
-// {$push:{subcategory:{$each:[data.subcategory]}}})
 
-//                     console.log("there is no sub cat");
-//                 }
-                
-
-//             })
 
 
 

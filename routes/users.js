@@ -155,19 +155,26 @@ console.log(products);
 //cart
 router.get('/cart',async (req,res)=>{
   let products=await userHelpers.getCartProducts(req.session.user._id)
-   console.log("product in cart start");
-   console.log(products);
-   console.log("product in cart end");
+   
   res.render('user/cart',{products,user:req.session.user})
-  console.log(req.session.user);
+  
 })
 
 
 
 router.get('/add-to-cart/:id',(req,res)=>{
-  console.log("ajax api caall");
+  
   userHelpers.addToCart(req.params.id,req.session.user._id).then(()=>{
     res.json({status:true})
+  })
+})
+
+
+router.post('/change-product-quantity',(req,res,next)=>{
+  
+  userHelpers.changeProductQauntity(req.body).then((response)=>{
+    res.json(response)
+
   })
 })
 
