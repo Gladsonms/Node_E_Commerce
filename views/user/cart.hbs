@@ -17,39 +17,39 @@
 							<table class="cart-summary table table">
 								<thead>
 									<tr>
-										<th class="width-20">Option</th>
 										<th class="width-80 text-center">Image</th>
 										<th>Name</th>
 										<th class="width-100 text-center">Unit price</th>
 										<th class="width-100 text-center">Qty</th>
 										<th class="width-100 text-center">Total</th>
+																				<th class="width-20">Option</th>
+
 									</tr>
 								</thead>
 								
 								<tbody>
 										{{#each products}}
 									<tr>
-										<td class="product-remove">
-											<a title="Remove this item" class="remove" href="#">
-												<i class="fa fa-trash"></i>
-											</a>
-										</td>
+										
+									
 										<td>
 											<a href="product-detail-left-sidebar.html">
-												<img width="80" alt="Product Image" class="img-responsive" src="/product-images/product-image1/{{this._id}}.jpg">
+												<img width="80" alt="Product Image" class="img-responsive" src="/product-images/product-image1/{{this.product._id}}.jpg">
 											</a>
 										</td>
+									
 										<td>
-											<a href="product-detail-left-sidebar.html" class="product-name">{{this.product}}</a>
+											<a href="product-detail-left-sidebar.html" class="product-name">{{this.product.product}}</a>
 										</td>
+									
 										<td class="text-center">
-											{{this.price}}
+											{{this.product.price}}
 										</td>
 										<td>
 											<div class="product-quantity">
 												<div class="qty">
 													<div class="input-group">
-														<input type="text" name="qty" value="1" data-min="1">
+														<input type="text" name="qty" value="{{this.quantity}}" data-min="1">
 														<span class="adjust-qty">
 															<button class="adjust-btn plus">+</button>
 															<button class="adjust-btn minus">-</button>
@@ -59,7 +59,12 @@
 											</div>
 										</td>
 										<td class="text-center">
-										{{this.price}}
+										{{this.product.price}}
+										</td>
+											<td class="product-remove">
+											<a title="Remove this item" class="remove" href="#">
+												<i class="fa fa-trash"></i>
+											</a>
 										</td>
 									</tr>
 										{{/each}}
@@ -67,7 +72,7 @@
 									
 								</tbody>
 								
-								<tfoot>
+								<tfoot class="">
 									<tr class="cart-total">
 										<td rowspan="3" colspan="3"></td>
 										<td colspan="2" class="text-right">Total products</td>

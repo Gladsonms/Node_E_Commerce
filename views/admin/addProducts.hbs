@@ -1,4 +1,65 @@
+<style>
+    .btn-file {
+        position: relative;
+        overflow: hidden;
+    }
 
+    .btn-file input[type=file] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 100%;
+        min-height: 100%;
+        font-size: 100px;
+        text-align: right;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        outline: none;
+        background: white;
+        cursor: inherit;
+        display: block;
+    }
+
+    #img-upload ,#img-upload2,#img-upload3,#img-upload4 {
+        width: 100%;
+    }
+
+
+
+
+label.cabinet{
+	display: block;
+	cursor: pointer;
+}
+
+label.cabinet input.file{
+	position: relative;
+	height: 100%;
+	width: auto;
+	opacity: 0;
+	-moz-opacity: 0;
+  filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+  margin-top:-30px;
+}
+
+#upload-demo{
+	width: 250px;
+	height: 250px;
+  padding-bottom:25px;
+}
+
+figure figcaption {
+    position: absolute;
+    bottom: 0;
+    color: #fff;
+    width: 100%;
+    padding-left: 9px;
+    padding-bottom: 5px;
+    text-shadow: 0 0 10px #000;
+}
+
+    
+</style>
 <div class="row">
     <div class="col-md-8  mx-auto">
         <div class="card card-statistics pt-5">
@@ -26,6 +87,7 @@
                             </select>
                         </div>
                     </div>
+
 
 
                  
@@ -71,7 +133,7 @@
                                         <div class="input-group">
                                             <span class="input-group-btn">
                                                 <span class="btn btn-default btn-file">
-                                                    Browse… <input type="file" id="imgInp" name="productimage1">
+                                                    Browse… <input type="file" class="item-img file center-block" id="imgInp" name="productimage1">
                                                 </span>
                                             </span>
                                             <input type="text" class="form-control" readonly>
@@ -79,6 +141,27 @@
                                         <img id='img-upload' />
                                     </div>
                                 </div>
+
+
+                            <!--image crop-->
+                            <div class="container">
+	<div class="row">
+								<div class="col-xs-12">
+									<label class="cabinet center-block">
+										<figure>
+											<img src="" class="gambar img-responsive img-thumbnail" id="item-img-output" />
+										  <figcaption><i class="fa fa-camera"></i></figcaption>
+								    </figure>
+										<input type="file" class="item-img file center-block" id="gladson" name="file_photo"/>
+									</label>
+								</div>
+							</div>
+</div>
+
+
+
+                            <!--image crop-->
+
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Upload Image 2</label>
@@ -137,33 +220,91 @@
     </div>
     
 </div>
-<style>
-    .btn-file {
-        position: relative;
-        overflow: hidden;
-    }
 
-    .btn-file input[type=file] {
-        position: absolute;
-        top: 0;
-        right: 0;
-        min-width: 100%;
-        min-height: 100%;
-        font-size: 100px;
-        text-align: right;
-        filter: alpha(opacity=0);
-        opacity: 0;
-        outline: none;
-        background: white;
-        cursor: inherit;
-        display: block;
-    }
 
-    #img-upload ,#img-upload2,#img-upload3,#img-upload4 {
-        width: 100%;
-    }
-</style>
+<div class="modal fade" id="cropImagePop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">
+				<?=multiLanguage( "Edit Foto" , "Edit Photo" )?></h4>
+			</div>
+			<div class="modal-body">
+				<div id="upload-demo" class="center-block"></div>
+			</div>
+			<div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" id="cropImageBtn" class="btn btn-primary">Crop</button>
+            </div>
+		</div>
+	</div>
+</div>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <script src="https://foliotek.github.io/Croppie/croppie.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 <script>
+
+    ///crop
+     // Start upload preview image
+                $(".gambar").attr("src", "https://user.gadjian.com/static/images/personnel_boy.png");
+						var $uploadCrop,
+						tempFilename,
+						rawImg,
+						imageId;
+						function readFile(input) {
+				 			if (input.files && input.files[0]) {
+				              var reader = new FileReader();
+					            reader.onload = function (e) {
+									$('.upload-demo').addClass('ready');
+									$('#cropImagePop').modal('show');
+						            rawImg = e.target.result;
+                                    
+					            }
+					            reader.readAsDataURL(input.files[0]);
+					        }
+					        else {
+						        swal("Sorry - you're browser doesn't support the FileReader API");
+						    }
+						}
+
+						$uploadCrop = $('#upload-demo').croppie({
+							viewport: {
+								width: 150,
+								height: 200,
+							},
+							enforceBoundary: false,
+							enableExif: true
+						});
+						$('#cropImagePop').on('shown.bs.modal', function(){
+							// alert('Shown pop');
+							$uploadCrop.croppie('bind', {
+				        		url: rawImg
+				        	}).then(function(){
+				        		console.log('jQuery bind complete');
+				        	});
+						});
+
+						$('#gladson').on('change',function(){imageId = $(this).data('id'); tempFilename = $(this).val();
+																								$('#cancelCropBtn').data('id', imageId); readFile(this); });
+						$('#cropImageBtn').on('click', function (ev) {
+							$uploadCrop.croppie('result', {
+								type: 'base64',
+								format: 'jpeg',
+								size: {width: 150, height: 200}
+							}).then(function (resp) {
+								$('#item-img-output').attr('src', resp);
+								$('#cropImagePop').modal('hide');
+							});
+						});
+				// End upload preview image
+  
+    //crop end
+
+
      document.getElementById('inputCategory').onchange=e=>{
          console.log(e.target.value)
      Category=e.target.value
@@ -172,11 +313,8 @@
         method:"POST",
         data:{Category},
         success: (res)=>{
-            console.log("success")
-             //console.log(res)
-             console.log("____________")
-             console.log(res.sorttedCategory.subcategory.length)
-             console.log("____________")
+           
+             document.getElementById("inputsubCategory").innerHTML=""
              for(let i=0;i<res.sorttedCategory.subcategory.length;i++){
             let element =   `<option>${res.sorttedCategory.subcategory[i]}</option>`
             document.getElementById("inputsubCategory").innerHTML+=element

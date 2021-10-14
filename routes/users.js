@@ -155,7 +155,9 @@ console.log(products);
 //cart
 router.get('/cart',async (req,res)=>{
   let products=await userHelpers.getCartProducts(req.session.user._id)
-
+   console.log("product in cart start");
+   console.log(products);
+   console.log("product in cart end");
   res.render('user/cart',{products,user:req.session.user})
   console.log(req.session.user);
 })

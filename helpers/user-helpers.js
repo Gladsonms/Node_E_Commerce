@@ -139,7 +139,7 @@ module.exports = {
       }
     });
   },
-  getCartProducts: (userId) => {
+   getCartProducts: (userId) => {
     return new Promise(async (resolve, reject) => {
       let cartItems = await db
         .get()
@@ -149,20 +149,35 @@ module.exports = {
             $match: { user: ObjectId(userId) },
           },
           {
-            $lookup: {
-              from: collection.PRODUCT_COLLECTIONS,
-              let: { prodlist: "$products" },
-              pipeline: [
-                {
-                  $match: { $expr: { $in: ["$_id", "$$prodlist"] } },
-                },
-              ],
-              as: "cartItems",
-            },
+            $unwind:'$products',  
           },
+          {
+            $project:{
+              item:'$products.item',
+              quantity:'$products.quantity'
+            }
+          },
+          {
+            $lookup:{
+              from: collection.PRODUCT_COLLECTIONS,
+              localField:'item',
+              foreignField:'_id',
+              as:'product'
+            }
+          },
+          {
+            $project:{
+              item:1,
+              quantity:1,
+              product:{$arrayElemAt:['$product',0]}
+            }
+          }
+
+        
         ])
         .toArray();
-      resolve(cartItems[0].cartItems);
+        console.log(cartItems);
+      resolve(cartItems);
     });
   },
   getCartCount: (userId) => {
