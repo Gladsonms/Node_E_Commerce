@@ -131,4 +131,17 @@ module.exports = {
 
 
     },
+    deleteSubCategory:(name)=>{
+        return new Promise((resolve,reject)=>{
+            console.log("deletesub category ____________");
+            console.log(name);
+            db.get().collection(collection.CATEGORY_COLLECTIONS).updateOne({subcategory
+                :name},{$pull:{subcategory
+                    :name}}).then((response)=>{
+                resolve(response)
+            }).catch((err)=>{
+                console.log(err);
+            })
+        })
+    }
 }

@@ -34,26 +34,29 @@
               <thead class="thead-dark">
                 <tr>
 
-                  <th scope="col">Name</th>
-                  <th scope="col">Email</th>
-                  <th scope="col">phone number</th>
+                  <th scope="col">Category</th>
+                  <th scope="col">Sub Category</th>
+                  
                   <th scope="col">Option</th>
                 </tr>
               </thead>
              
               <tbody>
+                 {{#each category }}
+                  {{#each this.subcategory}}
                 <tr>
-                  <td>gladson</td>
-                  <td>gladson</td>
-                  <td>gladson</td>
-                  <td>gladson</td>
+                 
+                  <td>{{../this.category}}</td>
+                  <td>{{this}}</td>
+                  
+                 <form action="/admin/subcategorymangament/delete-category/{{this}}" method="post">
+                  <input type="hidden" id="custId" name="custId" value="{{../this.category}}">
+                  <td><button class="btn btn-danger" onclick="return confirm('Are you sure to delete {{this}} ? ')">delete</button></td>
+                  </form>
+
                 </tr>
-                 <tr>
-                  <td>blesson</td>
-                  <td>blesson</td>
-                  <td>blesson</td>
-                  <td>blesson</td>
-                </tr>
+                {{/each}}
+                 {{/each}}
               </tbody>
             </table>
 

@@ -77,12 +77,13 @@ router.get("/productmanagment", function (req, res, next) {
 });
 
 router.post("/productmangment/deleteproduct/:id", function (req, res, next) {
-  console.log("came ");
+  
   let productId = req.params.id;
-  console.log(productId);
+  
 
   productHelpers.deleteProduct(productId).then((response) => {
-    res.render("admin/productsManagment", { admin: true });
+    //res.render("admin/productsManagment", { admin: true });
+    res.redirect("/admin/productmanagment");
   });
 });
 router.get("/productmangmnet/editproduct/:id", async (req, res) => {
@@ -182,7 +183,7 @@ router.post("/productmanagmnet/addproduct", function (req, res) {
     fs.writeFileSync(path3, base64Data3, { encoding: "base64" });
     fs.writeFileSync(path4, base64Data4, { encoding: "base64" });
 
-    res.render("admin/addProducts", { admin: true });
+    res.redirect("/admin/productmanagment");
   });
 });
 
@@ -217,6 +218,7 @@ router.post("/categorymangament/addcategory", (req, res) => {
 
 router.get("/subcategorymangament", async (req, res) => {
   await productHelpers.getCategory().then((category) => {
+    console.log(category)
     res.render("admin/subcategoryManagment", { admin: true, category });
   });
 });
@@ -231,6 +233,18 @@ router.post("/categorymangament/addsubCategory", (req, res) => {
       res.redirect("/subcategorymangament");
     });
 });
+
+router.post('/subcategorymangament/delete-category/:this',(req,res)=>{
+ 
+  catname=req.body.custId
+
+  let name=req.params.this
+  
+ productHelpers.deleteSubCategory(name,catname).then((response)=>{
+   res.redirect('/admin/subcategorymangament')
+ })
+  console.log(name);
+})
 
 //logout
 router.get("/logout", function (req, res) {

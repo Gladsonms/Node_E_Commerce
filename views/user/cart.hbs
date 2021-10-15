@@ -80,11 +80,11 @@
 									<tr class="cart-total">
 										<td rowspan="3" colspan="3"></td>
 										<td colspan="2" class="text-right"></td>
-										<td colspan="1" class="text-center">565</td>
+										{{!-- <td colspan="1" class="text-center">565</td> --}}
 									</tr>
 									<tr class="cart-total">
-										<td colspan="2" class="text-right">Total shipping</td>
-										<td colspan="1" class="text-center">10</td>
+										{{!-- <td colspan="2" class="text-right">Total shipping</td> --}}
+										{{!-- <td colspan="1" class="text-center">10</td> --}}
 									</tr>
 									<tr class="cart-total">
 										<td colspan="2" class="total text-right">Total</td>
@@ -124,7 +124,7 @@
 						   },
 						    method:'post',
 						   success:(response=>{
-							   alert(response)
+							
 							   if(response.removeProduct)
 							   {
 								   alert("Product Removed From cart")

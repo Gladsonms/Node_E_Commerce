@@ -46,7 +46,7 @@
                   <td>{{this.category}}</td>
                   <td>{{this.subcategory}}</td>
                   <form action="/admin/categorymangament/delete-category/{{this._id}}" method="post">
-                  <td><button class="btn btn-danger">delete</button></td>
+                  <td><button class="btn btn-danger" onclick="return confirm('Are you sure to delete {{this.category}} ? ')">delete</button></td>
                   </form>
                   {{!-- <td>2</td>
                   <td>2</td> --}}

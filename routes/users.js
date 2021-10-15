@@ -239,20 +239,12 @@ router.post('/change-product-quantity',verifyLogin,(req,res,next)=>{
 
   })
 })
-// router.post('/change-product-quantity',(req,res,next)=>{
-//   console.log(req.body);
-//   userHelpers.changeProductQauntity(req.body).then(async(response)=>{
-//      response.total= await userHelpers.getTottalAmount(req.body.user)
-//     res.json(response)
-    
 
-//   })
-// })
 
 
 
 router.get('/cart/checkout',verifyLogin,async(req,res)=>{
   let total=await userHelpers.getTottalAmount(req.session.user._id)
-  res.render('user/checkout',{total})
+  res.render('user/checkout',{total,user:req.session.user})
 })
 module.exports = router;
