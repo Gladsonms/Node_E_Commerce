@@ -16,7 +16,7 @@ const userHelpers = require('../helpers/user-helpers');
 const { session } = require('passport');
 const { Router } = require('express');
 
-const serviceSSID="VA7f5e3be0e2ab6040102122fa1c539743"
+const serviceSSID="VAf502bffa728ff718c6ae554633f846c1"
 const accountSSID="ACf937ee29a47b8531872c65b80601723a"
 const authToken="f6117c970c2c61e421ca9cc993c2e85d"
 const clientTwillo=require("twilio")(accountSSID,authToken)
@@ -40,7 +40,7 @@ const verifyLogin = (req, res, next) => {
 
 
 /* GET users listing. */
-router.get('/' ,async function (req, res, next) {
+router.get('/',verifyLogin ,async function (req, res, next) {
   let user=req.session.user
   
  
@@ -194,12 +194,12 @@ router.post('/googlelogin',checkAuthenticated,(req,res)=>{
 
 
 
-router.post('/logout',function (req,res,next){
-  //req.session.destroy()
-  //res.clearCookie('session-token')
-     req.session.user = null;
-    req.session.loggedIn=false; 
-  res.redirect('/login')
+router.get('/logout',function (req,res,next){
+  req.session.loggedIn=false; 
+  delete req.session.loggedIn
+  
+     
+  res.redirect('/')
 })
 
 
