@@ -53,9 +53,9 @@
 														<input type="text" id="{{this.product._id}}" name="qty" value="{{this.quantity}}" data-min="1">
 														
 														<span class="adjust-qty">
-															<button class="adjust-btn plus" onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user}}',1);">+</button>
+															<button class="adjust-btn plus" onclick="changeQuantity('{{this._id}}','{{this.product._id}}',1);">+</button>
 															{{!-- <p>{{this.quantity}}</p> --}}
-															<button class="adjust-btn minus" onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user}}',-1);">-</button>
+															<button class="adjust-btn minus" onclick="changeQuantity('{{this._id}}','{{this.product._id}}',-1);">-</button>
 														</span>
 													</div>
 												</div>
@@ -106,14 +106,17 @@
 			
 
 			<script>
-				function changeQuantity(cartId,proId,userId,count){
-				let quantity=parseInt(document.getElementById(proId).innerHTML)
+				function changeQuantity(cartId,proId,count){
+				let quantity=parseInt(document.getElementById(proId).value)
+				
+				console.log(quantity)
+				//console.log(userId)
 				count=parseInt(count)
                        $.ajax({
 						   url:'/change-product-quantity',
 						  
 						   data:{
-							   user:userId,
+							   
 							   cart:cartId,
 							   product:proId,
 							   count:count,
@@ -121,6 +124,7 @@
 						   },
 						    method:'post',
 						   success:(response=>{
+							   alert(response)
 							   if(response.removeProduct)
 							   {
 								   alert("Product Removed From cart")

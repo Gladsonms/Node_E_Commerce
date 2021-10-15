@@ -5,7 +5,7 @@ const userHelpers = require("../helpers/user-helpers");
 const productHelpers = require("../helpers/product-helpers");
 const { addCategory } = require("../helpers/product-helpers");
 var router = express.Router();
-const fs = require('fs')
+const fs = require("fs");
 
 const checkAuth = (req, res, next) => {
   if (req.session.isLoggedIn) {
@@ -155,7 +155,6 @@ router.post("/productmanagmnet/editproduct/:id", (req, res) => {
 
 router.get("/productmanagment/adddproduct", function (req, res) {
   productHelpers.getCategory().then((category) => {
-   
     res.render("admin/addProducts", { admin: true, category });
   });
 });
@@ -168,24 +167,22 @@ router.post("/productmanagmnet/addproduct", function (req, res) {
     let image4 = req.body.image4_b64;
     //console.log(image1);
 
-    const path1=`./public/product-images/product-image1/${id}.jpg`
-    const path2=`./public/product-images/product-image2/${id}.jpg`
-    const path3=`./public/product-images/product-image3/${id}.jpg`
-    const path4=`./public/product-images/product-image4/${id}.jpg`
+    const path1 = `./public/product-images/product-image1/${id}.jpg`;
+    const path2 = `./public/product-images/product-image2/${id}.jpg`;
+    const path3 = `./public/product-images/product-image3/${id}.jpg`;
+    const path4 = `./public/product-images/product-image4/${id}.jpg`;
 
-    const base64Data1 = image1.replace(/^data:([A-Za-z-+/]+);base64,/, '');
-    const base64Data2 = image2.replace(/^data:([A-Za-z-+/]+);base64,/, '');
-    const base64Data3 = image3.replace(/^data:([A-Za-z-+/]+);base64,/, '');
-    const base64Data4 = image4.replace(/^data:([A-Za-z-+/]+);base64,/, '');
+    const base64Data1 = image1.replace(/^data:([A-Za-z-+/]+);base64,/, "");
+    const base64Data2 = image2.replace(/^data:([A-Za-z-+/]+);base64,/, "");
+    const base64Data3 = image3.replace(/^data:([A-Za-z-+/]+);base64,/, "");
+    const base64Data4 = image4.replace(/^data:([A-Za-z-+/]+);base64,/, "");
 
-    fs.writeFileSync(path1, base64Data1, { encoding: 'base64' });
-    fs.writeFileSync(path2, base64Data2, { encoding: 'base64' });
-    fs.writeFileSync(path3, base64Data3, { encoding: 'base64' });
-    fs.writeFileSync(path4, base64Data4, { encoding: 'base64' })
+    fs.writeFileSync(path1, base64Data1, { encoding: "base64" });
+    fs.writeFileSync(path2, base64Data2, { encoding: "base64" });
+    fs.writeFileSync(path3, base64Data3, { encoding: "base64" });
+    fs.writeFileSync(path4, base64Data4, { encoding: "base64" });
 
-
- 
-    res.render("admin/addProducts", { admin: true});
+    res.render("admin/addProducts", { admin: true });
   });
 });
 
@@ -205,6 +202,14 @@ router.get("/categorymangament", function (req, res) {
     res.render("admin/categoryManagment", { admin: true, category });
   });
 });
+router.post('/categorymangament/delete-category/:id',function (req,res){
+  
+  let categoryId=req.params.id
+  //console.log(categoryId);
+  productHelpers.deleteCategory(categoryId).then((response)=>{
+      res.redirect('/categorymangament')
+  })
+})
 
 router.post("/categorymangament/addcategory", (req, res) => {
   productHelpers.addCategory(req.body).then((data) => {});
@@ -226,8 +231,6 @@ router.post("/categorymangament/addsubCategory", (req, res) => {
       res.redirect("/subcategorymangament");
     });
 });
-
-
 
 //logout
 router.get("/logout", function (req, res) {

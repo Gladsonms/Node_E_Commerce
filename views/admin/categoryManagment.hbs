@@ -33,9 +33,9 @@
               <thead class="thead-dark">
                 <tr>
 
-                  <th scope="col">Name</th>
-                  <th scope="col">Email</th>
-                  <th scope="col">phone number</th>
+                  <th scope="col">Category</th>
+                  <th scope="col">Sub Category</th>
+                  {{!-- <th scope="col">phone number</th> --}}
                   <th scope="col">Option</th>
                 </tr>
               </thead>
@@ -44,9 +44,12 @@
                 {{#each category}}
                 <tr>
                   <td>{{this.category}}</td>
-                  <td>1</td>
-                  <td>2</td>
-                  <td>2</td>
+                  <td>{{this.subcategory}}</td>
+                  <form action="/admin/categorymangament/delete-category/{{this._id}}" method="post">
+                  <td><button class="btn btn-danger">delete</button></td>
+                  </form>
+                  {{!-- <td>2</td>
+                  <td>2</td> --}}
                   {{!-- <td>{{this.}}</td>
                   <td>{{this.}}</td>
                   <td>{{this.}}</td> --}}

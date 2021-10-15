@@ -141,6 +141,7 @@ router.post('/verifyotp',(req,res)=>{
              .verifications
              .create({to: `+91${number}`, channel: 'sms'})
              .then(verification => console.log(verification.status));
+             console.log("otp sent");
              res.redirect('/confirmotp')
 })
 
@@ -220,23 +221,35 @@ router.get('/cart',async (req,res)=>{
 })
 
 
+//  response.total= await userHelpers.getTottalAmount(req.body.user)
 
 router.get('/add-to-cart/:id',(req,res)=>{
-  
   userHelpers.addToCart(req.params.id,req.session.user._id).then(()=>{
     res.json({status:true})
   })
 })
 
 
-router.post('/change-product-quantity/:id',(req,res,next)=>{
-  
+router.post('/change-product-quantity',verifyLogin,(req,res,next)=>{
+  console.log("change qunatitty 11111111");
+  console.log(req.body);
   userHelpers.changeProductQauntity(req.body).then(async(response)=>{
-     response.total= await userHelpers.getTottalAmount(req.body.user)
+    
     res.json(response)
 
   })
 })
+// router.post('/change-product-quantity',(req,res,next)=>{
+//   console.log(req.body);
+//   userHelpers.changeProductQauntity(req.body).then(async(response)=>{
+//      response.total= await userHelpers.getTottalAmount(req.body.user)
+//     res.json(response)
+    
+
+//   })
+// })
+
+
 
 router.get('/cart/checkout',verifyLogin,async(req,res)=>{
   let total=await userHelpers.getTottalAmount(req.session.user._id)
