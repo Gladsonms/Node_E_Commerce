@@ -155,8 +155,9 @@ console.log(products);
 //cart
 router.get('/cart',async (req,res)=>{
   let products=await userHelpers.getCartProducts(req.session.user._id)
+  let totalAmount=await userHelpers.getTottalAmount(req.session.user._id)
    
-  res.render('user/cart',{products,user:req.session.user})
+  res.render('user/cart',{products,user:req.session.user,totalAmount})
   
 })
 
@@ -170,9 +171,10 @@ router.get('/add-to-cart/:id',(req,res)=>{
 })
 
 
-router.post('/change-product-quantity',(req,res,next)=>{
+router.post('/change-product-quantity/:id',(req,res,next)=>{
   
-  userHelpers.changeProductQauntity(req.body).then((response)=>{
+  userHelpers.changeProductQauntity(req.body).then(async(response)=>{
+     response.total= await userHelpers.getTottalAmount(req.body.user)
     res.json(response)
 
   })

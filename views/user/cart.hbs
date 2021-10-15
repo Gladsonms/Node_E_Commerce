@@ -53,9 +53,9 @@
 														<input type="text" id="{{this.product._id}}" name="qty" value="{{this.quantity}}" data-min="1">
 														
 														<span class="adjust-qty">
-															<button class="adjust-btn plus" onclick="changeQuantity('{{this._id}}','{{this.product._id}}',1);">+</button>
+															<button class="adjust-btn plus" onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user}}',1);">+</button>
 															{{!-- <p>{{this.quantity}}</p> --}}
-															<button class="adjust-btn minus" onclick="changeQuantity('{{this._id}}','{{this.product._id}}',-1);">-</button>
+															<button class="adjust-btn minus" onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user}}',-1);">-</button>
 														</span>
 													</div>
 												</div>
@@ -79,7 +79,7 @@
 								<tfoot class="">
 									<tr class="cart-total">
 										<td rowspan="3" colspan="3"></td>
-										<td colspan="2" class="text-right">Total products</td>
+										<td colspan="2" class="text-right"></td>
 										<td colspan="1" class="text-center">565</td>
 									</tr>
 									<tr class="cart-total">
@@ -88,7 +88,7 @@
 									</tr>
 									<tr class="cart-total">
 										<td colspan="2" class="total text-right">Total</td>
-										<td colspan="1" class="total text-center">575</td>
+										<td colspan="1" class="total text-center"><span id="total">₹{{totalAmount}}</span></td>
 									</tr>
 								</tfoot>
 							</table>
@@ -106,13 +106,14 @@
 			
 
 			<script>
-				function changeQuantity(cartId,proId,count){
+				function changeQuantity(cartId,proId,userId,count){
 				let quantity=parseInt(document.getElementById(proId).innerHTML)
 				count=parseInt(count)
                        $.ajax({
 						   url:'/change-product-quantity',
 						  
 						   data:{
+							   user:userId,
 							   cart:cartId,
 							   product:proId,
 							   count:count,
@@ -126,8 +127,9 @@
 								location.reload()
 							   }
 							   else {
-								   document.getElementById(proId).innerHTML=quantity+count
 								   location.reload()
+								   document.getElementById(proId).innerHTML=quantity+count
+								   document.getElementById('total').innerHTML=response.total
 							   }
 						   })
 					   })
