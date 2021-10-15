@@ -5,11 +5,22 @@ var userHelper = require("../helpers/user-helpers")
 const productHelpers = require('../helpers/product-helpers');
 require('../helpers/auth')
 const passport=require('passport');
+
+
 const {OAuth2Client} = require('google-auth-library');
 const  CLIENT_ID = "367337184905-5g58ji2bdun23ep367986hqrnonn7tfm.apps.googleusercontent.com"
 const client = new OAuth2Client(CLIENT_ID);
+
+
 const userHelpers = require('../helpers/user-helpers');
 const { session } = require('passport');
+const { Router } = require('express');
+
+const serviceSSID="VA7f5e3be0e2ab6040102122fa1c539743"
+const accountSSID="ACf937ee29a47b8531872c65b80601723a"
+const authToken="f6117c970c2c61e421ca9cc993c2e85d"
+const clientTwillo=require("twilio")(accountSSID,authToken)
+
 const checkUserAuth=(req,res,next)=>{
   if(req.session.loggedIn){
     res.redirect('/')
@@ -108,6 +119,53 @@ function checkAuthenticated(req, res, next){
     })
 
 }
+
+
+//vserify otp
+router.get('/verifyotp',(req,res)=>{
+  res.render('user/otpVerify')
+})
+
+router.post('/verifyotp',(req,res)=>{
+
+  
+
+  console.log("____OTP______");
+  let number=req.body.phone
+   console.log(number);
+   req.session.number=number
+   console.log("session number");
+   console.log(number);
+
+   clientTwillo.verify.services(serviceSSID)
+             .verifications
+             .create({to: `+91${number}`, channel: 'sms'})
+             .then(verification => console.log(verification.status));
+             res.redirect('/confirmotp')
+})
+
+router.get("/confirmotp",(req,res)=>{
+  res.render('user/enterOtp')
+})
+router.post('/enterOtp',(req,res)=>{
+  let otp=req.body.otp
+  console.log("__________________________________________________");
+  console.log(otp);
+ let number=req.session.number
+  console.log("enter otp ______________");
+
+  console.log(number);
+  clientTwillo.verify.services(serviceSSID)
+  .verificationChecks.create({
+         to:`+91${number}`,
+         code:`${otp}`
+  })
+  .then((resp)=>{
+    
+    res.redirect('/')
+     console.log(resp);
+  })
+})
 
 router.post('/googlelogin',checkAuthenticated,(req,res)=>{
   

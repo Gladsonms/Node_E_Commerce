@@ -155,9 +155,7 @@ router.post("/productmanagmnet/editproduct/:id", (req, res) => {
 
 router.get("/productmanagment/adddproduct", function (req, res) {
   productHelpers.getCategory().then((category) => {
-    console.log("____________");
-    console.log(category);
-
+   
     res.render("admin/addProducts", { admin: true, category });
   });
 });
@@ -186,46 +184,7 @@ router.post("/productmanagmnet/addproduct", function (req, res) {
     fs.writeFileSync(path4, base64Data4, { encoding: 'base64' })
 
 
-    // image1.mv(
-    //   "./public/product-images/product-image1/" + id + ".jpg",
-    //   (err) => {
-    //     if (!err) {
-    //       res.render("admin/addProducts");
-    //     } else {
-    //       console.log(err);
-    //     }
-    //   }
-    // );
-    // image2.mv(
-    //   "./public/product-images/product-image2/" + id + ".jpg",
-    //   (err) => {
-    //     if (!err) {
-    //       res.render("admin/addProducts");
-    //     } else {
-    //       console.log(err);
-    //     }
-    //   }
-    // );
-    // image3.mv(
-    //   "./public/product-images/product-image3/" + id + ".jpg",
-    //   (err) => {
-    //     if (!err) {
-    //       res.render("admin/addProducts");
-    //     } else {
-    //       console.log(err);
-    //     }
-    //   }
-    // );
-    // image4.mv(
-    //   "./public/product-images/product-image4/" + id + ".jpg",
-    //   (err) => {
-    //     if (!err) {
-    //       res.render("admin/addProducts");
-    //     } else {
-    //       console.log(err);
-    //     }
-    //   }
-    // );
+ 
     res.render("admin/addProducts", { admin: true});
   });
 });
@@ -267,6 +226,8 @@ router.post("/categorymangament/addsubCategory", (req, res) => {
       res.redirect("/subcategorymangament");
     });
 });
+
+
 
 //logout
 router.get("/logout", function (req, res) {
