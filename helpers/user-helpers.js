@@ -259,15 +259,28 @@ module.exports = {
                 }
               }
              ]).toArray()
-             console.log(total[0].total);
              resolve(total[0].total)
-    })
+            // console.log(total[0].total);
+            if(total[0].total==0)
+            {
 
-    
+              resolve(total[0].total)
+            }
+            else
+            {
+              resolve()
+            }
+   })
+
   },
+    
   deleteCartProduct:(cartId,item)=>{
-     return new Promise((resolve,rejcet)=>{
-       db.get().collection(collection.CART_COLLECTIONS).updateOne({_id:ObjectId(cartId)},{$pull:{products:{item:ObjectId(item)}}})
+     return new Promise(async(resolve,rejcet)=>{
+    await   db.get().collection(collection.CART_COLLECTIONS).updateOne({_id:ObjectId(cartId)},{$pull:{products:{item:ObjectId(item)}}}).then((response)=>{
+      console.log("resolved response")
+      console.log(response);
+      resolve(response)
+    })
      })
   }
 }

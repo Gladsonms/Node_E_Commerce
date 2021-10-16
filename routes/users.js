@@ -212,7 +212,9 @@ console.log(products);
 })
 
 //cart
-router.get('/cart',async (req,res)=>{
+router.get('/cart',verifyLogin,async (req,res)=>{
+  console.log("idddddddddddddddddddddddddd")
+  console.log(req.session.user)
   let products=await userHelpers.getCartProducts(req.session.user._id)
   let totalAmount=await userHelpers.getTottalAmount(req.session.user._id)
    
@@ -248,16 +250,23 @@ router.get('/cart/checkout',verifyLogin,async(req,res)=>{
   res.render('user/checkout',{total,user:req.session.user})
 })
 
- router.post('/cart/remove-item/:id,:product',verifyLogin,(req,res)=>{
+ router.post('/cart/remove-item/:id,:product',verifyLogin,async(req,res)=>{
    console.log("___________________remove cart______________________");
    //console.log(req.params.products);
    item=req.params.product;
    cartId=req.params.id
    console.log("itemmmmm"+item);
    console.log("Cartid"+cartId);
-   userHelpers.deleteCartProduct(cartId,item).then((response)=>{
-
+  await userHelpers.deleteCartProduct(cartId,item).then((response)=>{
+    console.log("deleted data")
+    console.log(response);
      res.redirect('/cart')
    })
+ })
+ router.post('cart/checkout/place-order',(req,res)=>{
+   console.log(req.body);
+ })
+ router.post('/cart/checkout/addAddress',(req,res)=>{
+   console.log(req.body);
  })
 module.exports = router;

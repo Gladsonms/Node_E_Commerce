@@ -21,7 +21,7 @@
 										<th>Name</th>
 										<th class="width-100 text-center">Unit price</th>
 										<th class="width-100 text-center">Qty</th>
-										<th class="width-100 text-center">Total</th>
+										{{!-- <th class="width-100 text-center">Total</th> --}}
 																				<th class="width-20">Option</th>
 
 									</tr>
@@ -61,12 +61,16 @@
 												</div>
 											</div>
 										</td>
-										<td class="text-center">
+										{{!-- <td class="text-center">
 										{{this.product.price}}
-										</td>
+										</td> --}}
 											<td class="product-remove">
-												<form action="/cart/remove-item/{{this._id}},{{this.product._id}}" method="post">
-											 <button type="submit" class="btn btn-danger"><a title="Remove this item" class="remove" >
+												
+												 {{!-- <button type="submit" class="btn btn-danger" onclick="removeCart('{{this._id}}','{{this.product._id}}');" >
+												<i class="fa fa-trash"></i></button> --}}
+
+												<form action="/cart/remove-item/{{this._id}},{{this.product._id}}" method="post" >
+											 <button type="submit" class="btn btn-danger"><a title="Remove this item" class="remove" id="removeCart"  >
 												<i class="fa fa-trash"></i>
 												</button>
 												</form>
@@ -107,7 +111,23 @@
 			</div>
 			
 
-			<script>
+			     {{!-- <script>
+			function removeCart(cartId,proId){
+                        $.ajax({
+							url:'/cart/remove-item',
+							data:{
+                                  cart:cartId,
+								  product:proId
+							},
+							method:'post',
+							success:(respone=>{
+								swal("PRODUCT REMOVE FROM CART")
+							})
+						})
+				}
+				 
+				 </script> --}}
+				 <script>
 				function changeQuantity(cartId,proId,count){
 				let quantity=parseInt(document.getElementById(proId).value)
 				
@@ -129,13 +149,13 @@
 							
 							   if(response.removeProduct)
 							   {
-								   alert("Product Removed From cart")
+								   swal("Product Removed From cart")
 								location.reload()
 							   }
 							   else {
 								   location.reload()
-								   document.getElementById(proId).innerHTML=quantity+count
-								   document.getElementById('total').innerHTML=response.total
+								   //document.getElementById(proId).innerHTML=quantity+count
+								   //document.getElementById('total').innerHTML=response.total
 							   }
 						   })
 					   })

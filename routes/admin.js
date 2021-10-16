@@ -94,60 +94,81 @@ router.get("/productmangmnet/editproduct/:id", async (req, res) => {
 router.post("/productmanagmnet/editproduct/:id", (req, res) => {
   let id = req.params.id;
   console.log(id);
-  productHelpers.updateProducts(req.params.id, req.body).then(() => {
+  productHelpers.updateProducts(req.params.id, req.body).then((data) => {
+    let id = "" + data;
+    let image1 = req.body.image1_b64;
+    let image2 = req.body.image2_b64;
+    let image3 = req.body.image3_b64;
+    let image4 = req.body.image4_b64;
+    //console.log(image1);
+
+    const path1 = `./public/product-images/product-image1/${id}.jpg`;
+    const path2 = `./public/product-images/product-image2/${id}.jpg`;
+    const path3 = `./public/product-images/product-image3/${id}.jpg`;
+    const path4 = `./public/product-images/product-image4/${id}.jpg`;
+
+    const base64Data1 = image1.replace(/^data:([A-Za-z-+/]+);base64,/, "");
+    const base64Data2 = image2.replace(/^data:([A-Za-z-+/]+);base64,/, "");
+    const base64Data3 = image3.replace(/^data:([A-Za-z-+/]+);base64,/, "");
+    const base64Data4 = image4.replace(/^data:([A-Za-z-+/]+);base64,/, "");
+
+    fs.writeFileSync(path1, base64Data1, { encoding: "base64" });
+    fs.writeFileSync(path2, base64Data2, { encoding: "base64" });
+    fs.writeFileSync(path3, base64Data3, { encoding: "base64" });
+    fs.writeFileSync(path4, base64Data4, { encoding: "base64" });
     res.redirect("/admin/productmanagment");
 
-    let image1 = req.files.productimage1;
-    let image2 = req.files.productimage2;
-    let image3 = req.files.productimage3;
-    let image4 = req.files.productimage4;
-    console.log("start");
-    console.log(image1);
-    console.log(image2);
-    console.log(image3);
-    console.log(image4);
-    console.log("end");
-    image1.mv(
-      "./public/product-images/product-image1/" + id + ".jpg",
-      (err) => {
-        if (!err) {
-          res.render("admin/addProducts");
-        } else {
-          console.log(err);
-        }
-      }
-    );
-    image2.mv(
-      "./public/product-images/product-image2/" + id + ".jpg",
-      (err) => {
-        if (!err) {
-          res.render("admin/addProducts");
-        } else {
-          console.log(err);
-        }
-      }
-    );
-    image3.mv(
-      "./public/product-images/product-image3/" + id + ".jpg",
-      (err) => {
-        if (!err) {
-          res.render("admin/addProducts");
-        } else {
-          console.log(err);
-        }
-      }
-    );
-    image4.mv(
-      "./public/product-images/product-image4/" + id + ".jpg",
-      (err) => {
-        if (!err) {
-          res.render("admin/addProducts");
-        } else {
-          console.log(err);
-        }
-      }
-    );
-    //res.render('admin/addProducts', { admin: true })
+    // let image1 = req.files.productimage1;
+    // let image2 = req.files.productimage2;
+    // let image3 = req.files.productimage3;
+    // let image4 = req.files.productimage4;
+    // console.log("start");
+    // console.log(image1);
+    // console.log(image2);
+    // console.log(image3);
+    // console.log(image4);
+    // console.log("end");
+    // image1.mv(
+    //   "./public/product-images/product-image1/" + id + ".jpg",
+    //   (err) => {
+    //     if (!err) {
+    //       res.render("admin/addProducts");
+    //     } else {
+    //       console.log(err);
+    //     }
+    //   }
+    // );
+    // image2.mv(
+    //   "./public/product-images/product-image2/" + id + ".jpg",
+    //   (err) => {
+    //     if (!err) {
+    //       res.render("admin/addProducts");
+    //     } else {
+    //       console.log(err);
+    //     }
+    //   }
+    // );
+    // image3.mv(
+    //   "./public/product-images/product-image3/" + id + ".jpg",
+    //   (err) => {
+    //     if (!err) {
+    //       res.render("admin/addProducts");
+    //     } else {
+    //       console.log(err);
+    //     }
+    //   }
+    // );
+    // image4.mv(
+    //   "./public/product-images/product-image4/" + id + ".jpg",
+    //   (err) => {
+    //     if (!err) {
+    //       res.render("admin/addProducts");
+    //     } else {
+    //       console.log(err);
+    //     }
+    //   }
+    // );
+    // //res.render('admin/addProducts', { admin: true })
   });
 });
 // router.post('/productmanagmnet/editproduct/:id',(req,res)=>{
