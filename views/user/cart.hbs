@@ -65,9 +65,11 @@
 										{{this.product.price}}
 										</td>
 											<td class="product-remove">
-											 <span class="btn btn-danger"><a title="Remove this item" class="remove" href="#">
+												<form action="/cart/remove-item/{{this._id}},{{this.product._id}}" method="post">
+											 <button type="submit" class="btn btn-danger"><a title="Remove this item" class="remove" >
 												<i class="fa fa-trash"></i>
-												</span>
+												</button>
+												</form>
 											</a>
 										</td>
 									</tr>

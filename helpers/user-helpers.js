@@ -264,5 +264,10 @@ module.exports = {
     })
 
     
+  },
+  deleteCartProduct:(cartId,item)=>{
+     return new Promise((resolve,rejcet)=>{
+       db.get().collection(collection.CART_COLLECTIONS).updateOne({_id:ObjectId(cartId)},{$pull:{products:{item:ObjectId(item)}}})
+     })
   }
 }

@@ -16,9 +16,9 @@ const userHelpers = require('../helpers/user-helpers');
 const { session } = require('passport');
 const { Router } = require('express');
 
-const serviceSSID="VAf502bffa728ff718c6ae554633f846c1"
-const accountSSID="ACf937ee29a47b8531872c65b80601723a"
-const authToken="f6117c970c2c61e421ca9cc993c2e85d"
+const serviceSSID="VAaaa09725d9a25b6fa22c1e395362b716"
+const accountSSID="ACebbf9a771b4b998c20ba75f79b99372c"
+const authToken="0774db42a5b31131492642f7e89edc4a"
 const clientTwillo=require("twilio")(accountSSID,authToken)
 
 const checkUserAuth=(req,res,next)=>{
@@ -247,4 +247,17 @@ router.get('/cart/checkout',verifyLogin,async(req,res)=>{
   let total=await userHelpers.getTottalAmount(req.session.user._id)
   res.render('user/checkout',{total,user:req.session.user})
 })
+
+ router.post('/cart/remove-item/:id,:product',verifyLogin,(req,res)=>{
+   console.log("___________________remove cart______________________");
+   //console.log(req.params.products);
+   item=req.params.product;
+   cartId=req.params.id
+   console.log("itemmmmm"+item);
+   console.log("Cartid"+cartId);
+   userHelpers.deleteCartProduct(cartId,item).then((response)=>{
+
+     res.redirect('/cart')
+   })
+ })
 module.exports = router;
