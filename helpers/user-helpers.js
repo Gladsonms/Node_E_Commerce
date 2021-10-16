@@ -282,5 +282,36 @@ module.exports = {
       resolve(response)
     })
      })
+  },
+
+  //order Mangment
+
+
+  //add Addresss
+  addAddress:(userId,address)=>{
+    
+    return new Promise(async(resolve,rejcet)=>{
+    
+      let addressObj={
+        name:address.name,
+        phone:address.phone,
+        place:address.place,
+        address:address.address,
+        city:address.city,
+        pincode:address.pincode,
+
+      }
+      console.log(addressObj);
+      let userAddresssObj={
+        user:ObjectId(userId),
+        address:[addressObj]
+      }
+      db.get().collection(collection.ADDRESS_COLLECTIONS).insertOne(userAddresssObj).then((response)=>{
+        
+        console.log(response);
+      })
+
+    })
+
   }
 }
