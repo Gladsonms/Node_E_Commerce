@@ -289,7 +289,8 @@ module.exports = {
 
   //add Addresss
   addAddress:(userId,address)=>{
-    
+    console.log("user id in addresss");
+    console.log(userId);
     return new Promise(async(resolve,rejcet)=>{
     
       let addressObj={
@@ -301,17 +302,41 @@ module.exports = {
         pincode:address.pincode,
 
       }
-      console.log(addressObj);
+    
       let userAddresssObj={
         user:ObjectId(userId),
         address:[addressObj]
       }
-      db.get().collection(collection.ADDRESS_COLLECTIONS).insertOne(userAddresssObj).then((response)=>{
-        
-        console.log(response);
-      })
+      console.log("user id");
+      console.log(userId);
+      let userAddress= await db.get().collection(collection.ADDRESS_COLLECTIONS).findOne({user:ObjectId("615d873cb820b2f4650ed393")});
+      console.log("user in addresss");
+      console.log(userAddress);
+      if(userAddress){
+           db.get().collection(collection.ADDRESS_COLLECTIONS).updateOne({user:ObjectId("615d873cb820b2f4650ed393")},{$push:{address:userAddresssObj.address}}).then((response)=>{
+             console.log(response);
+           })
+      }else
+      {
+
+        db.get().collection(collection.ADDRESS_COLLECTIONS).insertOne(userAddresssObj).then((response)=>{
+           
+           console.log(response);
+         })
+      }
 
     })
 
+  },
+  checkNumber:(number)=>{
+    console.log(number);
+    return new Promise(async(resolve,reject)=>{
+
+      let userNumber=await db.get().collection(collection.USER_COLLECTIONS).findOne({number:number}).then((response)=>{
+        console.log("TheNNNNNNNNNNNNNNNNN");
+        console.log(response);
+        resolve(response)
+      })
+    })
   }
 }

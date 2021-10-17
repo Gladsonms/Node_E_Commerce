@@ -17,7 +17,7 @@ const { Router } = require("express");
 
 const serviceSSID = "VAaaa09725d9a25b6fa22c1e395362b716";
 const accountSSID = "ACebbf9a771b4b998c20ba75f79b99372c";
-const authToken = "0774db42a5b31131492642f7e89edc4a";
+const authToken = "61193b2f815c88755989d1e8050a2094";
 const clientTwillo = require("twilio")(accountSSID, authToken);
 
 const checkUserAuth = (req, res, next) => {
@@ -130,12 +130,21 @@ router.get("/confirmotp", (req, res) => {
 });
 router.post("/enterOtp", (req, res) => {
   let otp = req.body.otp;
+  
   console.log("__________________________________________________");
   console.log(otp);
   let number = req.session.number;
   console.log("enter otp ______________");
 
   console.log(number);
+  userHelpers.checkNumber(number).then((response)=>{
+    console.log("got here");
+     console.log(response);
+     req.session.user = response;
+     req.session.user_id = response._id;
+
+     
+  })
   clientTwillo.verify
     .services(serviceSSID)
     .verificationChecks.create({
@@ -143,9 +152,18 @@ router.post("/enterOtp", (req, res) => {
       code: `${otp}`,
     })
     .then((resp) => {
+      // if (response.status) {
+      req.session.loggedIn = true;
+      //   
+      //console.log(req.session.loggedIn);
+  
+        
       res.redirect("/");
+      //}
+      
       console.log(resp);
     });
+
 });
 
 router.post("/googlelogin", checkAuthenticated, (req, res) => {
@@ -231,9 +249,10 @@ router.post("cart/checkout/place-order", (req, res) => {
 router.post("/cart/checkout/addAddress", (req, res) => {
   let userId=req.session.user._id
   let address=req.body
-  
-  userHelpers.addAddress(userId,address).then((data)=>{
-
+  console.log("path of adrres");
+  console.log(userId);
+  userHelpers.addAddress(userId,address).then((response)=>{
+        res.redirect("cart/checkout")
   })
   console.log(address);
   
