@@ -267,10 +267,21 @@ router.post('/subcategorymangament/delete-category/:this',(req,res)=>{
   console.log(name);
 })
 
+
+//order Mangment
+router.get("/ordermangment",(req,res)=>{
+  res.render('admin/ordermangment',{admin:true})
+})
+
+
+
+
 //logout
 router.get("/logout", function (req, res) {
   req.session.isLoggedIn = false;
   req.session.destroy();
   res.redirect("/admin");
 });
+
+
 module.exports = router;

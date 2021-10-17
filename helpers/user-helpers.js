@@ -273,13 +273,58 @@ module.exports = {
    })
 
   },
+  getSubTotal:(userId)=>{
+    return new Promise(async(resolve,reject)=>{
+             let  subtotal=await db.get().collection(collection.CART_COLLECTIONS).aggregate([
+               {
+                 $match:{user:(ObjectId(userId))}
+              },
+              {
+                $unwind:'$products'
+              },
+              {
+                $project:{
+                  item:'$products.item',
+                  quantity:'$products.quantity'
+                }
+              },
+              {
+                $lookup:{
+                  from:collection.PRODUCT_COLLECTIONS,
+                  localField:'item',
+                  foreignField:'_id',
+                  as:'product'
+                }
+              },
+                {
+                $project:{
+                  item:1,quantity:1,product:{$arrayElemAt:['$product',0]}
+                }
+              
+              },
+              {
+                $project:{
+                  //_id:null,
+                  subtotal:{$sum:{$multiply:['$quantity','$product.price']}}
+                }
+              }
+             ]).toArray()
+             console.log(subtotal);
+             resolve(subtotal)
+       
+            })
+
+          },
     
   deleteCartProduct:(cartId,item)=>{
      return new Promise(async(resolve,rejcet)=>{
     await   db.get().collection(collection.CART_COLLECTIONS).updateOne({_id:ObjectId(cartId)},{$pull:{products:{item:ObjectId(item)}}}).then((response)=>{
       console.log("resolved response")
       console.log(response);
-      resolve(response)
+      
+        resolve(response)
+      
+     
     })
      })
   },
@@ -288,6 +333,7 @@ module.exports = {
 
 
   //add Addresss
+    
   addAddress:(userId,address)=>{
     console.log("user id in addresss");
     console.log(userId);
@@ -333,10 +379,23 @@ module.exports = {
     return new Promise(async(resolve,reject)=>{
 
       let userNumber=await db.get().collection(collection.USER_COLLECTIONS).findOne({number:number}).then((response)=>{
-        console.log("TheNNNNNNNNNNNNNNNNN");
-        console.log(response);
+        
         resolve(response)
       })
     })
+  },
+  addOrder:(order,products,total)=>{
+         return new Promise((resolve,reject)=>{
+          console.log(order,products,total);
+         })
+  },
+  getCartProductList:(userId)=>{
+        return new Promise(async(resolve,reject)=>{
+          console.log("_______________");
+                let cart=await db.get().collection(collection.CART_COLLECTIONS).findOne({user:ObjectId(userId)})
+                console.log(cart);
+                resolve(cart.products)
+        })
   }
+
 }

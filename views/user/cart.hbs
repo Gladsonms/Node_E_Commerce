@@ -29,6 +29,7 @@
 								
 								<tbody>
 										{{#each products}}
+									
 									<tr>
 										
 									
@@ -60,23 +61,27 @@
 													</div>
 												</div>
 											</div>
-										</td>
-										{{!-- <td class="text-center">
-										{{this.product.price}}
-										</td> --}}
+									 </td>
+											{{!-- {{#each subtotal}}
+										<td class="text-center">
+											₹{{this.subtotal}}
+										
+										</td> 
+										   {{/each}} --}}
 											<td class="product-remove">
 												
 												 {{!-- <button type="submit" class="btn btn-danger" onclick="removeCart('{{this._id}}','{{this.product._id}}');" >
 												<i class="fa fa-trash"></i></button> --}}
 
-												<form action="/cart/remove-item/{{this._id}},{{this.product._id}}" method="post" >
-											 <button type="submit" class="btn btn-danger"><a title="Remove this item" class="remove" id="removeCart"  >
-												<i class="fa fa-trash"></i>
-												</button>
-												</form>
+												
+											 <a  class="btn btn-danger" id="removeCart" onclick="deleteProduct('{{this._id}}','{{this.product._id}}')"  >
+												{{!-- <i class="fa fa-trash"></i> --}}
+												delete
+												
 											</a>
 										</td>
 									</tr>
+									  
 										{{/each}}
 									
 									
@@ -86,7 +91,8 @@
 									<tr class="cart-total">
 										<td rowspan="3" colspan="3"></td>
 										<td colspan="2" class="text-right"></td>
-										{{!-- <td colspan="1" class="text-center">565</td> --}}
+  
+										<td colspan="1" class="text-center">₹{{subtotal.subtotal}}</td>
 									</tr>
 									<tr class="cart-total">
 										{{!-- <td colspan="2" class="text-right">Total shipping</td> --}}
@@ -159,5 +165,23 @@
 							   }
 						   })
 					   })
+				}
+			</script>
+			<script>
+				function deleteProduct(cartId,proId){
+					console.log("evede aanu")
+					$.ajax({
+						url:'/remove-item',
+						data:{
+							cartId:cartId,
+							proId:proId
+						},
+						method:'post',
+						success:(response)=>{
+							if(response){
+								window.location.reload()
+							}
+						}
+					})
 				}
 			</script>

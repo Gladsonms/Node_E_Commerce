@@ -13,7 +13,7 @@ const client = new OAuth2Client(CLIENT_ID);
 
 const userHelpers = require("../helpers/user-helpers");
 const { session } = require("passport");
-const { Router } = require("express");
+const { Router, response } = require("express");
 
 const serviceSSID = "VAaaa09725d9a25b6fa22c1e395362b716";
 const accountSSID = "ACebbf9a771b4b998c20ba75f79b99372c";
@@ -39,14 +39,12 @@ const verifyLogin = (req, res, next) => {
 router.get("/", verifyLogin, async function (req, res, next) {
   let user = req.session.user;
 
-  console.log(cartCount);
+  
   if (req.session.user) {
     var cartCount = await userHelpers.getCartCount(req.session.user._id);
   }
   productHelpers.getAllProducts().then(async (products) => {
-    console.log(products.product);
-    console.log(cartCount);
-
+  
     res.render("user/index", { user, products, cartCount });
   });
 });
@@ -100,7 +98,7 @@ function checkAuthenticated(req, res, next) {
       next();
     })
     .catch((err) => {
-      res.redirect("/login");
+      res.redirect("/");
     });
 }
 
@@ -110,12 +108,11 @@ router.get("/verifyotp", (req, res) => {
 });
 
 router.post("/verifyotp", (req, res) => {
-  console.log("____OTP______");
+  
   let number = req.body.phone;
-  console.log(number);
+  
   req.session.number = number;
-  console.log("session number");
-  console.log(number);
+  
 
   clientTwillo.verify
     .services(serviceSSID)
@@ -205,12 +202,12 @@ router.get("/productdetails/:id", async function (req, res, next) {
 
 //cart
 router.get("/cart", verifyLogin, async (req, res) => {
-  console.log("idddddddddddddddddddddddddd");
-  console.log(req.session.user);
+  
   let products = await userHelpers.getCartProducts(req.session.user._id);
   let totalAmount = await userHelpers.getTottalAmount(req.session.user._id);
-
-  res.render("user/cart", { products, user: req.session.user, totalAmount });
+  let subtotal = await userHelpers.getSubTotal(req.session.user._id)
+  console.log(subtotal);
+  res.render("user/cart", { products, user: req.session.user, totalAmount,subtotal });
 });
 
 //  response.total= await userHelpers.getTottalAmount(req.body.user)
@@ -233,18 +230,34 @@ router.get("/cart/checkout", verifyLogin, async (req, res) => {
   let total = await userHelpers.getTottalAmount(req.session.user._id);
   res.render("user/checkout", { total, user: req.session.user });
 });
+// router.post("/cart/remove-item/:id,:product", verifyLogin, async (req, res) => {
+//   //console.log(req.params.products);
+//   item = req.params.product;
+//   cartId = req.params.id;
+ 
 
-router.post("/cart/remove-item/:id,:product", verifyLogin, async (req, res) => {
+//   await userHelpers.deleteCartProduct(cartId, item).then((response) => {
+//     res.json({response})
+//   });
+router.post("/remove-item", verifyLogin,async  (req, res) => {
   //console.log(req.params.products);
-  item = req.params.product;
-  cartId = req.params.id;
+ console.log(req.body)
+  let cartId = req.body.cartId;
+  let item = req.body.proId
 
   await userHelpers.deleteCartProduct(cartId, item).then((response) => {
-    res.redirect("/cart");
+    res.json({response})
   });
 });
-router.post("cart/checkout/place-order", (req, res) => {
+router.post("cart/checkout/placeorder",verifyLogin,async (req, res) => {
   //console.log(req.body);
+  let product=await userHelpers.getCartProductList(req.body.userId)
+  let totalAmount= await userHelpers.getTottalAmount(req.body.userId)
+  console.log("_______________");
+  userHelpers.addOrder(req.body,product,totalAmount).then((response)=>{
+      
+
+  })
 });
 router.post("/cart/checkout/addAddress", (req, res) => {
   let userId=req.session.user._id
@@ -258,4 +271,10 @@ router.post("/cart/checkout/addAddress", (req, res) => {
   
 
 });
+
+
+router.post('/cart/checkout/placeorder',(req,res)=>{
+   console.log("plce odeeer");
+  console.log(req.body);
+})
 module.exports = router;
