@@ -37,7 +37,7 @@
                 style="height: 0px;"
               >
                 <div class="panel-body">
-                  <form id="formaddress" class="form-horizontal">
+                  <form id="formaddress" method="post" action="/cart/checkout/addAddress" class="form-horizontal">
 
                     <div class="form-group">
                       <div class="col-md-6">
@@ -346,7 +346,13 @@
     data:$('#placeorderform').serialize(),
   success:(response)=>
   { 
-	  location.href("/cart") 
-  } })
+	 swal(response)
+	 alert(response.status)
+   if(response.status)
+   {
+	   location.href='/order-success'
+   }
+  }
+   })
    })
 </script>

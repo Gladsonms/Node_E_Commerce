@@ -118,7 +118,7 @@ router.post("/verifyotp", (req, res) => {
     .services(serviceSSID)
     .verifications.create({ to: `+91${number}`, channel: "sms" })
     .then((verification) => console.log(verification.status));
-  console.log("otp sent");
+  
   res.redirect("/confirmotp");
 });
 
@@ -244,27 +244,13 @@ router.post("/cart/checkout/addAddress", (req, res) => {
   let address=req.body
  
   userHelpers.addAddress(userId,address).then((response)=>{
-        res.redirect("cart/checkout")
+    res.redirect("cart/checkout")
   })
  
   
 
 });
 
-// router.post("/place-order",async(req,res)=>{
-//   console.log(req.body);
-// let address= await userHelpers.getUserSingleAddres(req.body.address1)
-// let product=await userHelpers.getCartProductList(req.session.user._id)
-// let totalAmount= await userHelpers.getTottalAmount(req.body.userId)
-   
-//    console.log(req.body);
-//    userHelpers.PlaceOrder(req.body,product,totalAmount).then((response)=>{
-   
-//   })
-
-  
-  
-// })
 
 router.post("/place-order",async(req,res)=>{
 
@@ -278,7 +264,19 @@ let totalAmount= await userHelpers.getTottalAmount(req.body.userId)
   })
 
   
-  
+    
 })
 
+
+router.get('/order-success',verifyLogin,(req,res)=>{
+  res.render('user/order-success',{user:req.session.user})
+})
+router.get("/orders",verifyLogin,async (req,res)=>{
+   console.log("odersss list");
+ 
+  let orders=await userHelpers.getUserOrders(req.session.user._id)
+  
+  res.render('user/odersList',{user:req.session.user,orders})
+ 
+})
 module.exports = router;

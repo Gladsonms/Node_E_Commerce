@@ -430,10 +430,24 @@ module.exports = {
      date:new Date()
 
       }
-     let orderDetails =  db.get().collection(collection.ORDER_COLLECTIONS).insertOne(orderObj)
-     console.log(orderDetails);
-
-   console.log(status);
+      let userId=order.userId;
+      
+    
+     let orderDetails = await db.get().collection(collection.ORDER_COLLECTIONS).insertOne(orderObj).then((response)=>{
+          db.get().collection(collection.CART_COLLECTIONS).deleteOne({user:ObjectId(userId)})
+       resolve()
+     })
+     
+    })
+  },
+  getUserOrders:(userId)=>{
+    
+    console.log(userId)
+    return new Promise(async(resolve,reject)=>{
+     let oders= await  db.get().collection(collection.ORDER_COLLECTIONS).findOne({userId:userId})
+       
+    
+      resolve(oders)
     })
   }
   
