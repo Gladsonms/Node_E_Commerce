@@ -128,14 +128,13 @@ router.get("/confirmotp", (req, res) => {
 router.post("/enterOtp", (req, res) => {
   let otp = req.body.otp;
   
-  console.log("__________________________________________________");
-  console.log(otp);
+  
   let number = req.session.number;
-  console.log("enter otp ______________");
+  
 
-  console.log(number);
+  
   userHelpers.checkNumber(number).then((response)=>{
-    console.log("got here");
+    
      console.log(response);
      req.session.user = response;
      req.session.user_id = response._id;
@@ -149,14 +148,12 @@ router.post("/enterOtp", (req, res) => {
       code: `${otp}`,
     })
     .then((resp) => {
-      // if (response.status) {
+     
       req.session.loggedIn = true;
-      //   
-      //console.log(req.session.loggedIn);
-  
+     
         
       res.redirect("/");
-      //}
+     
       
       console.log(resp);
     });
@@ -219,8 +216,7 @@ router.get("/add-to-cart/:id", (req, res) => {
 });
 
 router.post("/change-product-quantity", verifyLogin, (req, res, next) => {
-  console.log("change qunatitty 11111111");
-  console.log(req.body);
+  
   userHelpers.changeProductQauntity(req.body).then(async (response) => {
     res.json(response);
   });
@@ -228,20 +224,13 @@ router.post("/change-product-quantity", verifyLogin, (req, res, next) => {
 
 router.get("/cart/checkout", verifyLogin, async (req, res) => {
   let total = await userHelpers.getTottalAmount(req.session.user._id);
-  res.render("user/checkout", { total, user: req.session.user });
+  let useraddres = await userHelpers.getUserAddress(req.session.user._id)
+  
+  res.render("user/checkout", { total, user: req.session.user, useraddres});
 });
-// router.post("/cart/remove-item/:id,:product", verifyLogin, async (req, res) => {
-//   //console.log(req.params.products);
-//   item = req.params.product;
-//   cartId = req.params.id;
- 
 
-//   await userHelpers.deleteCartProduct(cartId, item).then((response) => {
-//     res.json({response})
-//   });
 router.post("/remove-item", verifyLogin,async  (req, res) => {
-  //console.log(req.params.products);
- console.log(req.body)
+  
   let cartId = req.body.cartId;
   let item = req.body.proId
 
@@ -249,32 +238,47 @@ router.post("/remove-item", verifyLogin,async  (req, res) => {
     res.json({response})
   });
 });
-router.post("cart/checkout/placeorder",verifyLogin,async (req, res) => {
-  //console.log(req.body);
-  let product=await userHelpers.getCartProductList(req.body.userId)
-  let totalAmount= await userHelpers.getTottalAmount(req.body.userId)
-  console.log("_______________");
-  userHelpers.addOrder(req.body,product,totalAmount).then((response)=>{
-      
 
-  })
-});
 router.post("/cart/checkout/addAddress", (req, res) => {
   let userId=req.session.user._id
   let address=req.body
-  console.log("path of adrres");
-  console.log(userId);
+ 
   userHelpers.addAddress(userId,address).then((response)=>{
         res.redirect("cart/checkout")
   })
-  console.log(address);
+ 
   
 
 });
 
+// router.post("/place-order",async(req,res)=>{
+//   console.log(req.body);
+// let address= await userHelpers.getUserSingleAddres(req.body.address1)
+// let product=await userHelpers.getCartProductList(req.session.user._id)
+// let totalAmount= await userHelpers.getTottalAmount(req.body.userId)
+   
+//    console.log(req.body);
+//    userHelpers.PlaceOrder(req.body,product,totalAmount).then((response)=>{
+   
+//   })
 
-router.post('/cart/checkout/placeorder',(req,res)=>{
-   console.log("plce odeeer");
-  console.log(req.body);
+  
+  
+// })
+
+router.post("/place-order",async(req,res)=>{
+
+
+let product=await userHelpers.getCartProductList(req.session.user._id)
+let totalAmount= await userHelpers.getTottalAmount(req.body.userId)
+   
+  
+   userHelpers.PlaceOrder(req.body,product,totalAmount).then((response)=>{
+   res.json({status:true})
+  })
+
+  
+  
 })
+
 module.exports = router;

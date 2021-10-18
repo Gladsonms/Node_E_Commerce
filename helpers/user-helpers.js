@@ -322,7 +322,7 @@ module.exports = {
       console.log("resolved response")
       console.log(response);
       
-        resolve(response)
+        resolve(respone)
       
      
     })
@@ -353,13 +353,13 @@ module.exports = {
         user:ObjectId(userId),
         address:[addressObj]
       }
-      console.log("user id");
       console.log(userId);
-      let userAddress= await db.get().collection(collection.ADDRESS_COLLECTIONS).findOne({user:ObjectId("615d873cb820b2f4650ed393")});
+      console.log(userId);
+      let userAddress= await db.get().collection(collection.ADDRESS_COLLECTIONS).findOne({user:ObjectId(userId)});
       console.log("user in addresss");
       console.log(userAddress);
       if(userAddress){
-           db.get().collection(collection.ADDRESS_COLLECTIONS).updateOne({user:ObjectId("615d873cb820b2f4650ed393")},{$push:{address:userAddresssObj.address}}).then((response)=>{
+           db.get().collection(collection.ADDRESS_COLLECTIONS).updateOne({user:ObjectId(userId)},{$push:{address:address}}).then((response)=>{
              console.log(response);
            })
       }else
@@ -378,24 +378,64 @@ module.exports = {
     console.log(number);
     return new Promise(async(resolve,reject)=>{
 
-      let userNumber=await db.get().collection(collection.USER_COLLECTIONS).findOne({number:number}).then((response)=>{
+      let userNumber=await db.get().collection(collection.USER_COLLECTIONS).findOne({phone:number}).then((response)=>{
         
         resolve(response)
       })
     })
   },
-  addOrder:(order,products,total)=>{
-         return new Promise((resolve,reject)=>{
-          console.log(order,products,total);
-         })
-  },
+
   getCartProductList:(userId)=>{
+    
         return new Promise(async(resolve,reject)=>{
-          console.log("_______________");
+          
+          
                 let cart=await db.get().collection(collection.CART_COLLECTIONS).findOne({user:ObjectId(userId)})
-                console.log(cart);
+                
+                
                 resolve(cart.products)
+               
+                
+
         })
+  },
+  getUserAddress:(userId)=>{
+    return new Promise(async(resolve,reject)=>{
+        let  address=await db.get().collection(collection.ADDRESS_COLLECTIONS).findOne({user:ObjectId(userId)})
+        
+        resolve(address)
+    })
+  },
+  
+  // getUserSingleAddres:(username)=>{
+  //    return new Promise(async(resolve,reject)=>{
+  //      let address=await db.get().collection(collection.ADDRESS_COLLECTIONS).findOne({"adress.name":username})
+  //      console.log("single user address");
+  //         console.log(address);
+  //         resolve(address)
+  //     })
+  // },
+  
+  PlaceOrder:(order,products,total)=>{
+    return new Promise(async(resolve,reject)=>{
+      
+      let status = order.payment=='cod' ? 'placed' :'pending'
+      let orderObj={
+     userId:order.userId,
+     address:order.address,
+     paymentMethod:order.payment,
+     products:products,
+     total:total,
+     status:status,
+     date:new Date()
+
+      }
+     let orderDetails =  db.get().collection(collection.ORDER_COLLECTIONS).insertOne(orderObj)
+     console.log(orderDetails);
+
+   console.log(status);
+    })
   }
+  
 
 }
