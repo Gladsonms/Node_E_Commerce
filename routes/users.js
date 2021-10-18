@@ -272,11 +272,17 @@ router.get('/order-success',verifyLogin,(req,res)=>{
   res.render('user/order-success',{user:req.session.user})
 })
 router.get("/orders",verifyLogin,async (req,res)=>{
-   console.log("odersss list");
+   
  
   let orders=await userHelpers.getUserOrders(req.session.user._id)
-  
+  console.log(orders);
   res.render('user/odersList',{user:req.session.user,orders})
  
+})
+router.get('/view-order-product/:id',async(req,res)=>{
+  let products=await userHelpers.getOrderProducts(req.params.id)
+  console.log("view order product");
+  console.log(products);
+  res.render('user/userorder',{user:req.session.user,products})
 })
 module.exports = router;

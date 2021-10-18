@@ -444,10 +444,49 @@ module.exports = {
     
     console.log(userId)
     return new Promise(async(resolve,reject)=>{
-     let oders= await  db.get().collection(collection.ORDER_COLLECTIONS).findOne({userId:userId})
+     let oders= await  db.get().collection(collection.ORDER_COLLECTIONS).find({userId:userId}).toArray()
        
-    
+      console.log(oders);
       resolve(oders)
+    })
+  },
+  getOrderProducts:(productId)=>{
+    return new Promise(async(resolve,reject)=>{
+      let oderItems=await  db.get().collection(collection.ORDER_COLLECTIONS).aggregate([
+        {
+          $match:({_id:ObjectId(productId)})
+        },
+        {
+          $unwind:'$products'
+        },
+        {
+          $project:{
+            item:'$products.item',
+            quantity:'$products.quantity'
+          }
+        },
+        {
+          $lookup:{
+            from:collection.PRODUCT_COLLECTIONS,
+            localField:'item',
+            foreignField:'_id',
+            as:'product',
+
+
+          }
+        },
+        {
+          $project:{
+            item:1,
+            quantity:1,
+            product:{
+              $arrayElemAt:['$product',0]
+            }
+          }
+        }
+      ]).toArray()
+      
+      resolve(oderItems)
     })
   }
   
