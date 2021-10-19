@@ -507,16 +507,19 @@ module.exports = {
 testing:(data,orderId)=>{
 
   return new Promise((resolve,reject)=>{
-    console.log("testing");
-    console.log(data)
-    console.log(orderId)
+    
     db.get().collection(collection.ORDER_COLLECTIONS).updateOne({_id:ObjectId(orderId)},{$set:{status:data.status}}).then((result)=>{
         console.log(result)
     }).catch((err)=>{
         console.log(err)
     })
 })
-}
+},
+cancelOrder:(oderId)=> {
+  return new Promise((resolve,reject)=>{
+   db.get().collection(collection.ORDER_COLLECTIONS).updateOne({_id:ObjectId(oderId)},{$set:{status:"Cancel"}})
+  })
+},
   
 
 }

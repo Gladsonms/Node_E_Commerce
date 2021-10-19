@@ -285,4 +285,8 @@ router.get('/view-order-product/:id',async(req,res)=>{
   console.log(products);
   res.render('user/userorder',{user:req.session.user,products})
 })
+router.post('/oders/cancelorder/:id',async(req,res)=>{
+  let orderId=req.params.id
+  userHelpers.cancelOrder(orderId)
+})
 module.exports = router;

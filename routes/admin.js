@@ -276,11 +276,10 @@ router.get("/ordermangment",async(req,res)=>{
   })
 })
   router.post('/changeorderstatus/:id',(req,res)=>{
-    console.log("git igxs");
+    
     let orderId=req.params.id
     let data = req.body
-    console.log("=============================================")
-    console.log(orderId);
+    
     var values= {orderId,data}
     userHelpers.testing(data,orderId)
 

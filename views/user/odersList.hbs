@@ -43,7 +43,10 @@
                                                         <td>{{this.status}}</td>
                                                         <td>{{this.total}}</td>
                                                         <td>{{this.paymentMethod}}</td>
-                                                        <td><a href="/view-order-product/{{this._id}}" class="btn btn-primary">View</a><a class="btn btn-danger" href="">cancel</a></td>
+                                                        <td><a href="/view-order-product/{{this._id}}" class="btn btn-primary">View</a>
+                                                        
+                                                        <button class="btn btn-danger" href="" onclick="cancelOder('{{this._id}}'); ">cancel</button>
+                                                        </td>
                                                     </tr>
                                                     {{/each}}
                                                    
@@ -59,3 +62,16 @@
                     </div>
                     <!-- end container-fluid -->
                 </div>
+                <script>
+                    function  cancelOder(oderId){
+                       $.ajax({
+                           url:"/oders/cancelorder/"+oderId,
+                           method:"post",
+                           data:{},
+                           success:()=>{
+
+                           }
+
+                       })
+                    }
+                </script>
