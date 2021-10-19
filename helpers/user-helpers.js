@@ -32,9 +32,10 @@ module.exports = {
         .collection(collection.USER_COLLECTIONS)
         .findOne({ email: userData.email });
       console.log(user);
-      let usersStatus = true;
-      usersStatus = user.status;
+      let usersStatus = user?user.status?true:false:false;
+      
       if (user && usersStatus) {
+        
         bcyrpt
           .compare(userData.password, user.password)
           .then((status) => {
@@ -44,15 +45,16 @@ module.exports = {
               response.status = true;
               resolve(response);
             } else {
-              resolve({ status: false });
+              let response =  {status:false}; 
+              resolve(response);
             }
           })
           .catch(() => {
             console.log("error");
           });
       } else {
-        console.log("login failed");
-        resolve({ status: false });
+        let response =  {status:false}; 
+        resolve(response);
       }
     });
   },
