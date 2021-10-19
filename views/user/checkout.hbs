@@ -346,8 +346,8 @@
     data:$('#placeorderform').serialize(),
   success:(response)=>
   { 
-	 swal(response)
-	 alert(response.status)
+	 swal("order Placed"+response)
+	
    if(response.status)
    {
 	   location.href='/order-success'

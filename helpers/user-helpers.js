@@ -5,6 +5,7 @@ var ObjectId = require("mongodb").ObjectId;
 const { response } = require("express");
 const { get } = require("../routes/admin");
 const { USER_COLLECTIONS } = require("../config/collections");
+const moment=require("moment")
 //const { ObjectID, ObjectId } = require('bson')
 module.exports = {
   doSignup: (userData) => {
@@ -427,7 +428,7 @@ module.exports = {
      products:products,
      total:total,
      status:status,
-     date:new Date()
+     date:moment().format("dddd, MMMM Do YYYY, h:mm:ss a")
 
       }
       let userId=order.userId;
@@ -488,7 +489,34 @@ module.exports = {
       
       resolve(oderItems)
     })
-  }
+  },
+
+//   changeOrderStatus:(value)=>{
+//     return new Promise((resolve,reject)=>{
+//         console.log("Change oders status");
+//         console.log(value)
+//         console.log(Id);
+//         db.get().collection(collection.ORDER_COLLECTIONS).updateOne({_id:ObjectId(Id)},{$set:{status:status.status}}).then((result)=>{
+//             console.log(result)
+//         }).catch((err)=>{
+//             console.log(err)
+//         })
+//     })
+// },
+
+testing:(data,orderId)=>{
+
+  return new Promise((resolve,reject)=>{
+    console.log("testing");
+    console.log(data)
+    console.log(orderId)
+    db.get().collection(collection.ORDER_COLLECTIONS).updateOne({_id:ObjectId(orderId)},{$set:{status:data.status}}).then((result)=>{
+        console.log(result)
+    }).catch((err)=>{
+        console.log(err)
+    })
+})
+}
   
 
 }

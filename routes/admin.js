@@ -264,15 +264,34 @@ router.post('/subcategorymangament/delete-category/:this',(req,res)=>{
  productHelpers.deleteSubCategory(name,catname).then((response)=>{
    res.redirect('/admin/subcategorymangament')
  })
-  console.log(name);
+  
 })
 
 
-//order Mangment
-router.get("/ordermangment",(req,res)=>{
-  res.render('admin/ordermangment',{admin:true})
+//order MaUngment
+router.get("/ordermangment",async(req,res)=>{
+  let oders=await productHelpers.getAllUserOrder().then((oders)=>{
+    res.render('admin/ordermangment',{admin:true,oders})
+    
+  })
 })
+  router.post('/changeorderstatus/:id',(req,res)=>{
+    console.log("git igxs");
+    let orderId=req.params.id
+    let data = req.body
+    console.log("=============================================")
+    console.log(orderId);
+    var values= {orderId,data}
+    userHelpers.testing(data,orderId)
 
+   
+    
+
+
+   
+    //productHelpers.changeOrderStatus()
+     
+  })
 
 
 

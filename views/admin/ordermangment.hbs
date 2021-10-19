@@ -23,34 +23,36 @@
                                 <div class="card card-statistics">
                                     <div class="card-body">
                                         <div class="export-table-wrapper table-responsive">
-                                            <table id="export-table" class="table table-bordered">
+                                            <table id="export-tble" class="table table-bordered">
                                                 <thead class="thead-light">
                                                     <tr>
-                                                        <th>Name</th>
-                                                        <th>Position</th>
-                                                        <th>Office</th>
-                                                        <th>Age</th>
-                                                        <th>Start date</th>
-                                                        <th>Salary</th>
+                                                        <th>Date</th>
+                                                        {{!-- <th>Address</th> --}}
+                                                        <th>Address </th>
+                                                        <th>Tottal</th>
+                                                        <th>Payment Method</th>
+                                                        <th>option</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    {{#each oders}}
                                                     <tr>
-                                                        <td>Tiger Nixon</td>
-                                                        <td>System Architect</td>
-                                                        <td>Edinburgh</td>
-                                                        <td>61</td>
-                                                        <td>2011/04/25</td>
-                                                        <td>$320,800</td>
+
+                                                        <td> <span id="date">{{this.date}}</span></td>
+                                                        {{!-- <td>{{this.address}}</td> --}}
+                                                        <td>{{this.address}}</td>
+                                                        <td>{{this.total}}</td>
+                                                        <td>{{this.paymentMethod}}</td>
+                                                        <td><span><a href="/view-order-product/{{this._id}}" class="btn btn-primary">View</a></span><span>  <label for="status"></label>
+  <select name="status" id="status" onchange="changeStatus('{{this._id}}')">
+    <option value="{{this.status}}" selected></option>
+    <option value="Pending">Pending</option>
+    <option value="Deliverd">Deliverd</option>
+    <option value="Cancel">Cancel</option>
+  </select></span></td>
                                                     </tr>
-                                                    <tr>
-                                                        <td>Garrett Winters</td>
-                                                        <td>Accountant</td>
-                                                        <td>Tokyo</td>
-                                                        <td>63</td>
-                                                        <td>2011/07/25</td>
-                                                        <td>$170,750</td>
-                                                    </tr>
+                                                    {{/each}}
+                                                   
                                                                             </tbody>
 
                                             </table>
@@ -63,3 +65,23 @@
                     </div>
                     <!-- end container-fluid -->
                 </div>
+             
+             <script>
+                 function changeStatus(orderId) {
+                    
+                    let  status= document.getElementById('status').value
+                   $.ajax({
+                     //  url:'/changeorderstatus/'+orderId
+                      url:'/admin/changeorderstatus/'+orderId,
+                       method:'POST',
+                       data:{
+                           status
+                       },
+                       success:()=>{
+
+                       }
+                   })
+                      
+                 }
+
+             </script>

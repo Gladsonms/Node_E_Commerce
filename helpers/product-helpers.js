@@ -133,14 +133,31 @@ module.exports = {
     },
     deleteSubCategory:(name)=>{
         return new Promise((resolve,reject)=>{
-            console.log("deletesub category ____________");
-            console.log(name);
+        
             db.get().collection(collection.CATEGORY_COLLECTIONS).updateOne({subcategory
                 :name},{$pull:{subcategory
                     :name}}).then((response)=>{
                 resolve(response)
             }).catch((err)=>{
                 console.log(err);
+            })
+        })
+    },
+    getAllUserOrder:()=>{
+           return new Promise((resolve,reject)=>{
+             let userOders=  db.get().collection(collection.ORDER_COLLECTIONS).find({}).toArray()
+                   resolve(userOders)
+           })
+    },
+    changeOrderStatus:()=>{
+        return new Promise((resolve,reject)=>{
+            console.log("Change oders status");
+            console.log(value)
+            console.log(Id);
+            db.get().collection(collection.ORDER_COLLECTIONS).updateOne({_id:ObjectId(Id)},{$set:{status:status.status}}).then((result)=>{
+                console.log(result)
+            }).catch((err)=>{
+                console.log(err)
             })
         })
     }
