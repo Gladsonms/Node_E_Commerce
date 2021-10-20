@@ -37,7 +37,7 @@
                 style="height: 0px;"
               >
                 <div class="panel-body">
-                  <form id="formaddress" method="post" action="/cart/checkout/addAddress" class="form-horizontal">
+                  <form id="formaddress" onsubmit="addAddress()" method="post" action="/cart/checkout/addAddress" class="form-horizontal" >
 
                     <div class="form-group">
                       <div class="col-md-6">
@@ -47,7 +47,9 @@
                           value=""
                           class="form-control"
                           name="name"
+                          id="name"
                         />
+                         <p class="text-danger" id="nameError"></p>
                       </div>
                       <div class="col-md-6">
                         <label>phone number</label>
@@ -56,7 +58,9 @@
                           value=""
                           class="form-control"
                           name="phone"
+                          id="phone"
                         />
+                         <p class="text-danger" id="phoneError"></p>
                       </div>
                     </div>
                     <div class="form-group">
@@ -67,7 +71,9 @@
                           value=""
                           class="form-control"
                           name="place"
+                          id="place"
                         />
+                         <p class="text-danger" id="placeError"></p>
                       </div>
                     </div>
                     <div class="form-group">
@@ -78,7 +84,9 @@
                           value=""
                           class="form-control"
                           name="address"
+                          id="address"
                         />
+                         <p class="text-danger" id="addressError"></p>
                       </div>
                     </div>
                     <div class="form-group">
@@ -89,7 +97,9 @@
                           value=""
                           class="form-control"
                           name="city"
+                          id="city"
                         />
+                         <p class="text-danger" id="cityError"></p>
                       </div>
                       <div class="col-md-6">
                         <label>Pincode </label>
@@ -98,16 +108,18 @@
                           value=""
                           class="form-control"
                           name="pincode"
+                          id="pincode"
                         />
+                         <p class="text-danger" id="pincodeError"></p>
                       </div>
                     </div>
                     <div class="form-group">
                       <div class="col-md-12">
-                        <input
+                        <button
                           type="submit"
                           value="Save"
                           class="btn pull-right"
-                        />
+                        >submit</button>
                       </div>
                     </div>
                   </form>
@@ -122,11 +134,12 @@
                 <label for="">Choose Address</label>
                 {{#each useraddres.address}}
 					
-						<div>
-						
+						<div class="mt-2">
+						     <form action="/oders/deleteaddress">
 						<input type="radio"  name="address" value="{{this.name}}  ,  {{this.phone}}  ,  {{this.place}},  {{this.address}} ,  {{this.city}} "  /> <label for="">{{this.name}}    {{this.phone}}    {{this.place}}  {{this.address}}   {{this.city}}    </label>
-
+                  <button class="btn btn-sm btn btn-danger ml-3 text-light" > Remove address</button>
 							</div>
+              </form>
 											
                       						
                                              {{/each}}
@@ -337,22 +350,172 @@
     </div>
   </div>
 </div>
+
 <script>
-  $('#placeorderform').submit((e)=>{ 
-	  e.preventDefault() 
-	  $.ajax({
-  url:"/place-order",
-   method:"post",
-    data:$('#placeorderform').serialize(),
-  success:(response)=>
-  { 
-	 swal("order Placed")
-	
-   if(response.status)
-   {
-	   location.href='/order-success'
-   }
+       ////To check Name  in form
+var nameField = document.getElementById('name')
+var validname=false;
+
+
+nameField.addEventListener('input', (e) => {
+    var name = nameField.value
+    var nameRegex=/^[a-zA-Z ]+$/ 
+
+    if(name.length==0){
+        text="Please Enter your Name";
+        nameError.innerHTML = text;
+        validname=false;
+    } 
+    else if(name.length<5){
+        console.log(name.length);
+        nameError.innerHTML="Name should be more than 4 Characters"
+        validname=false;
+    }
+    else if(name.includes('  ')){
+        nameError.innerHTML="Name should not contain 2 concecutive spaces"
+        validname=false;
+
+
+    }
+    else if(!name.match(nameRegex))
+    {
+        text="Name Should not contain numeric value"
+        nameError.innerHTML=text;
+        return false;
+    }
+    else{
+
+        validname=true;
+        nameError.innerHTML=" ";
+   
+      }
+})
+
+////To Check Number is valid or not
+var phoneField = document.getElementById('phone')
+var validphone=false;
+phoneField.addEventListener('input',()=>{
+    var phone=phoneField.value
+    if(isNaN(phone) || phone.length==0){
+         validphone=false;
+        text="This field should not be blank";
+        phoneError.innerHTML = text;
+   
+} else if(isNaN(phone) || phone.length!=10){
+     validphone=false;
+    text="Please Enter Valid Number";
+    phoneError.innerHTML = text;
+   
+}else{
+    phoneError.innerHTML=" ";
+     validphone=true;
+}     
+})
+
+
+
+//////To check address is on or present or not
+var addressField=document.getElementById('address')
+var validaddress=false;
+addressField.addEventListener('input',(e)=>{
+    var address=addressField.value
+    if(address.length<=10){
+        validaddress=false;
+        text="Please Enter More Than 10 Characters"
+        addressError.innerHTML = text;
+       
+    }else{
+        validaddress=true;
+        text=" "
+        addressError.innerHTML=text;
+        
+    }
+})
+
+
+
+
+//////To check city is on or present or not
+var cityField=document.getElementById('city')
+var validcity=false;
+cityField.addEventListener('input',(e)=>{
+    var city=cityField.value
+    if(city.length<=3){
+        validcity=false;
+        text="Please Enter More Than 3 Characters"
+        cityError.innerHTML = text;
+       
+    }else{
+        validcity=true;
+        text=" "
+        cityError.innerHTML=text;
+        
+    }
+})
+
+
+
+//////To check pincode is on or present or not
+var pincodeField=document.getElementById('pincode')
+var validpincode=false;
+pincodeField.addEventListener('input',(e)=>{
+    var pincode=pincodeField.value
+    if(pincode.length!==6){
+       
+        text="Please Enter   6 digit"
+        pincodeError.innerHTML = text;
+       validpincode=false;
+    }else{
+        validpincode=true;
+        text=" "
+        pincodeError.innerHTML=text;
+        
+    }
+})
+
+
+//////To check place is on or present or not
+var placeField=document.getElementById('place')
+var validplace=false;
+placeField.addEventListener('input',(e)=>{
+    var place=placeField.value
+    if(place.length<=3){
+      
+        text="Please Enter More Than 3 Characters"
+        placeError.innerHTML = text;
+       validplace=false;
+    }else{
+        validplace=true;
+        text=" "
+        placeError.innerHTML=text;
+        
+    }
+})
+ 
+
+
+    
+
+  function addAddress(){
+    
+    console.log(validaddress)
+    console.log(validcity)
+    console.log(validphone)
+    console.log(validname)
+    console.log(validplace)
+    if(validname && validphone && validpincode && validcity && validaddress && validplace)
+    {
+      return true
+    }else
+
+    {
+      swal("Please fill all fileds")
+      return false
+    }
   }
-   })
-   })
+
+
+
+
+
 </script>

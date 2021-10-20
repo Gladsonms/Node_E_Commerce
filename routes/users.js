@@ -196,6 +196,7 @@ router.get("/about",function(req,res,next){
 })
 
 router.get("/productdetails/:id", async function (req, res, next) {
+  
   let products = await productHelpers.getProductDetails(req.params.id);
   
   res.render("user/productDetails", { products });
@@ -219,6 +220,7 @@ router.get("/cart", verifyLogin, async (req, res) => {
   }
 });
   
+
     
 
 //  response.total= await userHelpers.getTottalAmount(req.body.user)
@@ -303,4 +305,10 @@ router.post('/oders/cancelorder/:id',async(req,res)=>{
   let orderId=req.params.id
   userHelpers.cancelOrder(orderId)
 })
+
+router.post("/oders/deleteaddress",(req,res)=>{
+  
+})
+
+
 module.exports = router;

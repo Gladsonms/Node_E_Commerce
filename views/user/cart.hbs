@@ -21,7 +21,7 @@
 										<th>Name</th>
 										<th class="width-100 text-center">Unit price</th>
 										<th class="width-100 text-center">Qty</th>
-										{{!-- <th class="width-100 text-center">Total</th> --}}
+										<th class="width-100 text-center">Total</th>
 																				<th class="width-20">Option</th>
 
 									</tr>
@@ -62,16 +62,22 @@
 												</div>
 											</div>
 									 </td>
-											{{!-- {{#each subtotal}}
-										<td class="text-center">
+											{{#each ../subtotal}}
+										<td class="">
 											₹{{this.subtotal}}
 										
 										</td> 
-										   {{/each}} --}}
+										   {{/each}}
+										   		
+						
+						<td>
+                        
+						</td>
+						
+					
+
 											<td class="product-remove">
 												
-												 {{!-- <button type="submit" class="btn btn-danger" onclick="removeCart('{{this._id}}','{{this.product._id}}');" >
-												<i class="fa fa-trash"></i></button> --}}
 
 												
 											 <a  class="btn btn-danger" id="removeCart" onclick="deleteProduct('{{this._id}}','{{this.product._id}}')"  >
@@ -92,7 +98,7 @@
 										<td rowspan="3" colspan="3"></td>
 										<td colspan="2" class="text-right"></td>
   
-										<td colspan="1" class="text-center">₹{{subtotal.subtotal}}</td>
+										{{!-- <td colspan="1" class="text-center">₹{{subtotal.subtotal}}</td> --}}
 									</tr>
 									<tr class="cart-total">
 										{{!-- <td colspan="2" class="text-right">Total shipping</td> --}}
@@ -113,26 +119,11 @@
 							</a>
 						</div>
 					</div>
+					
 				</div>
 			</div>
 			
 
-			     {{!-- <script>
-			function removeCart(cartId,proId){
-                        $.ajax({
-							url:'/cart/remove-item',
-							data:{
-                                  cart:cartId,
-								  product:proId
-							},
-							method:'post',
-							success:(respone=>{
-								swal("PRODUCT REMOVE FROM CART")
-							})
-						})
-				}
-				 
-				 </script> --}}
 				 <script>
 				function changeQuantity(cartId,proId,count){
 				let quantity=parseInt(document.getElementById(proId).value)
