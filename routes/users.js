@@ -70,7 +70,7 @@ router.post("/login", function (req, res, next) {
       req.session.loggedIn = true;
       req.session.user = response.user;
       req.session.user_id = response._id;
-      console.log(req.session.loggedIn);
+     
 
       res.redirect("/");
     } else {
@@ -191,9 +191,13 @@ router.get("/logout", function (req, res, next) {
   res.redirect("/");
 });
 
+router.get("/about",function(req,res,next){
+  res.render("user/aboutus")
+})
+
 router.get("/productdetails/:id", async function (req, res, next) {
   let products = await productHelpers.getProductDetails(req.params.id);
-  console.log(products);
+  
   res.render("user/productDetails", { products });
 });
 
@@ -201,11 +205,21 @@ router.get("/productdetails/:id", async function (req, res, next) {
 router.get("/cart", verifyLogin, async (req, res) => {
   
   let products = await userHelpers.getCartProducts(req.session.user._id);
+  if(products.length!=0)
+  {
+    
   let totalAmount = await userHelpers.getTottalAmount(req.session.user._id);
   let subtotal = await userHelpers.getSubTotal(req.session.user._id)
   console.log(subtotal);
   res.render("user/cart", { products, user: req.session.user, totalAmount,subtotal });
+  }
+  else {
+
+    res.render("user/cartempty")
+  }
 });
+  
+    
 
 //  response.total= await userHelpers.getTottalAmount(req.body.user)
 
@@ -275,14 +289,14 @@ router.get("/orders",verifyLogin,async (req,res)=>{
    
  
   let orders=await userHelpers.getUserOrders(req.session.user._id)
-  console.log(orders);
+  
   res.render('user/odersList',{user:req.session.user,orders})
  
 })
 router.get('/view-order-product/:id',async(req,res)=>{
   let products=await userHelpers.getOrderProducts(req.params.id)
   console.log("view order product");
-  console.log(products);
+  
   res.render('user/userorder',{user:req.session.user,products})
 })
 router.post('/oders/cancelorder/:id',async(req,res)=>{

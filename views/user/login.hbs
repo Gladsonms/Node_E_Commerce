@@ -31,7 +31,7 @@
 								
 								<div class="form-group">
 									<label>Password</label>
-									<input type="password" value="" name="password">
+									<input type="password" value="" name="password" id="password">
 								</div>
                                 
 								
@@ -58,10 +58,32 @@
 				</div>
 	
 			</div>
-			 <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
-   
+     
+
+          <script>
+			  	jQuery.validator.setDefaults({
+		debug: false,
+		sucess: function (label) {
+			label.attr('id', 'valid')
+		},
+	});
+	("#loginform").validate({
+		rules :{
+			 email:{
+				 required:true,
+			 },
+			 password:{
+				 required:true
+			 }
+       },
+	   messages:{
+		   email:{
+			   req
+		   }
+	   }
+	})
+		  </script>
+
 <script>
 
   function onSignIn(googleUser) {
@@ -105,6 +127,9 @@ xhr.send(JSON.stringify({token:id_token}));
 				required: true,
 				email: true
 			},
+			password:{
+					required: true,
+			}
 			
 			
 		},
@@ -112,7 +137,13 @@ xhr.send(JSON.stringify({token:id_token}));
 			
 			email: {
 				required: "Please provide an email"
+			},
+			password:{
+				required: "Please provide a password"
 			}
+		
+		}
+
 	});
 	
 </script>

@@ -23,7 +23,7 @@
 
 				<div class="form-group">
 					<label>Phone number</label>
-					<input type="number" value="" name="phone" id="phone" required
+					<input type="number" value="" name="phone" id="phone" maxlength="10" required
                         >
 				</div>
 
@@ -58,9 +58,7 @@
 		</div>
 	</div>
 </div>
- <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+
 
 <script>
 	jQuery.validator.setDefaults({
@@ -78,6 +76,10 @@
 				required: true,
 				email: true
 			},
+			phone: {
+				required:true,
+
+			}
 			
 			password: "required",
 			confirmPassword: {

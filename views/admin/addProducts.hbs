@@ -1,3 +1,6 @@
+
+
+
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script src="https://kit.fontawesome.com/4f9ff9a3d7.js" crossorigin="anonymous"></script>
   <!-- Material Dashboard CSS -->
@@ -9,6 +12,8 @@
 	<script src="https://unpkg.com/dropzone"></script>
 		<script src="https://unpkg.com/cropperjs"></script>
 
+        <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+
 
 
 <style>
@@ -19,17 +24,14 @@
         margin: 10px;
         border: 1px solid red;
     }
-
     .modal-lg {
         max-width: 1000px !important;
     }
-
     
     .btn-file {
         position: relative;
         overflow: hidden;
     }
-
     .btn-file input[type=file] {
         position: absolute;
         top: 0;
@@ -45,14 +47,9 @@
         cursor: inherit;
         display: block;
     }
-
     #img-upload ,#img-upload2,#img-upload3,#img-upload4 {
         width: 100%;
     }
-
-
-
-
 </style>
 
 
@@ -67,17 +64,20 @@
                 </div>
             </div>
             <div class="card-body">
-                <form action="/admin/productmanagmnet/addproduct" method="POST" enctype="multipart/form-data">
+                <form action="/admin/productmanagmnet/addproduct" method="POST" enctype="multipart/form-data" id="productForm" onsubmit="return addProduct()">
+                {{!-- <form action="/admin/productmanagmnet/addproduct" method="POST" enctype="multipart/form-data" id="productForm" > --}}
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="inputProduct">Product Name</label>
-                            <input type="text" class="form-control" id="inputProduct" placeholder="product name" name="product">
+                            <input type="text" class="form-control" id="inputProduct" placeholder="product name" name="product" >
+                            <p class="text-danger" id="productError"></p>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="CATEGORY">Category</label>
                             {{!-- <input type="password" class="form-control" id="inputPassword4"
                                 placeholder="Password"> --}}
-                            <select id="inputCategory" class="form-control" name="category">
+                            <select id="inputCategory" class="form-control" name="category" >
+                                <p class="text-danger" id="categoryError"></p>
                                  <option selected="">Select Category </option>
                                  {{#each category}}
                                 <option >{{this.category}} </option>
@@ -93,7 +93,8 @@
                     <div class="form-row">
                         <div class="form-group col-md-8">
                             <label for="subCategory">Sub Category</label>
-                            <select id="inputsubCategory" class="form-control" name="subCategory">
+                            <select id="inputsubCategory" class="form-control" name="subCategory" >
+                                <p class="text-danger" id="subCategoryError"></p>
                                 <option selected="">Select sub Category</option>
                                 
                             </select>
@@ -101,96 +102,24 @@
 
                         <div class="form-group col-md-2">
                             <label for="inputprice">Price</label>
-                            <input type="number" class="form-control" id="inputPrice" name="price">
+                            <input type="number" class="form-control" id="inputPrice" name="price" maxlength="4" >
+                            <p class="text-danger" id="priceError"></p>
                         </div>
                         <div class="form-group col-md-2">
                             <label for="inputquantity" name="quantity">Quantity</label>
-                            <input type="number" class="form-control" id="inputQuantity" name="quantity">
+                            <input type="number" class="form-control" id="inputQuantity" name="quantity" >
+                            <p class="text-danger" id="quantityError"></p>
                         </div>
                     </div>
                       <div class="form-row ">
 
                     <div class="form-group col-md-12">
                         <label for="exampleFormControlTextarea1">Description</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="description"></textarea>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="description " ></textarea>
+                        <p class="text-danger" id="descriptionError"></p>
                     </div>
                    </div>
-
-                    {{!-- <div class="form-row">
-                        <div class="form-group col-md-12">
-                            <label for="inputprice">Additonal information</label>
-                            <textarea class="form-control" rows="3"></textarea>
-                        </div>
-                    </div> --}}
-                    {{!-- <div class="form-row">
-                        <div class="form-group col-md-12">
-                            <div class="container">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Upload Image 1</label>
-                                        <div class="input-group">
-                                            <span class="input-group-btn">
-                                                <span class="btn btn-default btn-file">
-                                                    Browse… <input type="file" class="item-img file center-block" id="imgInp" name="productimage1">
-                                                </span>
-                                            </span>
-                                            <input type="text" class="form-control" readonly>
-                                        </div>
-                                        <img id='img-upload' />
-                                    </div>
-                                </div>
-
-
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Upload Image 2</label>
-                                        <div class="input-group">
-                                            <span class="input-group-btn">
-                                                <span class="btn btn-default btn-file">
-                                                    Browse… <input type="file" id="imgInp2" name="productimage2">
-                                                </span>
-                                            </span>
-                                            <input type="text" class="form-control" readonly>
-                                        </div>
-                                        <img id='img-upload2' />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group col-md-12">
-                            <div class="container">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Upload Image 3</label>
-                                        <div class="input-group">
-                                            <span class="input-group-btn">
-                                                <span class="btn btn-default btn-file">
-                                                    Browse… <input type="file" id="imgInp3" name="productimage3">
-                                                </span>
-                                            </span>
-                                            <input type="text" class="form-control" readonly>
-                                        </div>
-                                        <img id='img-upload3' />
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Upload Image 4</label>
-                                        <div class="input-group">
-                                            <span class="input-group-btn">
-                                                <span class="btn btn-default btn-file">
-                                                    Browse… <input type="file" id="imgInp4" name="productimage4">
-                                                </span>
-                                            </span>
-                                            <input type="text" class="form-control" readonly>
-                                        </div>
-                                        <img id='img-upload4' />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> --}}
+                   
                     <div class="container">
     <div class="row justify-content-between" style="width:90%">
         {{!-- item 1 start --}}
@@ -199,12 +128,13 @@
             <div class="fileinput fileinput-new text-center">
                 <div class="fileinput-new thumbnail">
                     <img src="../../assets/img/image_placeholder.jpg" id="chekPreview1" alt="...">
+                    <p class="text-danger" id="image1Error"></p>
 
                 </div>
                 <div>
                     <span class="btn btn-rose btn-round btn-file">
                         <span class="fileinput-new">Select image</span>
-                        <input type="file" id="image1" accept="image/gif, image/jpeg, image/png" name="productimage1" required />
+                        <input type="file" id="image1" accept="image/gif, image/jpeg, image/png" name="productimage1"    />
                         <textarea name="image1_b64" id="imageValue1" cols="30" rows="10" hidden></textarea>
                     </span>
                 </div>
@@ -226,7 +156,8 @@
                 <div>
                     <span class="btn btn-rose btn-round btn-file">
                         <span class="fileinput-new">Select image</span>
-                        <input type="file" id="image2" accept="image/gif, image/jpeg, image/png" name="productimage2" required />
+                        <input type="file" id="image2" accept="image/gif, image/jpeg, image/png" name="productimage2"   />
+                        <p class="text-danger" id="image2rror"></p>
                         <textarea name="image2_b64" id="imageValue2" cols="30" rows="10" hidden></textarea>
                     </span>
                 </div>
@@ -247,7 +178,8 @@
                 <div>
                     <span class="btn btn-rose btn-round btn-file">
                         <span class="fileinput-new">Select image</span>
-                        <input type="file" id="image3" accept="image/gif, image/jpeg, image/png" name="productimage3" required />
+                        <input type="file" id="image3" accept="image/gif, image/jpeg, image/png" name="productimage3"   />
+                        <p class="text-danger" id="image3Error"></p>
                         <textarea name="image3_b64" id="imageValue3" cols="30" rows="10" hidden></textarea>
                     </span>
                 </div>
@@ -263,12 +195,13 @@
             <div class="fileinput fileinput-new text-center">
                 <div class="fileinput-new thumbnail">
                     <img src="../../assets/img/image_placeholder.jpg" id="chekPreview4" alt="...">
+                    <p class="text-danger" id="image4Error"></p>
 
                 </div>
                 <div>
                     <span class="btn btn-rose btn-round btn-file">
                         <span class="fileinput-new">Select image</span>
-                        <input type="file" id="image4" accept="image/gif, image/jpeg, image/png" name="productimage4" required />
+                        <input type="file" id="image4" accept="image/gif, image/jpeg, image/png" name="productimage4"   />
                         <textarea name="image4_b64" id="imageValue4" cols="30" rows="10" hidden></textarea>
                     </span>
                 </div>
@@ -436,15 +369,12 @@
   
 
 <script>
-
     ///crop
      // Start upload preview image
                
 				// End upload preview image
   
     //crop end
-
-
      document.getElementById('inputCategory').onchange=e=>{
          console.log(e.target.value)
      Category=e.target.value
@@ -462,7 +392,6 @@
         }
     })
      }
-
 </script>
 <script>
     $('document').ready(function() {
@@ -470,15 +399,12 @@
     var image1 = document.getElementById('sampleImage1');
     var modal1 = $('#modal1');
     var cropper1;
-
     $('#image1').change(function (event) {
         var files = event.target.files;
-
         var done = function (url) {
             image1.src = url;
             modal1.modal('show');
         };
-
         if (files && files.length > 0) {
             reader = new FileReader();
             reader.onload = function (event) {
@@ -487,7 +413,6 @@
             reader.readAsDataURL(files[0]);
         }
     });
-
     modal1.on('shown.bs.modal', function () {
         cropper1 = new Cropper(image1, {
             aspectRatio: 1,
@@ -498,13 +423,11 @@
         cropper1.destroy();
         cropper1 = null;
     });
-
     $('#crop1').click(function () {
         canvas = cropper1.getCroppedCanvas({
             width: 600,
             height: 600
         });
-
         canvas.toBlob(function (blob) {
             url = URL.createObjectURL(blob);
             var reader = new FileReader();
@@ -518,20 +441,16 @@
         });
     });
 //modal1 and image 1 end
-
 //modal2 and image 2
     var image2 = document.getElementById('sampleImage2');
     var modal2 = $('#modal2');
     var cropper2;
-
     $('#image2').change(function (event) {
         var files = event.target.files;
-
         var done = function (url) {
             image2.src = url;
             modal2.modal('show');
         };
-
         if (files && files.length > 0) {
             reader = new FileReader();
             reader.onload = function (event) {
@@ -540,24 +459,21 @@
             reader.readAsDataURL(files[0]);
         }
     });
-
     modal2.on('shown.bs.modal', function () {
         cropper2 = new Cropper(image2, {
             aspectRatio: 1,
-            viewMode: 3,
+            viewMode: 1,
             preview: '#preview2'
         });
     }).on('hidden.bs.modal', function () {
         cropper2.destroy();
         cropper2 = null;
     });
-
     $('#crop2').click(function () {
         canvas = cropper2.getCroppedCanvas({
             width: 600,
             height: 600
         });
-
         canvas.toBlob(function (blob) {
             url = URL.createObjectURL(blob);
             var reader = new FileReader();
@@ -571,21 +487,16 @@
         });
     });
 //image 2 and modal 2 end
-
-
 //modal3 and image 3 start
     var image3 = document.getElementById('sampleImage3');
     var modal3 = $('#modal3');
     var cropper3;
-
     $('#image3').change(function (event) {
         var files = event.target.files;
-
         var done = function (url) {
             image3.src = url;
             modal3.modal('show');
         };
-
         if (files && files.length > 0) {
             reader = new FileReader();
             reader.onload = function (event) {
@@ -594,24 +505,21 @@
             reader.readAsDataURL(files[0]);
         }
     });
-
     modal3.on('shown.bs.modal', function () {
         cropper3 = new Cropper(image3, {
             aspectRatio: 1,
-            viewMode: 3,
+            viewMode: 1,
             preview: '#preview3'
         });
     }).on('hidden.bs.modal', function () {
         cropper3.destroy();
         cropper3 = null;
     });
-
     $('#crop3').click(function () {
         canvas = cropper3.getCroppedCanvas({
             width: 600,
             height: 600
         });
-
         canvas.toBlob(function (blob) {
             url = URL.createObjectURL(blob);
             var reader = new FileReader();
@@ -625,20 +533,16 @@
         });
     });
 //image 3 and modal 3 end
-
 //modal4 and image 4 start
     var image4 = document.getElementById('sampleImage4');
     var modal4 = $('#modal4');
     var cropper4;
-
     $('#image4').change(function (event) {
         var files = event.target.files;
-
         var done = function (url) {
             image4.src = url;
             modal4.modal('show');
         };
-
         if (files && files.length > 0) {
             reader = new FileReader();
             reader.onload = function (event) {
@@ -647,24 +551,21 @@
             reader.readAsDataURL(files[0]);
         }
     });
-
     modal4.on('shown.bs.modal', function () {
         cropper4 = new Cropper(image4, {
             aspectRatio: 1,
-            viewMode: 3,
+            viewMode: 1,
             preview: '#preview4'
         });
     }).on('hidden.bs.modal', function () {
         cropper4.destroy();
         cropper4 = null;
     });
-
     $('#crop4').click(function () {
         canvas = cropper4.getCroppedCanvas({
             width: 600,
             height: 600
         });
-
         canvas.toBlob(function (blob) {
             url = URL.createObjectURL(blob);
             var reader = new FileReader();
@@ -678,7 +579,173 @@
         });
     });
 //image 4 and modal 4 end
-
   });
-
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+ 
+
+
+  <script>
+        
+        
+
+      //product
+      var productField= document.getElementById('inputProduct')
+      var validproduct=false;
+      productField.addEventListener('input',(e)=>{
+          console.log("got it")
+          console.log(e.target.value)
+          var product=productField.value
+          if(product.length==0)
+          {
+              text="please enter Product name",
+              productError.innerHTML =text
+              validproduct=false
+          }
+          else
+          {
+           validproduct=true;
+        productError.innerHTML=" ";
+          }
+      })
+
+        
+
+   
+
+
+      //category
+      var categoryField=document.getElementById('inputCategory')
+      var validcategory=false;
+      categoryField.addEventListener('input',(e)=>{
+          console.log(e.target.value)
+          var category=categoryField.value
+          if(category.length==0)
+          {
+              text="please enter Product name",
+              categoryError.innerHTML =text
+              validcategory=false
+          }
+          else
+          {
+           validcategory=true;
+        categoryError.innerHTML=" ";
+          }
+      })
+   
+
+
+      
+
+    //subcategory
+      var subcategoryField=document.getElementById('inputsubCategory')
+      var validsubcategory=false;
+      subcategoryField.addEventListener('input',(e)=>{
+          console.log(e.target.value)
+          var subcategory=subcategoryField.value
+          if(subcategory.length==0)
+          {
+              text="please enter Product name",
+              subcategoryError.innerHTML =text
+              validsubcategory=false
+          }
+          else
+          {
+           validsubcategory=true;
+        subcategoryError.innerHTML=" ";
+          }
+      })
+    
+      
+    
+
+      //price
+      var priceField=document.getElementById('inputPrice')
+      var validprice=false;
+      priceField.addEventListener('input',(e)=>{
+          console.log(e.target.value)
+          var price=priceField.value
+          if(price.length==0)
+          {
+              text="please enter Product price",
+              priceError.innerHTML =text
+              validprice=false
+          }
+          else
+          {
+           validprice=true;
+        priceError.innerHTML=" ";
+          }
+      })
+  
+    
+       
+  
+
+     //Quantity
+      var quantityField=document.getElementById('inputQuantity')
+      var validquantity=false;
+      quantityField.addEventListener('input',(e)=>{
+          console.log(e.target.value)
+          var quantity=quantityField.value
+          if(quantity.length==0)
+          {
+              text="please enter Product quantity",
+            quantityError.innerHTML =text
+              validquantity=false
+          }
+          else
+          {
+           validquantity=true;
+        quantityError.innerHTML=" ";
+          }
+      })
+  
+
+    
+
+      //Description
+      var descriptionField=document.getElementById('exampleFormControlTextarea1')
+      var validdescription=false;
+      descriptionField.addEventListener('input',(e)=>{
+          console.log(e.target.value)
+          var description=descriptionField.value
+          if(description.length==0)
+          {
+              text="please enter Product description",
+            descriptionError.innerHTML =text
+              validdescription=false
+          }
+          else
+          {
+           validdescription=true;
+        descriptionError.innerHTML=" ";
+          }
+      })
+      
+
+
+    
+
+    function addProduct(){
+         if( validproduct==true &&  validcategory==true &&  validquantity==true && validdescription==true ){
+             let image1=document.getElementById('image1')
+             
+             return true
+         }
+         else{
+             swal("Please fill all fileds")
+             return false
+         }
+    }
+
+         
+
+
+         
+  </script>
+
+
+
+
+  

@@ -54,6 +54,9 @@
 
 
 </style>
+<div class="container">
+
+
 
 <div class="row">
     <div class="col-md-8  mx-auto">
@@ -64,7 +67,8 @@
                 </div>
             </div>
             <div class="card-body">
-                <form action="/admin/productmanagmnet/editproduct/{{products._id}}" method="POST" enctype="multipart/form-data" >
+                <form action="/admin/productmanagmnet/editproduct/{{products._id}}" method="POST" enctype="multipart/form-data" id="addProduct"></form
+                {{!-- <form enctype="multipart/form-data" id="addProduct"> --}}
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="inputProduct">Product Name  </label>
@@ -76,9 +80,9 @@
                                 placeholder="Password"> --}}
                             <select id="inputCategory" class="form-control" name="category" >
                                  <option selected="">{{products.category}} </option>
-                                <option >Fruits and Vegetables </option>
-                                <option>Dairy and Bakery</option>
-                                <option> Staples</option>
+                                {{#each category}}
+                                <option >{{this.category}} </option>
+                                {{/each}}
                             </select>
                         </div>
                     </div>
@@ -130,13 +134,13 @@
             <h4 class="title"> Image 1</h4>
             <div class="fileinput fileinput-new text-center">
                 <div class="fileinput-new thumbnail">
-                    <img src="../../assets/img/image_placeholder.jpg" id="chekPreview1" alt="...">
+                    <img  src="/product-images/product-image1/{{products._id}}.jpg" id="chekPreview1" alt="...">
 
                 </div>
                 <div>
                     <span class="btn btn-rose btn-round btn-file">
                         <span class="fileinput-new">Select image</span>
-                        <input type="file" id="image1" accept="image/gif, image/jpeg, image/png" name="productimage1" required />
+                        <input type="file" id="image1" accept="image/gif, image/jpeg, image/png" name="productimage1"  />
                         <textarea name="image1_b64" id="imageValue1" cols="30" rows="10" hidden></textarea>
                     </span>
                 </div>
@@ -152,13 +156,13 @@
             <h4 class="title"> Image 2</h4>
             <div class="fileinput fileinput-new text-center">
                 <div class="fileinput-new thumbnail">
-                    <img src="../../assets/img/image_placeholder.jpg" id="chekPreview2" alt="...">
+                    <img  src="/product-images/product-image2/{{products._id}}.jpg" id="chekPreview2" alt="...">
 
                 </div>
                 <div>
                     <span class="btn btn-rose btn-round btn-file">
                         <span class="fileinput-new">Select image</span>
-                        <input type="file" id="image2" accept="image/gif, image/jpeg, image/png" name="productimage2" required />
+                        <input type="file" id="image2" accept="image/gif, image/jpeg, image/png" name="productimage2"  />
                         <textarea name="image2_b64" id="imageValue2" cols="30" rows="10" hidden></textarea>
                     </span>
                 </div>
@@ -173,18 +177,19 @@
             <h4 class="title"> Image 3</h4>
             <div class="fileinput fileinput-new text-center">
                 <div class="fileinput-new thumbnail">
-                    <img src="../../assets/img/image_placeholder.jpg" id="chekPreview3" alt="...">
+                    <img  src="/product-images/product-image3/{{products._id}}.jpg" id="chekPreview3" alt="...">
 
                 </div>
                 <div>
                     <span class="btn btn-rose btn-round btn-file">
                         <span class="fileinput-new">Select image</span>
-                        <input type="file" id="image3" accept="image/gif, image/jpeg, image/png" name="productimage3" required />
+                        <input type="file" id="image3" accept="image/gif, image/jpeg, image/png" name="productimage3"  />
                         <textarea name="image3_b64" id="imageValue3" cols="30" rows="10" hidden></textarea>
                     </span>
                 </div>
             </div>
         </div>
+       
 
      {{!-- item 3 end--}}
 
@@ -194,17 +199,22 @@
             <h4 class="title"> Image 4</h4>
             <div class="fileinput fileinput-new text-center">
                 <div class="fileinput-new thumbnail">
-                    <img src="../../assets/img/image_placeholder.jpg" id="chekPreview4" alt="...">
+                    <img  src="/product-images/product-image4/{{products._id}}.jpg" id="chekPreview4" alt="...">
 
                 </div>
                 <div>
                     <span class="btn btn-rose btn-round btn-file">
                         <span class="fileinput-new">Select image</span>
-                        <input type="file" id="image4" accept="image/gif, image/jpeg, image/png" name="productimage4" required />
+                        <input type="file" id="image4" accept="image/gif, image/jpeg, image/png" name="productimage4"  />
                         <textarea name="image4_b64" id="imageValue4" cols="30" rows="10" hidden></textarea>
                     </span>
                 </div>
             </div>
+        </div>
+         <div style="padding-top: 20%;" class="col-md-4 text-center ">
+            
+           <button class="btn">Add products </button>
+             
         </div>
 
      {{!-- item 4 end--}}
@@ -212,6 +222,7 @@
 
 
     </div>
+</div>
 </div>
 
 <!-- Modal 1-->
@@ -353,12 +364,21 @@
 </div>
 <!-- Modal  4 end-->
                     </div>
+                         
+                         {{!-- <div>
 
-
-                    <button type="submit" class="btn btn-primary">Edit Product</button>
+                    <button type="submit" class="btn btn-primary " onclick="editProduct('{{this._id}}')">Edit Product</button>
+                         </div> --}}
+                         <div>
+                             <button type="submit" class="btn btn-primary">add Product</button>
+                         </div>
+                  </div>
                 </form>
+
+                
             </div>
         </div>
+        
     </div>
     
 </div>
@@ -388,7 +408,31 @@
         width: 100%;
     }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
 <script>
+ document.getElementById('inputCategory').onchange=e=>{
+         console.log(e.target.value)
+     Category=e.target.value
+    $.ajax({
+        url:'/admin/getCategory',
+        method:"POST",
+        data:{Category},
+        success: (res)=>{
+           
+             document.getElementById("inputsubCategory").innerHTML=""
+             for(let i=0;i<res.sorttedCategory.subcategory.length;i++){
+            let element =   `<option>${res.sorttedCategory.subcategory[i]}</option>`
+            document.getElementById("inputsubCategory").innerHTML+=element
+             }
+        }
+    })
+     }
+</script>
+
+
+<script>
+
     $('document').ready(function() {
 //modal1 and image 1
     var image1 = document.getElementById('sampleImage1');
@@ -606,3 +650,145 @@
   });
 
 </script>
+
+
+
+ {{!-- <script>
+
+      //product
+      var productField=document.getElementById('inputProduct')
+      var validproduct=false;
+      productField.addEventListener('input',(e)=>{
+          console.log(e.target.value)
+          var product=productField.value
+          if(product.length==0)
+          {
+              text="please enter Product name",
+              productError.innerHTML =text
+              validproduct=false
+          }
+          else
+          {
+           validproduct=true;
+        productError.innerHTML=" ";
+          }
+      })
+
+
+
+      //category
+      var categoryField=document.getElementById('inputCategory')
+      var validcategory=false;
+      categoryField.addEventListener('input',(e)=>{
+          console.log(e.target.value)
+          var category=categoryField.value
+          if(category.length==0)
+          {
+              text="please enter Product name",
+              categoryError.innerHTML =text
+              validcategory=false
+          }
+          else
+          {
+           validcategory=true;
+        categoryError.innerHTML=" ";
+          }
+      })
+
+      //subcategory
+      var subcategoryField=document.getElementById('inputsubCategory')
+      var validsubcategory=false;
+      subcategoryField.addEventListener('input',(e)=>{
+          console.log(e.target.value)
+          var subcategory=subcategoryField.value
+          if(subcategory.length==0)
+          {
+              text="please enter Product name",
+              subcategoryError.innerHTML =text
+              validsubcategory=false
+          }
+          else
+          {
+           validsubcategory=true;
+        subcategoryError.innerHTML=" ";
+          }
+      })
+
+
+      //price
+      var priceField=document.getElementById('inputPrice')
+      var validprice=false;
+      priceField.addEventListener('input',(e)=>{
+          console.log(e.target.value)
+          var price=priceField.value
+          if(price.length==0)
+          {
+              text="please enter Product price",
+              priceError.innerHTML =text
+              validprice=false
+          }
+          else
+          {
+           validprice=true;
+        priceError.innerHTML=" ";
+          }
+      })
+
+
+     //Quantity
+      var quantityField=document.getElementById('inputQuantity')
+      var validquantity=false;
+      quantityField.addEventListener('input',(e)=>{
+          console.log(e.target.value)
+          var quantity=quantityField.value
+          if(quantity.length==0)
+          {
+              text="please enter Product quantity",
+            quantityError.innerHTML =text
+              validquantity=false
+          }
+          else
+          {
+           validquantity=true;
+        quantityError.innerHTML=" ";
+          }
+      })
+
+
+      //Description
+      var descriptionField=document.getElementById('exampleFormControlTextarea1')
+      var validdescription=false;
+      descriptionField.addEventListener('input',(e)=>{
+          console.log(e.target.value)
+          var description=descriptionField.value
+          if(description.length==0)
+          {
+              text="please enter Product description",
+            descriptionError.innerHTML =text
+              validdescription=false
+          }
+          else
+          {
+           validdescription=true;
+        descriptionError.innerHTML=" ";
+          }
+      })
+
+      function editProduct(proId){
+
+      if(validproduct==true && validdescription==true &&  validquantity==true && validprice=true   validsubcategory=true && validcategory==true)
+      {
+          $('#addProduct').submit((e)=>{
+              $.ajax({
+                  url:"/admin/productmanagmnet/editproduct/"+proId,
+                  method:"post",
+                  data:$('#addProduct').serialize(),
+                  success:(response)=>{
+
+                  }
+              })
+          })
+      }
+      }
+
+  </script> --}}

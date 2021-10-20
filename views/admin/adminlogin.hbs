@@ -1,431 +1,115 @@
-<div class="limiter" id="login">
-    <div class="container-login100" style="background-image:url(https://image.freepik.com/free-photo/happy-woman-doing-online-shopping-home_329181-4301.jpg)">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6"></div>
-                <div class="col-md-5 col-md-offset-1">
-                    <div class="login_topimg"> </div>
-                    <div class="wrap-login100">
-                        <form method="POST" action="/admin/adminLogin" class="login100-form validate-form"> <span class="login100-form-title "> admin Login </span> <span class="login100-form-subtitle m-b-16"> </span>
-                            <div class="wrap-input100 validate-input m-b-16" data-validate="Valid email is required: ex@abc.xyz"> <input class="input100" type="text" name="username" placeholder="Username"> <span class="focus-input100"></span> <span class="symbol-input100"> <span class="glyphicon glyphicon-user"></span> </span> </div>
-                            <div class="wrap-input100 validate-input m-b-16" data-validate="Password is required"> <input class="input100" type="password" name="password" placeholder="Password"> <span class="focus-input100"></span> <span class="symbol-input100"> <span class="glyphicon glyphicon-lock"></span> </span> </div>
-                            <div class="flex-sb-m w-full p-b-30">
-                                <div class="contact100-form-checkbox"> <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me"> <label class="label-checkbox100" for="ckb1"> Remember me </label> </div>
-                                {{!-- <div> <a href="#" class="txt1"> Forgot Password? </a> </div> --}}
-                            </div>
-                            <div class="container-login100-form-btn p-t-25"> <button type="submit">Login</button>
-                              {{!-- <a class="btn btn-primary" href="/admin/adminLogin" > Login </a> --}}
-                               </div>
-                        </form>
+
+
+
+  <!-- begin app -->
+    <div class="app">
+        <!-- begin app-wrap -->
+        <div class="app-wrap">
+            <!-- begin pre-loader -->
+            <div class="loader">
+                <div class="h-100 d-flex justify-content-center">
+                    <div class="align-self-center">
+                        <img src="assets/img/loader/loader.svg" alt="loader">
                     </div>
                 </div>
             </div>
+            <!-- end pre-loader -->
+
+            <!--start login contant-->
+            <div class="app-contant">
+                <div class="bg-white">
+                    <div class="container-fluid p-0">
+                        <div class="row no-gutters">
+                            <div class="col-sm-6 col-lg-5 col-xxl-3  align-self-center order-2 order-sm-1">
+                                <div class="d-flex align-items-center h-100-vh">
+                                    <div class="login p-50">
+                                        <h1 class="mb-2">We Are Admin</h1>
+                                        <p>Welcome back, please login to your account.</p>
+                                        <form action="/admin/adminLogin" class="mt-3 mt-sm-5" method="post" id="loginform">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label">User Name*</label>
+                                                        <input type="text" class="form-control" placeholder="Username"  name="username" id="username"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Password*</label>
+                                                        <input type="password" class="form-control" placeholder="Password" name="password" id="password"/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="d-block d-sm-flex  align-items-center">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" id="gridCheck">
+                                                            <label class="form-check-label" for="gridCheck">
+                                                                Remember Me
+                                                            </label>
+                                                        </div>
+                                                        {{!-- <a href="javascript:void(0);" class="ml-auto">Forgot Password ?</a> --}}
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 mt-3">
+                                                    <button class="btn btn-primary text-uppercase">Sign In</button>
+                                                </div>
+                                                {{!-- <div class="col-12  mt-3">
+                                                    <p>Don't have an account ?<a href="auth-register.html"> Sign Up</a></p>
+                                                </div> --}}
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-xxl-9 col-lg-7 bg-gradient o-hidden order-1 order-sm-2">
+                                <div class="row align-items-center h-100">
+                                    <div class="col-7 mx-auto ">
+                                        <img class="img-fluid" src="assets/img/bg/login.svg" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end login contant-->
         </div>
+        <!-- end app-wrap -->
     </div>
-</div>
-<style>
-    @charset "utf-8";
+    <!-- end app -->
 
-* {
-    margin: 0px;
-    padding: 0px;
-    box-sizing: border-box
-}
 
-.limiter {
-    width: 100%;
-    margin: 0 auto
-}
+    <script>
+	jQuery.validator.setDefaults({
+		debug: false,
+		sucess: function (label) {
+			label.attr('id', 'valid')
+		},
+	});
+	$("#loginform").validate({
+		rules: {
+			
+			username: {
+				required: true,
+				
+			},
+			password:{
+					required: true,
+			}
+			
+			
+		},
+		messages: {
+			
+			username: {
+				required: "Please provide your username"
+			},
+			password:{
+				required: "Please provide a password"
+			}
+		
+		}
 
-.container-login100 {
-    width: 100%;
-    min-height: 100vh;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    padding: 15px;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    position: relative;
-    z-index: 1
-}
-
-.container-login100::before {
-    content: "";
-    display: block;
-    position: absolute;
-    z-index: -1;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    background-color: rgba(0, 0, 0, 0.80)
-}
-
-.login_topimg {
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    width: 100%;
-    min-height: 185px;
-    position: relative;
-    background: #91B3D1 url(https://image.freepik.com/free-vector/cyber-data-security-online-concept-illustration-internet-security-information-privacy-protection_1150-37330.jpg) no-repeat;
-    background-size: auto;
-    background-position: center
-}
-
-.login_topimg img {
-    width: 100%;
-    height: auto
-}
-
-.login_topimg .logo_wrap {
-    border-radius: 5px;
-    background: #fff;
-    padding: 13px 55px;
-    position: relative;
-    top: -21px;
-    margin: 10px auto;
-    max-width: 255px
-}
-
-#login .wrap-login100 {
-    background-color: #fff;
-    padding: 20px 45px;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    width: 100%
-}
-
-.login100-form {
-    width: 100%;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap
-}
-
-.login100-form-title {
-    font-size: 25px;
-    color: #243762;
-    line-height: 1.2;
-    text-transform: uppercase;
-    text-align: center;
-    width: 100%;
-    display: block
-}
-
-.login100-form-subtitle {
-    font-size: 16px;
-    color: #243762;
-    line-height: 1.2;
-    text-align: center;
-    width: 100%;
-    display: block
-}
-
-.wrap-input100 {
-    position: relative;
-    width: 100%;
-    z-index: 1
-}
-
-#login input {
-    outline: none;
-    border: none
-}
-
-#login label {
-    display: inline-block;
-    margin-bottom: .5rem
-}
-
-.input-checkbox100 {
-    display: none
-}
-
-input {
-    outline: none;
-    border: none
-}
-
-.wrap-input100 {
-    position: relative;
-    width: 100%;
-    z-index: 1
-}
-
-.input100 {
-    font-size: 15px;
-    line-height: 1.2;
-    color: #686868;
-    display: block;
-    width: 100%;
-    background: #e6e6e6;
-    height: 45px;
-    border-radius: 3px;
-    padding: 0 30px 0 55px
-}
-
-.focus-input100 {
-    display: block;
-    position: absolute;
-    border-radius: 3px;
-    bottom: 0;
-    left: 0;
-    z-index: -1;
-    width: 100%;
-    height: 100%;
-    box-shadow: 0px 0px 0px 0px;
-    color: rgba(211, 63, 141, 0.6)
-}
-
-.symbol-input100 {
-    font-size: 15px;
-    color: #999999;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: flex;
-    align-items: center;
-    position: absolute;
-    border-radius: 25px;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    padding-left: 23px;
-    padding-bottom: 5px;
-    pointer-events: none;
-    -webkit-transition: all 0.4s;
-    -o-transition: all 0.4s;
-    -moz-transition: all 0.4s;
-    transition: all 0.4s
-}
-
-::-webkit-input-placeholder {
-    opacity: 1;
-    -webkit-transition: opacity .5s;
-    transition: opacity .5s
-}
-
-:-moz-placeholder {
-    opacity: 1;
-    -moz-transition: opacity .5s;
-    transition: opacity .5s
-}
-
-::-moz-placeholder {
-    opacity: 1;
-    -moz-transition: opacity .5s;
-    transition: opacity .5s
-}
-
-:-ms-input-placeholder {
-    opacity: 1;
-    -ms-transition: opacity .5s;
-    transition: opacity .5s
-}
-
-::placeholder {
-    opacity: 1;
-    transition: opacity .5s
-}
-
-*:focus::-webkit-input-placeholder {
-    opacity: 0
-}
-
-*:focus:-moz-placeholder {
-    opacity: 0
-}
-
-*:focus::-moz-placeholder {
-    opacity: 0
-}
-
-*:focus:-ms-input-placeholder {
-    opacity: 0
-}
-
-*:focus::placeholder {
-    opacity: 0
-}
-
-.lnr {
-    speak: none;
-    font-style: normal;
-    font-weight: 400;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale
-}
-
-.flex-sb-m {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: flex;
-    justify-content: space-between;
-    -ms-align-items: center;
-    align-items: center
-}
-
-.w-full {
-    width: 100%
-}
-
-.p-b-30 {
-    padding-bottom: 30px
-}
-
-.input-checkbox100:checked+.label-checkbox100::before {
-    color: #09569B
-}
-
-.label-checkbox100::before {
-    content: "\f00c";
-    font-family: FontAwesome;
-    font-size: 13px;
-    color: transparent;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    width: 18px;
-    height: 18px;
-    border-radius: 2px;
-    background: #fff;
-    border: 1px solid #e6e6e6;
-    left: 0;
-    top: 50%;
-    -webkit-transform: translateY(-50%);
-    -moz-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    -o-transform: translateY(-50%);
-    transform: translateY(-50%)
-}
-
-.label-checkbox100 {
-    font-size: 14px;
-    font-weight: normal;
-    color: #999999;
-    line-height: 1.2;
-    display: block;
-    position: relative;
-    padding-left: 26px;
-    cursor: pointer
-}
-
-.m-b-16 {
-    margin-bottom: 16px
-}
-
-.p-b-55 {
-    padding-bottom: 55px
-}
-
-.container-login100-form-btn {
-    width: 100%;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center
-}
-
-.login100-form-btn:hover {
-    background: #333333
-}
-
-.label-checkbox100::before {
-    content: "\f00c";
-    font-family: FontAwesome;
-    font-size: 13px;
-    color: transparent;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    width: 18px;
-    height: 18px;
-    border-radius: 3px;
-    background: #fff;
-    border: 2px solid #09569B;
-    left: 0;
-    top: 48%;
-    -webkit-transform: translateY(-50%);
-    -moz-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    -o-transform: translateY(-50%);
-    transform: translateY(-50%)
-}
-
-#login button:hover {
-    cursor: pointer
-}
-
-.login100-form-btn {
-    font-size: 16px;
-    line-height: 1.5;
-    color: #fff;
-    text-transform: uppercase;
-    width: 100%;
-    height: 45px;
-    border-radius: 3px;
-    background: #09569B;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0 25px;
-    -webkit-transition: all 0.4s;
-    -o-transition: all 0.4s;
-    -moz-transition: all 0.4s;
-    transition: all 0.4s
-}
-
-#login button {
-    outline: none !important;
-    border: none
-}
-
-@media (max-width: 768px) {
-    .container {
-        width: 750px
-    }
-
-    #login .wrap-login100 {
-        padding: 27px
-    }
-
-    .login_topimg .logo_wrap {
-        padding: 5px 55px
-    }
-}
-</style>
+	});
+	
+</script>

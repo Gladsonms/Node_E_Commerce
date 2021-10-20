@@ -47,7 +47,7 @@
                                                         <td>{{this.status}}</td>
                                                         <td><span><a href="/view-order-product/{{this._id}}" class="btn btn-primary">View</a></span><span>  <label for="status"></label>
   <select name="status" id="status" onchange="changeStatus('{{this._id}}')">
-    <option value="{{this.status}}" selected></option>
+    <option value="{{this.status}}"selected>{{this.status}}</option>
     <option value="Pending">Pending</option>
     <option value="Deliverd">Deliverd</option>
     <option value="Cancel">Cancel</option>

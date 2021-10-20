@@ -31,7 +31,7 @@ module.exports = {
         .get()
         .collection(collection.USER_COLLECTIONS)
         .findOne({ email: userData.email });
-      console.log(user);
+     
       let usersStatus = user?user.status?true:false:false;
       
       if (user && usersStatus) {
@@ -40,7 +40,7 @@ module.exports = {
           .compare(userData.password, user.password)
           .then((status) => {
             if (status) {
-              console.log("login success");
+             
               response.user = user;
               response.status = true;
               resolve(response);
@@ -325,7 +325,7 @@ module.exports = {
       console.log("resolved response")
       console.log(response);
       
-        resolve(respone)
+        resolve(response)
       
      
     })

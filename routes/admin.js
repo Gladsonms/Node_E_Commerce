@@ -30,12 +30,12 @@ router.post("/adminLogin", function (req, res, next) {
     req.session.username = adminUsername;
     req.session.password = adminPassword;
     req.session.isLoggedIn = true;
-    console.log("login succes");
+   
     res.redirect("/admin/home");
-    console.log(req.session.isLoggedIn);
+    
   } else {
-    console.log("login failed");
-    res.render("admin/adminlogin", { rejectHeader: true });
+   
+    res.render("admin/adminlogin",{ err: "Invalid username or password" ,  rejectHeader: true });
   }
 });
 
@@ -87,9 +87,12 @@ router.post("/productmangment/deleteproduct/:id", function (req, res, next) {
   });
 });
 router.get("/productmangmnet/editproduct/:id", async (req, res) => {
+  
   let products = await productHelpers.getProductDetails(req.params.id);
+productHelpers.getCategory().then((category)=>{
 
-  res.render("admin/editProduct", { admin: true, products });
+  res.render("admin/editProduct", { admin: true, products,category });
+})
 });
 router.post("/productmanagmnet/editproduct/:id", (req, res) => {
   let id = req.params.id;
@@ -100,7 +103,7 @@ router.post("/productmanagmnet/editproduct/:id", (req, res) => {
     let image2 = req.body.image2_b64;
     let image3 = req.body.image3_b64;
     let image4 = req.body.image4_b64;
-    //console.log(image1);
+    //console.log(image1);  
 
     const path1 = `./public/product-images/product-image1/${id}.jpg`;
     const path2 = `./public/product-images/product-image2/${id}.jpg`;
@@ -209,10 +212,9 @@ router.post("/productmanagmnet/addproduct", function (req, res) {
 });
 
 router.post("/getCategory", (req, res) => {
-  console.log(req.body);
+
   productHelpers.sortCategory(req.body.Category).then((sorttedCategory) => {
-    console.log(sorttedCategory);
-    console.log("get category");
+   
     res.json({ sorttedCategory });
   });
 });
@@ -281,11 +283,13 @@ router.get("/ordermangment",async(req,res)=>{
     let data = req.body
     
     var values= {orderId,data}
-    userHelpers.testing(data,orderId)
+    userHelpers.testing(data,orderId).then(()=>{
+
+      
+    })
 
    
     
-
 
    
     //productHelpers.changeOrderStatus()
