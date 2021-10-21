@@ -16,7 +16,7 @@
       <div class="row">
         <div class="checkout-left col-lg-9 col-md-9 col-sm-9 col-xs-12">
           <p>Returning customer?
-            <a class="login" href="user-login.html">Click here to login</a>.</p>
+            {{!-- <a class="login" href="user-login.html">Click here to login</a>.</p> --}}
           <div class="panel-group" id="accordion">
             <div class="panel panel-default">
               <div class="panel-heading">
@@ -37,7 +37,7 @@
                 style="height: 0px;"
               >
                 <div class="panel-body">
-                  <form id="formaddress" onsubmit="addAddress()" method="post" action="/cart/checkout/addAddress" class="form-horizontal" >
+                  <form id="formaddress" onsubmit=" return addAddress()" method="post" action="/cart/checkout/addAddress" class="form-horizontal" >
 
                     <div class="form-group">
                       <div class="col-md-6">
@@ -131,15 +131,15 @@
 
             <form action="" id="placeorderform">
               <div class="mt-3">
-                <label for="">Choose Address</label>
+                <label for="">Choose Address   </label>
                 {{#each useraddres.address}}
 					
 						<div class="mt-2">
-						     <form action="/oders/deleteaddress">
-						<input type="radio"  name="address" value="{{this.name}}  ,  {{this.phone}}  ,  {{this.place}},  {{this.address}} ,  {{this.city}} "  /> <label for="">{{this.name}}    {{this.phone}}    {{this.place}}  {{this.address}}   {{this.city}}    </label>
-                  <button class="btn btn-sm btn btn-danger ml-3 text-light" > Remove address</button>
+						  
+						<input type="radio"  name="address" value="{{this.name}} ,  {{this.phone}}  ,  {{this.place}},  {{this.address}} ,  {{this.city}} "  /> <label for="">{{this.name}}   {{this.phone}}    {{this.place}}  {{this.address}}   {{this.city}}    </label>
+                  <button type="submit" class="btn btn-sm btn btn-danger ml-3 text-light"  onclick="removeAddress('{{this.id}}','{{this.name}}','{{../useraddres._id}}')"> Remove address</button>
 							</div>
-              </form>
+              
 											
                       						
                                              {{/each}}
@@ -513,7 +513,26 @@ placeField.addEventListener('input',(e)=>{
       return false
     }
   }
+   
 
+   function removeAddress(address,name,addressId){
+     alert(address)
+     alert(addressId)
+     alert(name)
+     console.log(addressId)
+       $.ajax({
+         url:"/oders/deleteaddress",
+         method:"post",
+         data:{
+           address:address,
+           name:name,
+          addressId:addressId
+         },
+         success:()=>{
+
+         }
+       })
+   }
 
 
 

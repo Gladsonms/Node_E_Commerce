@@ -56,7 +56,7 @@ router.get("/signup", function (req, res, next) {
 });
 router.post("/signup", function (req, res, next) {
   userHelper.doSignup(req.body).then((response) => {
-    console.log(response);
+    
     res.redirect("/login");
     //  req.session.loggedIn = true;
     //  req.session.user = response
@@ -135,7 +135,7 @@ router.post("/enterOtp", (req, res) => {
   
   userHelpers.checkNumber(number).then((response)=>{
     
-     console.log(response);
+     
      req.session.user = response;
      req.session.user_id = response._id;
 
@@ -155,7 +155,7 @@ router.post("/enterOtp", (req, res) => {
       res.redirect("/");
      
       
-      console.log(resp);
+      
     });
 
 });
@@ -172,7 +172,7 @@ router.post("/googlelogin", checkAuthenticated, (req, res) => {
     });
     const payload = ticket.getPayload();
     const userid = payload["sub"];
-    console.log(payload);
+    
     // If request specified a G Suite domain:
     // const domain = payload['hd'];
   }
@@ -195,7 +195,7 @@ router.get("/about",function(req,res,next){
   res.render("user/aboutus")
 })
 
-router.get("/productdetails/:id", async function (req, res, next) {
+router.get("/productdetails/:id",verifyLogin, async function (req, res, next) {
   
   let products = await productHelpers.getProductDetails(req.params.id);
   
@@ -211,8 +211,10 @@ router.get("/cart", verifyLogin, async (req, res) => {
     
   let totalAmount = await userHelpers.getTottalAmount(req.session.user._id);
   let subtotal = await userHelpers.getSubTotal(req.session.user._id)
-  console.log(subtotal);
-  res.render("user/cart", { products, user: req.session.user, totalAmount,subtotal });
+  
+  products = products.map((i,index)=>{return {...i,subtotal:subtotal[index]}})
+
+  res.render("user/cart", { products, user: req.session.user, totalAmount });
   }
   else {
 
@@ -297,7 +299,7 @@ router.get("/orders",verifyLogin,async (req,res)=>{
 })
 router.get('/view-order-product/:id',async(req,res)=>{
   let products=await userHelpers.getOrderProducts(req.params.id)
-  console.log("view order product");
+  
   
   res.render('user/userorder',{user:req.session.user,products})
 })
@@ -307,7 +309,19 @@ router.post('/oders/cancelorder/:id',async(req,res)=>{
 })
 
 router.post("/oders/deleteaddress",(req,res)=>{
-  
+  console.log("____________");
+   
+   uaddress=req.body.address
+   uname=req.body.name
+   addId=req.body.addressId
+   userId=req.session.user._id
+   
+  //  console.log("address");
+  //  console.log(addId);
+userHelpers.deleteAdddress(uaddress,userId,addId,uname).then((response)=>{
+      res.redirect("/cart/checkout")
+})
+
 })
 
 
