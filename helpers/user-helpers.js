@@ -72,6 +72,22 @@ module.exports = {
       resolve(users);
     });
   },
+  getUserByEmail:(email)=>{
+    
+    return new Promise((resolve,reject)=>{
+      db.get().collection(collection.USER_COLLECTIONS).findOne({email:email}).then((response)=>{
+        //console.log('userResponse:', response);
+        resolve(response)
+      })
+    })
+  },
+  addGoogleUser:(email,username)=>{
+     return new Promise((resolve,reject)=>{
+       db.get().collection(collection.USER_COLLECTIONS).insertOne({email,username,status:true})
+     }).then((response)=>{
+       db.get().collection(collection.USER_COLLECTIONS).findOne({_id:response.insertedId}).then((response)=>resolve(response))
+     })
+  }, 
   disableUser: (userId) => {
     return new Promise((resolve, reject) => {
       db.get()

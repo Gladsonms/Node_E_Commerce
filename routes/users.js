@@ -107,56 +107,71 @@ router.post("/login", function (req, res, next) {
 // }
 
 
-function checkAuthenticated(req, res, next){
+// function checkAuthenticated(req, res, next){
 
-  let token = req.cookies['session-token'];
+//   let token = req.cookies['session-token'];
 
-  let user = {};
-  async function verify() {
-      const ticket = await client.verifyIdToken({
-          idToken: token,
-          audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
-      });
-      const payload = ticket.getPayload();
-      user.name = payload.name;
-      user.email = payload.email;
-      user.picture = payload.picture;
-    }
-    verify()
-    .then(()=>{
-        req.user = user;
-        next();
-    })
-    .catch(err=>{
-        res.redirect('/login')
-    })
+//   let user = {};
+//   async function verify() {
+//       const ticket = await client.verifyIdToken({
+//           idToken: token,
+//           audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
+//       });
+//       const payload = ticket.getPayload();
+//       user.name = payload.name;
+//       user.email = payload.email;
+//       user.picture = payload.picture;
+//     }
+//     verify()
+//     .then(()=>{
+//         req.user = user;
+//         next();
+//     })
+//     .catch(err=>{
+//         res.redirect('/')
+//     })
 
-}
 
-router.post('/googlelogin',(req,res)=>{
+
+router.post('/googlelogin',async(req,res)=>{
   
   let token = req.body.token
-  
-  async function verify() {
+  console.log(token);
+
+  try {
     const ticket = await client.verifyIdToken({
-        idToken: token,
-        audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
-        // Or, if multiple clients access the backend:
-        //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
-    });
-    const payload = ticket.getPayload();
-    const userid = payload['sub'];
-    console.log("check");
-    console.log(payload);
-    // If request specified a G Suite domain:
-    // const domain = payload['hd'];
+      idToken: token,
+      audience: CLIENT_ID, 
+  });
+  const payload = ticket.getPayload();
+  console.log(payload);
+const user = await userHelpers.getUserByEmail(payload.email)
+if(user){
+  console.log('user:', user);
+  if(!user.status){
+    res.render("user/login", { err: "Blocked User" });
   }
-  verify()
-  .then(()=>{
-    res.cookie('session-token',token);
-    res.send('SUCCESS')
-  }).catch(console.error);
-})
+  else{
+    req.session.user = user
+    req.session.loggedIn = true
+    res.redirect('/')
+
+  }
+}else{
+const createdUser = await userHelpers.addGoogleUser(payload.email, payload.given_name)
+console.log('createdUser:', createdUser);
+req.session.user = createdUser
+req.session.loggedIn = true
+req.session.user_id = user._id
+res.redirect('/')
+}
+  } catch (error) {
+    
+  }
+      
+   
+  
+  })
 
 
 
@@ -220,29 +235,7 @@ router.post("/enterOtp", (req, res) => {
 
 });
 
-router.post("/googlelogin", checkAuthenticated, (req, res) => {
-  let token = req.body.token;
 
-  async function verify() {
-    const ticket = await client.verifyIdToken({
-      idToken: token,
-      audience: CLIENT_ID, // Specify the CLIENT_ID of the app that accesses the backend
-      // Or, if multiple clients access the backend:
-      //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
-    });
-    const payload = ticket.getPayload();
-    const userid = payload["sub"];
-    
-    // If request specified a G Suite domain:
-    // const domain = payload['hd'];
-  }
-  verify()
-    .then(() => {
-      res.cookie("session-token", token);
-      res.send("SUCCESS");
-    })
-    .catch(console.error);
-});
 
 router.get("/logout", function (req, res, next) {
   req.session.loggedIn = false;
