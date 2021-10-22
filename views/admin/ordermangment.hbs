@@ -1,89 +1,89 @@
 <div class="app-main" id="main">
-                    <!-- begin container-fluid -->
-                    <div class="container-fluid">
-                        <!-- begin row -->
-                        <div class="row">
-                            <div class="col-md-12 m-b-30">
-                                <!-- begin page title -->
-                                <div class="d-block d-sm-flex flex-nowrap align-items-center">
-                                    <div class="page-title mb-2 mb-sm-0">
-                                        <h1>Orders Table</h1>
-                                    </div>
-                                    <div class="ml-auto d-flex align-items-center">
-                                        
-                                    </div>
-                                </div>
-                                <!-- end page title -->
-                            </div>
-                        </div>
-                        <!-- end row -->
-                        <!-- begin row -->
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="card card-statistics">
-                                    <div class="card-body">
-                                        <div class="export-table-wrapper table-responsive">
-                                            <table id="export-tble" class="table table-bordered">
-                                                <thead class="thead-light">
-                                                    <tr>
-                                                        <th>Date</th>
-                                                        {{!-- <th>Address</th> --}}
-                                                        <th>Address </th>
-                                                        <th>Tottal</th>
-                                                        <th>Payment Method</th>
-                                                        <th>status</th>
-                                                        <th>option</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {{#each oders}}
-                                                    <tr>
+  <!-- begin container-fluid -->
+  <div class="container-fluid">
+    <!-- begin row -->
+    <div class="row">
+      <div class="col-md-12 m-b-30">
+        <!-- begin page title -->
+        <div class="d-block d-sm-flex flex-nowrap align-items-center">
+          <div class="page-title mb-2 mb-sm-0">
+            <h1>Orders Table</h1>
+          </div>
+          <div class="ml-auto d-flex align-items-center">
 
-                                                        <td> <span id="date">{{this.date}}</span></td>
-                                                        {{!-- <td>{{this.address}}</td> --}}
-                                                        <td>{{this.address}}</td>
-                                                        <td>{{this.total}}</td>
-                                                        <td>{{this.paymentMethod}}</td>
-                                                        <td>{{this.status}}</td>
-                                                        <td><span><a href="/view-order-product/{{this._id}}" class="btn btn-primary">View</a></span><span>  <label for="status"></label>
-  <select name="status" id="status" onchange="changeStatus('{{this._id}}')">
-    <option value="{{this.status}}"selected>{{this.status}}</option>
-    <option value="Pending">Pending</option>
-    <option value="Deliverd">Deliverd</option>
-    <option value="Cancel">Cancel</option>
-  </select></span></td>
-                                                    </tr>
-                                                    {{/each}}
-                                                   
-                                                                            </tbody>
+          </div>
+        </div>
+        <!-- end page title -->
+      </div>
+    </div>
+    <!-- end row -->
+    <!-- begin row -->
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card card-statistics">
+          <div class="card-body">
+            <div class="export-table-wrapper table-responsive">
+              <table id="export-tble" class="table table-bordered">
+                <thead class="thead-light">
+                  <tr>
+                    <th>Date</th>
+                    {{! <th>Address</th> }}
+                    <th>Address </th>
+                    <th>Tottal</th>
+                    <th>Payment Method</th>
+                    <th>status</th>
+                    <th>option</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each oders}}
+                    <tr>
 
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- end row -->
-                    </div>
-                    <!-- end container-fluid -->
-                </div>
-             
-             <script>
-                 function changeStatus(orderId) {
-                    
-                    let  status= document.getElementById('status').value
-                   $.ajax({
-                     //  url:'/changeorderstatus/'+orderId
-                      url:'/admin/changeorderstatus/'+orderId,
-                       method:'POST',
-                       data:{
-                           status
-                       },
-                       success:()=>{
+                      <td> <span id="date">{{this.date}}</span></td>
+                      {{!-- <td>{{this.address}}</td> --}}
+                      <td>{{this.address}}</td>
+                      <td>{{this.total}}</td>
+                      <td>{{this.paymentMethod}}</td>
+                      <td>{{this.status}}</td>
+                      <td><span><a
+                            href="/view-order-product/{{this._id}}"
+                            class="btn btn-primary"
+                          >View</a></span><span>
+                          <label for="status"></label>
+                          <select
+                            name="status"
+                            id="status"
+                            onchange="changeStatus('{{this._id}}')"
+                          >
+                            <option
+                              value="{{this.status}}"
+                              selected
+                            >{{this.status}}</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Deliverd">Deliverd</option>
+                            <option value="Cancel">Cancel</option>
+                            <option value="placed">Placed</option>
+                          </select></span></td>
+                    </tr>
+                  {{/each}}
 
-                       }
-                   })
-                      
-                 }
+                </tbody>
 
-             </script>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end row -->
+  </div>
+  <!-- end container-fluid -->
+</div>
+
+<script>
+  function changeStatus(orderId) { let status=
+  document.getElementById('status').value $.ajax({ //
+  url:'/changeorderstatus/'+orderId url:'/admin/changeorderstatus/'+orderId,
+  method:'POST', data:{ status }, success:()=>{ } }) }
+
+</script>

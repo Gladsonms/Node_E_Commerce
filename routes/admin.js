@@ -270,9 +270,10 @@ router.post('/subcategorymangament/delete-category/:this',(req,res)=>{
 })
 
 
-//order MaUngment
+//order Manngment
 router.get("/ordermangment",async(req,res)=>{
   let oders=await productHelpers.getAllUserOrder().then((oders)=>{
+    
     res.render('admin/ordermangment',{admin:true,oders})
     
   })

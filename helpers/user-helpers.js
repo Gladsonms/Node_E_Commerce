@@ -6,7 +6,13 @@ const { response } = require("express");
 const { get } = require("../routes/admin");
 const { USER_COLLECTIONS } = require("../config/collections");
 const moment = require("moment");
+const  Razorpay=require('razorpay');
+const { resolve } = require("path");
 //const { ObjectID, ObjectId } = require('bson')
+var instance = new Razorpay({
+  key_id: 'rzp_test_wof2EdLxFrX857',
+  key_secret: 'x8JE5ePxnOtxamNo5nXkXgJE',
+});
 module.exports = {
   doSignup: (userData) => {
     {
@@ -347,8 +353,7 @@ module.exports = {
   //add Addresss
 
   addAddress: (userId, address) => {
-    console.log("user id in addresss");
-    console.log(userId);
+    ;
     return new Promise(async (resolve, rejcet) => {
       
       let addressObj = {
@@ -365,14 +370,12 @@ module.exports = {
         user: ObjectId(userId),
         address: [addressObj],
       };
-      console.log(userId);
-      console.log(userId);
+     
       let userAddress = await db
         .get()
         .collection(collection.ADDRESS_COLLECTIONS)
         .findOne({ user: ObjectId(userId) });
-      console.log("user in addresss");
-      console.log(userAddress);
+      
       if (userAddress) {
         db.get()
           .collection(collection.ADDRESS_COLLECTIONS)
@@ -381,14 +384,14 @@ module.exports = {
             { $push: { address: addressObj } }
           )
           .then((response) => {
-            console.log(response);
+            //console.log(response);
           });
       } else {
         db.get()
           .collection(collection.ADDRESS_COLLECTIONS)
           .insertOne(userAddresssObj)
           .then((response) => {
-            console.log(response);
+            //console.log(response);
           });
       }
     });
@@ -412,8 +415,8 @@ module.exports = {
         .get()
         .collection(collection.CART_COLLECTIONS)
         .findOne({ user: ObjectId(userId) });
-
-      resolve(cart.products);
+           
+      resolve(cart.product);
     });
   },
   getUserAddress: (userId) => {
@@ -458,7 +461,8 @@ module.exports = {
           db.get()
             .collection(collection.CART_COLLECTIONS)
             .deleteOne({ user: ObjectId(userId) });
-          resolve();
+          resolve(response.insertedId);
+          console.log(response.insertedId);
         });
     });
   },
@@ -571,4 +575,54 @@ console.log(address);
         console.log("finished");
       });
   },
+  generateRazorPay:(orderId,totalAmount)=>{
+    console.log(orderId);
+    return new Promise((resolve,reject)=>{
+      var options = {  
+        amount: totalAmount*100,  // amount in the smallest currency unit  
+        currency: "INR", 
+         receipt: ""+orderId
+        };
+        instance.orders.create(options, function(err, order) {
+          if(err)
+          {
+            console.log(err);
+          } 
+          else 
+          {
+            console.log("new order");
+            console.log(order);
+           resolve(order)  
+          }
+          
+          });    
+
+    })
+  },
+verifyPayment:(details)=>{
+return new Promise((resolve,rejcet)=>{
+  const crypto = require('crypto');
+  let hmca = createHmac('sha256', x8JE5ePxnOtxamNo5nXkXgJE)
+  hmca.update(details['payment[razorpay_order_id]']+'|'+details['payment[razorpay_payment_id]'])
+  hmca=hmca.digest('hex')
+  if(hmca==details['payment[razorpay_signature]']){
+    resolve()
+  }else{
+    rejcet()
+  }
+
+})
+},
+changePaymentStatus:(orderId)=>{
+return new Promise((resolve,reject)=>{
+  db.get.collection(collection.ORDER_COLLECTIONS).updateOne({_id:ObjectId(orderId)},{
+    $set:{ status :'placed'}
+  }
+  )
+}).then(()=>
+{
+  resolve()
+})
+}
+
 };

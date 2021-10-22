@@ -78,29 +78,89 @@ router.post("/login", function (req, res, next) {
     }
   });
 });
-function checkAuthenticated(req, res, next) {
-  let token = req.cookies["session-token"];
+// function checkAuthenticated(req, res, next) {
+//   let token = req.cookies["session-token"];
+
+//   let user = {};
+//   async function verify() {
+//     const ticket = await client.verifyIdToken({
+//       idToken: token,
+//       audience: CLIENT_ID, // Specify the CLIENT_ID of the app that accesses the backend
+//     });
+//     const payload = ticket.getPayload();
+//     user.name = payload.name;
+//     user.email = payload.email;
+//     user.picture = payload.picture;
+//     console.log(payload.name);
+//    // console.log(payload.email);
+//   }
+//   verify()
+//     .then(() => {
+//       req.user = user;
+//       next();
+//       log
+
+//     })
+//     .catch((err) => {
+//       res.redirect("/");
+//     });
+// }
+
+
+function checkAuthenticated(req, res, next){
+
+  let token = req.cookies['session-token'];
 
   let user = {};
   async function verify() {
+      const ticket = await client.verifyIdToken({
+          idToken: token,
+          audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
+      });
+      const payload = ticket.getPayload();
+      user.name = payload.name;
+      user.email = payload.email;
+      user.picture = payload.picture;
+    }
+    verify()
+    .then(()=>{
+        req.user = user;
+        next();
+    })
+    .catch(err=>{
+        res.redirect('/login')
+    })
+
+}
+
+router.post('/googlelogin',(req,res)=>{
+  
+  let token = req.body.token
+  
+  async function verify() {
     const ticket = await client.verifyIdToken({
-      idToken: token,
-      audience: CLIENT_ID, // Specify the CLIENT_ID of the app that accesses the backend
+        idToken: token,
+        audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
+        // Or, if multiple clients access the backend:
+        //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
     });
     const payload = ticket.getPayload();
-    user.name = payload.name;
-    user.email = payload.email;
-    user.picture = payload.picture;
+    const userid = payload['sub'];
+    console.log("check");
+    console.log(payload);
+    // If request specified a G Suite domain:
+    // const domain = payload['hd'];
   }
   verify()
-    .then(() => {
-      req.user = user;
-      next();
-    })
-    .catch((err) => {
-      res.redirect("/");
-    });
-}
+  .then(()=>{
+    res.cookie('session-token',token);
+    res.send('SUCCESS')
+  }).catch(console.error);
+})
+
+
+
+
 
 //vserify otp
 router.get("/verifyotp", (req, res) => {
@@ -262,7 +322,8 @@ router.post("/cart/checkout/addAddress", (req, res) => {
   let address=req.body
  
   userHelpers.addAddress(userId,address).then((response)=>{
-    res.redirect("cart/checkout")
+
+    res.redirect("/")
   })
  
   
@@ -275,10 +336,23 @@ router.post("/place-order",async(req,res)=>{
 
 let product=await userHelpers.getCartProductList(req.session.user._id)
 let totalAmount= await userHelpers.getTottalAmount(req.body.userId)
+
    
   
-   userHelpers.PlaceOrder(req.body,product,totalAmount).then((response)=>{
-   res.json({status:true})
+   userHelpers.PlaceOrder(req.body,product,totalAmount).then((orderId)=>{
+     console.log(orderId);
+    if(req.body['paymentMethod']=='cod'){
+
+      res.json({codSuccess:true})
+    }else{
+      userHelpers.generateRazorPay(orderId,totalAmount).then((response)=>{
+        res.json(response)
+
+      })
+    }
+
+  // res.redirect("/order-success")
+
   })
 
   
@@ -293,7 +367,7 @@ router.get("/orders",verifyLogin,async (req,res)=>{
    
  
   let orders=await userHelpers.getUserOrders(req.session.user._id)
-  
+  console.log(orders.status)
   res.render('user/odersList',{user:req.session.user,orders})
  
 })
@@ -309,7 +383,7 @@ router.post('/oders/cancelorder/:id',async(req,res)=>{
 })
 
 router.post("/oders/deleteaddress",(req,res)=>{
-  console.log("____________");
+  
    
    uaddress=req.body.address
    uname=req.body.name
@@ -322,6 +396,19 @@ userHelpers.deleteAdddress(uaddress,userId,addId,uname).then((response)=>{
       res.redirect("/cart/checkout")
 })
 
+})
+
+router.post("/verify-payment",(req,res)=>{
+console.log(req.body);
+userHelpers.verifyPayment(req.body).then(()=>{
+  userHelpers.changePaymentStatus(req.body['order[receipt]']).then(()=>{
+    console.log("Payment succesfull");
+    res.json({status:true})
+  })
+}).catch((err)=>{
+  console.log(err);
+  res.json({status:flase,errMsg:''})
+})
 })
 
 
