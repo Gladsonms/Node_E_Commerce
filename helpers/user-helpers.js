@@ -426,13 +426,14 @@ module.exports = {
   },
 
   getCartProductList: (userId) => {
+    
     return new Promise(async (resolve, reject) => {
       let cart = await db
         .get()
         .collection(collection.CART_COLLECTIONS)
         .findOne({ user: ObjectId(userId) });
            
-      resolve(cart.product);
+      resolve(cart.products);
     });
   },
   getUserAddress: (userId) => {
@@ -559,7 +560,8 @@ module.exports = {
           { $set: { status: data.status } }
         )
         .then((result) => {
-          console.log(result);
+
+         resolve({status:true})
         })
         .catch((err) => {
           console.log(err);

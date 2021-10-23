@@ -5,7 +5,6 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var db=require('./config/connection')
 var hbs =require('express-handlebars')
-
 var session = require('express-session')
 
 
@@ -19,7 +18,36 @@ var fileUpload=require('express-fileupload')
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
-app.engine('hbs',hbs({extname:'hbs',defaultLayout:'layout',layoutsDir:__dirname+'/views/layout',partialsDir:__dirname+'/views/partials'}))
+// hbs.registerHelper('ifEquals', function(arg1, arg2, options) {
+//   return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
+// });
+
+// hbs.registerHelper('if_eq', function(a, b, opts) {
+//   if(a == b)
+//       return opts.fn(this);
+//   else
+//       return opts.inverse(this);
+// });
+// hbs.registerHelper("inc", function(value, options)
+// {
+//     return parseInt(value) + 1;
+// });
+
+// hbs.registerHelper('if_eq', function(a, b, opts) {
+//   if(a == b)
+//       return opts.fn(this);
+//   else
+//       return opts.inverse(this);
+// });
+
+app.engine('hbs',hbs({extname:'hbs',defaultLayout:'layout',layoutsDir:__dirname+'/views/layout',partialsDir:__dirname+'/views/partials',helpers:{
+  check:('if_eq', function(a, b, opts) {
+    if(a == b)
+        return opts.fn(this);
+    else
+        return opts.inverse(this);
+})
+}}))
 
 
 //app.use(logger('dev'));

@@ -231,12 +231,14 @@ router.post('/categorymangament/delete-category/:id',function (req,res){
   let categoryId=req.params.id
   //console.log(categoryId);
   productHelpers.deleteCategory(categoryId).then((response)=>{
-      res.redirect('/categorymangament')
+      res.redirect('/admin/categorymangament')
   })
 })
 
 router.post("/categorymangament/addcategory", (req, res) => {
-  productHelpers.addCategory(req.body).then((data) => {});
+  productHelpers.addCategory(req.body).then((data) => {
+    res.redirect('/admin/categorymangament')
+  });
 });
 
 router.get("/subcategorymangament", async (req, res) => {
@@ -250,10 +252,10 @@ router.post("/categorymangament/addsubCategory", (req, res) => {
   productHelpers
     .addsubCategory(req.body)
     .then(() => {
-      res.redirect("/subcategorymangament");
+      res.redirect("/admin/subcategorymangament");
     })
     .catch((err) => {
-      res.redirect("/subcategorymangament");
+      //res.redirect("admin/subcategorymangament");
     });
 });
 
@@ -265,7 +267,7 @@ router.post('/subcategorymangament/delete-category/:this',(req,res)=>{
   
  productHelpers.deleteSubCategory(name,catname).then((response)=>{
    res.redirect('/admin/subcategorymangament')
- })
+})
   
 })
 
@@ -284,8 +286,9 @@ router.get("/ordermangment",async(req,res)=>{
     let data = req.body
     
     var values= {orderId,data}
-    userHelpers.testing(data,orderId).then(()=>{
-
+    userHelpers.testing(data,orderId).then((res)=>{
+      console.log(res);
+      res.json({status:true})
       
     })
 

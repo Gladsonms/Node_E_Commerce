@@ -27,11 +27,14 @@ const checkUserAuth = (req, res, next) => {
     next();
   }
 };
-const verifyLogin = (req, res, next) => {
+const verifyLogin = async(req, res, next) => {
   if (req.session.loggedIn) {
     next();
   } else {
-    res.redirect("/login");
+   await productHelpers.getAllProducts().then(async (products) => {
+  
+      res.render("user/index", {  products });
+    });
   }
 };
 
@@ -78,58 +81,7 @@ router.post("/login", function (req, res, next) {
     }
   });
 });
-// function checkAuthenticated(req, res, next) {
-//   let token = req.cookies["session-token"];
 
-//   let user = {};
-//   async function verify() {
-//     const ticket = await client.verifyIdToken({
-//       idToken: token,
-//       audience: CLIENT_ID, // Specify the CLIENT_ID of the app that accesses the backend
-//     });
-//     const payload = ticket.getPayload();
-//     user.name = payload.name;
-//     user.email = payload.email;
-//     user.picture = payload.picture;
-//     console.log(payload.name);
-//    // console.log(payload.email);
-//   }
-//   verify()
-//     .then(() => {
-//       req.user = user;
-//       next();
-//       log
-
-//     })
-//     .catch((err) => {
-//       res.redirect("/");
-//     });
-// }
-
-
-// function checkAuthenticated(req, res, next){
-
-//   let token = req.cookies['session-token'];
-
-//   let user = {};
-//   async function verify() {
-//       const ticket = await client.verifyIdToken({
-//           idToken: token,
-//           audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
-//       });
-//       const payload = ticket.getPayload();
-//       user.name = payload.name;
-//       user.email = payload.email;
-//       user.picture = payload.picture;
-//     }
-//     verify()
-//     .then(()=>{
-//         req.user = user;
-//         next();
-//     })
-//     .catch(err=>{
-//         res.redirect('/')
-//     })
 
 
 
@@ -334,7 +286,8 @@ let totalAmount= await userHelpers.getTottalAmount(req.body.userId)
   
    userHelpers.PlaceOrder(req.body,product,totalAmount).then((orderId)=>{
      console.log(orderId);
-    if(req.body['paymentMethod']=='cod'){
+     console.log(req.body);
+    if(req.body['payment']=='cod'){
 
       res.json({codSuccess:true})
     }else{
@@ -404,5 +357,8 @@ userHelpers.verifyPayment(req.body).then(()=>{
 })
 })
 
+router.get('/contact',(req,res)=>{
+  res.render("user/contact")
+})
 
 module.exports = router;

@@ -44,9 +44,12 @@
                                                         <td>{{this.total}}</td>
                                                         <td>{{this.paymentMethod}}</td>
                                                         <td><a href="/view-order-product/{{this._id}}" class="btn btn-primary">View</a>
-                                                        
+                                                          
+                                                          {{!-- {{#if_eq this.status "Cancel"}} --}}
+                                                        {{!-- <button></button> --}}
+                                                         {{!-- {{else}} --}}
                                                         <button class="btn btn-danger" href="" onclick="cancelOder('{{this._id}}'); ">cancel</button>
-                                                        
+                                                        {{!-- {{/if_eq}}  --}}
                                                         </td>
                                                     </tr>
                                                     {{/each}}
@@ -54,6 +57,7 @@
                                                                             </tbody>
 
                                             </table>
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -63,6 +67,7 @@
                     </div>
                     <!-- end container-fluid -->
                 </div>
+            
                 <script>
                     function  cancelOder(oderId){
                        $.ajax({
@@ -76,3 +81,12 @@
                        })
                     }
                 </script>
+
+                    <script>
+        handlebars.registerHelper('eq', function () {
+    const args = Array.prototype.slice.call(arguments, 0, -1);
+    return args.every(function (expression) {
+        return args[0] === expression;
+    });
+});
+    </script>

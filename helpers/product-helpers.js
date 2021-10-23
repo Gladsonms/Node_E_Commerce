@@ -96,7 +96,7 @@ module.exports = {
            
             let category = data.category
             let subcategory=data.subcategory
-           // console.log(category, subcategory,"thi si cheki")
+           //console.log(category, subcategory,"thi si cheki")
             // let checkSubCategory = await db.get().collection(collection.CATEGORY_COLLECTIONS).find({category:data.category}).toArray()
 
            let checkSubCategory = await db.get().collection(collection.CATEGORY_COLLECTIONS).findOne({subcategory:{$in:[data.subcategory]}})
@@ -104,8 +104,12 @@ module.exports = {
            if(checkSubCategory){
                reject("already exist")
            }else{
-           await db.get().collection(collection.CATEGORY_COLLECTIONS).updateOne({category:data.category},{$push:{subcategory:data.subcategory}})
-           resolve(true)
+            
+           await db.get().collection(collection.CATEGORY_COLLECTIONS).updateOne({category:data.category},{$push:{subcategory:data.subcategory}}).then((response)=>{
+
+               resolve(true)
+               console.log(response);
+           })
            }
            
            
@@ -131,6 +135,8 @@ module.exports = {
 
 
     },
+    
+    
     deleteSubCategory:(name)=>{
         return new Promise((resolve,reject)=>{
         
