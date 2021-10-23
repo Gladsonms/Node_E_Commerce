@@ -54,7 +54,7 @@ module.exports = {
             }
           })
           .catch(() => {
-            console.log("error");
+
           });
       } else {
         let response = { status: false };
@@ -76,7 +76,7 @@ module.exports = {
     
     return new Promise((resolve,reject)=>{
       db.get().collection(collection.USER_COLLECTIONS).findOne({email:email}).then((response)=>{
-        //console.log('userResponse:', response);
+
         resolve(response)
       })
     })
@@ -118,13 +118,13 @@ module.exports = {
         .get()
         .collection(collection.CART_COLLECTIONS)
         .findOne({ user: ObjectId(userId) });
-      console.log(userCart);
+
 
       if (userCart) {
         let proExist = userCart.products.findIndex(
           (product) => product.item == proId
         );
-        console.log(proExist);
+
         if (proExist != -1) {
           db.get()
             .collection(collection.CART_COLLECTIONS)
@@ -197,7 +197,7 @@ module.exports = {
           },
         ])
         .toArray();
-      console.log(cartItems);
+
       resolve(cartItems);
     });
   },
@@ -212,7 +212,7 @@ module.exports = {
         count = cart.products.length;
       }
       resolve(count);
-      //console.log(count);
+
     });
   },
   changeProductQauntity: (details) => {
@@ -290,7 +290,7 @@ module.exports = {
         ])
         .toArray();
       resolve(total[0].total);
-      // console.log(total[0].total);
+
       if (total[0].total == 0) {
         resolve(total[0].total);
       } else {
@@ -356,8 +356,6 @@ module.exports = {
           { $pull: { products: { item: ObjectId(item) } } }
         )
         .then((response) => {
-          console.log("resolved response");
-          console.log(response);
 
           resolve(response);
         });
@@ -400,20 +398,20 @@ module.exports = {
             { $push: { address: addressObj } }
           )
           .then((response) => {
-            //console.log(response);
+
           });
       } else {
         db.get()
           .collection(collection.ADDRESS_COLLECTIONS)
           .insertOne(userAddresssObj)
           .then((response) => {
-            //console.log(response);
+
           });
       }
     });
   },
   checkNumber: (number) => {
-    console.log(number);
+
     return new Promise(async (resolve, reject) => {
       let userNumber = await db
         .get()
@@ -447,14 +445,6 @@ module.exports = {
     });
   },
 
-  // getUserSingleAddres:(username)=>{
-  //    return new Promise(async(resolve,reject)=>{
-  //      let address=await db.get().collection(collection.ADDRESS_COLLECTIONS).findOne({"adress.name":username})
-  //      console.log("single user address");
-  //         console.log(address);
-  //         resolve(address)
-  //     })
-  // },
 
   PlaceOrder: (order, products, total) => {
     return new Promise(async (resolve, reject) => {
@@ -479,12 +469,12 @@ module.exports = {
             .collection(collection.CART_COLLECTIONS)
             .deleteOne({ user: ObjectId(userId) });
           resolve(response.insertedId);
-          console.log(response.insertedId);
+
         });
     });
   },
   getUserOrders: (userId) => {
-    console.log(userId);
+
     return new Promise(async (resolve, reject) => {
       let oders = await db
         .get()
@@ -492,7 +482,7 @@ module.exports = {
         .find({ userId: userId })
         .toArray();
 
-      console.log(oders);
+
       resolve(oders);
     });
   },
@@ -537,64 +527,54 @@ module.exports = {
       resolve(oderItems);
     });
   },
-
-  //   changeOrderStatus:(value)=>{
-  //     return new Promise((resolve,reject)=>{
-  //         console.log("Change oders status");
-  //         console.log(value)
-  //         console.log(Id);
-  //         db.get().collection(collection.ORDER_COLLECTIONS).updateOne({_id:ObjectId(Id)},{$set:{status:status.status}}).then((result)=>{
-  //             console.log(result)
-  //         }).catch((err)=>{
-  //             console.log(err)
-  //         })
-  //     })
-  // },
-
   testing: (data, orderId) => {
     return new Promise((resolve, reject) => {
       db.get()
         .collection(collection.ORDER_COLLECTIONS)
         .updateOne(
           { _id: ObjectId(orderId) },
-          { $set: { status: data.status } }
+          { $set: { status: data.status,adminCancel:true }, }
         )
         .then((result) => {
 
          resolve({status:true})
         })
         .catch((err) => {
-          console.log(err);
+
         });
     });
   },
   cancelOrder: (oderId) => {
+  
     return new Promise((resolve, reject) => {
       db.get()
         .collection(collection.ORDER_COLLECTIONS)
-        .updateOne({ _id: ObjectId(oderId) }, { $set: { status: "Cancel" } });
+        .updateOne({ _id: ObjectId(oderId) }, { $set: { status: "Cancel",userCancel:true } });
+    }).then((res)=>{
+      resolve(res)
+      console.log(res);
+    
     });
   },
   deleteAdddress: async(uaddress, userId, addId, uname) => {
-    console.log(uaddress);
-    console.log(userId);
-    console.log(addId);
-let address = await db.get().collection(collection.ADDRESS_COLLECTIONS).findOne({"address.id":uaddress});
-console.log(address);
-    db.get()
-      .collection(collection.ADDRESS_COLLECTIONS)
-      .update(
-        { user: ObjectId(userId) },
-        { $pull: { address: { id: uaddress } } },
-        
-      )
-      .then((res) => {
-        console.log(res);
-        console.log("finished");
+    return new Promise((resolve,reject)=>{
+
+      
+    //let address = await db.get().collection(collection.ADDRESS_COLLECTIONS).findOne({"address.id":uaddress});
+    
+        db.get()
+          .collection(collection.ADDRESS_COLLECTIONS)
+          .update(
+            { user: ObjectId(userId) },
+            { $pull: { address: { id: uaddress } } },
+            
+          )
+    }) .then((res) => {
+      console.log(res);
       });
   },
   generateRazorPay:(orderId,totalAmount)=>{
-    console.log(orderId);
+
     return new Promise((resolve,reject)=>{
       var options = {  
         amount: totalAmount*100,  // amount in the smallest currency unit  
@@ -604,7 +584,7 @@ console.log(address);
         instance.orders.create(options, function(err, order) {
           if(err)
           {
-            console.log(err);
+
           } 
           else 
           {

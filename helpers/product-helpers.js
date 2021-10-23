@@ -33,13 +33,12 @@ module.exports = {
     },
     deleteProduct: (productId) => {
         return new Promise((resolve, reject) => {
-            console.log("delete product");
-            console.log(productId);
+
             db.get().collection(collection.PRODUCT_COLLECTIONS).deleteOne({ _id: ObjectId(productId) }).then((response) => {
                 resolve(response)
-                console.log(response);
+
             }).catch((err) => {
-                console.log(err);
+
             })
         })
     },
@@ -60,7 +59,7 @@ module.exports = {
                 resolve()
 
             })
-            console.log(response);
+
         })
 
     },
@@ -85,8 +84,7 @@ module.exports = {
         
         return new Promise(async (resolve,reject)=>{
    let sorttedCategory = await db.get().collection(collection.CATEGORY_COLLECTIONS).findOne({category:data},{subCategory:1})
-   //console.log("sorrtedCategory");
-   //console.log(sorttedCategory);
+
    resolve(sorttedCategory)
         })
     },
@@ -96,11 +94,10 @@ module.exports = {
            
             let category = data.category
             let subcategory=data.subcategory
-           //console.log(category, subcategory,"thi si cheki")
-            // let checkSubCategory = await db.get().collection(collection.CATEGORY_COLLECTIONS).find({category:data.category}).toArray()
+
 
            let checkSubCategory = await db.get().collection(collection.CATEGORY_COLLECTIONS).findOne({subcategory:{$in:[data.subcategory]}})
-          // console.log(checkSubCategory,"---------------------")
+
            if(checkSubCategory){
                reject("already exist")
            }else{
@@ -108,7 +105,7 @@ module.exports = {
            await db.get().collection(collection.CATEGORY_COLLECTIONS).updateOne({category:data.category},{$push:{subcategory:data.subcategory}}).then((response)=>{
 
                resolve(true)
-               console.log(response);
+              
            })
            }
            
@@ -129,7 +126,7 @@ module.exports = {
             db.get().collection(collection.CATEGORY_COLLECTIONS).deleteOne({_id:ObjectId(categoryId)}).then((response)=>{
               resolve(response)
             }).catch((err)=>{
-                console.log(err);
+               
             })
         })
 
@@ -145,7 +142,7 @@ module.exports = {
                     :name}}).then((response)=>{
                 resolve(response)
             }).catch((err)=>{
-                console.log(err);
+               
             })
         })
     },
@@ -157,13 +154,11 @@ module.exports = {
     },
     changeOrderStatus:()=>{
         return new Promise((resolve,reject)=>{
-            console.log("Change oders status");
-            console.log(value)
-            console.log(Id);
+            
             db.get().collection(collection.ORDER_COLLECTIONS).updateOne({_id:ObjectId(Id)},{$set:{status:status.status}}).then((result)=>{
-                console.log(result)
+            
             }).catch((err)=>{
-                console.log(err)
+            
             })
         })
     }

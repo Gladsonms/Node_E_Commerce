@@ -33,7 +33,7 @@ const verifyLogin = async(req, res, next) => {
   } else {
    await productHelpers.getAllProducts().then(async (products) => {
   
-      res.render("user/index", {  products });
+      res.render("user/index", { products });
     });
   }
 };
@@ -61,14 +61,12 @@ router.post("/signup", function (req, res, next) {
   userHelper.doSignup(req.body).then((response) => {
     
     res.redirect("/login");
-    //  req.session.loggedIn = true;
-    //  req.session.user = response
-    //  res
+  
   });
 });
 router.post("/login", function (req, res, next) {
   userHelper.doLogin(req.body).then((response) => {
-    //  console.log("new check"+user);
+  
     if (response.status) {
       req.session.loggedIn = true;
       req.session.user = response.user;
@@ -88,7 +86,7 @@ router.post("/login", function (req, res, next) {
 router.post('/googlelogin',async(req,res)=>{
   
   let token = req.body.token
-  console.log(token);
+  
 
   try {
     const ticket = await client.verifyIdToken({
@@ -96,10 +94,10 @@ router.post('/googlelogin',async(req,res)=>{
       audience: CLIENT_ID, 
   });
   const payload = ticket.getPayload();
-  console.log(payload);
+  
 const user = await userHelpers.getUserByEmail(payload.email)
 if(user){
-  console.log('user:', user);
+  
   if(!user.status){
     res.render("user/login", { err: "Blocked User" });
   }
@@ -111,7 +109,7 @@ if(user){
   }
 }else{
 const createdUser = await userHelpers.addGoogleUser(payload.email, payload.given_name)
-console.log('createdUser:', createdUser);
+
 req.session.user = createdUser
 req.session.loggedIn = true
 req.session.user_id = user._id
@@ -285,8 +283,7 @@ let totalAmount= await userHelpers.getTottalAmount(req.body.userId)
    
   
    userHelpers.PlaceOrder(req.body,product,totalAmount).then((orderId)=>{
-     console.log(orderId);
-     console.log(req.body);
+    
     if(req.body['payment']=='cod'){
 
       res.json({codSuccess:true})
@@ -313,7 +310,7 @@ router.get("/orders",verifyLogin,async (req,res)=>{
    
  
   let orders=await userHelpers.getUserOrders(req.session.user._id)
-  console.log(orders.status)
+
   res.render('user/odersList',{user:req.session.user,orders})
  
 })
@@ -325,7 +322,11 @@ router.get('/view-order-product/:id',async(req,res)=>{
 })
 router.post('/oders/cancelorder/:id',async(req,res)=>{
   let orderId=req.params.id
-  userHelpers.cancelOrder(orderId)
+  await userHelpers.cancelOrder(orderId).then((response)=>{
+    console.log(response);
+    res.json(response)
+  })
+
 })
 
 router.post("/oders/deleteaddress",(req,res)=>{
@@ -336,8 +337,7 @@ router.post("/oders/deleteaddress",(req,res)=>{
    addId=req.body.addressId
    userId=req.session.user._id
    
-  //  console.log("address");
-  //  console.log(addId);
+  
 userHelpers.deleteAdddress(uaddress,userId,addId,uname).then((response)=>{
       res.redirect("/cart/checkout")
 })
@@ -345,14 +345,14 @@ userHelpers.deleteAdddress(uaddress,userId,addId,uname).then((response)=>{
 })
 
 router.post("/verify-payment",(req,res)=>{
-console.log(req.body);
+
 userHelpers.verifyPayment(req.body).then(()=>{
   userHelpers.changePaymentStatus(req.body['order[receipt]']).then(()=>{
-    console.log("Payment succesfull");
+
     res.json({status:true})
   })
 }).catch((err)=>{
-  console.log(err);
+
   res.json({status:flase,errMsg:''})
 })
 })

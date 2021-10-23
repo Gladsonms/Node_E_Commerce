@@ -52,7 +52,7 @@ router.get("/usermanagment", function (req, res) {
       res.render("admin/userManagment", { admin: true, users });
     })
     .catch((err) => {
-      console.log(err);
+
     });
 });
 
@@ -63,7 +63,7 @@ router.post("/usermanagment/disableuser", async (req, res) => {
 });
 
 router.post("/usermanagment/enableuser", async (req, res) => {
-  userHelpers.enableUser(req.query.id, req.body).then(() => {
+  userHelpers.enableUser(req.query.id, req.body).then(() => {  
     res.redirect("/admin/usermanagment");
   });
 });
@@ -71,7 +71,7 @@ router.post("/usermanagment/enableuser", async (req, res) => {
 //product mangment
 router.get("/productmanagment", function (req, res, next) {
   productHelpers.getAllProducts().then((products) => {
-    console.log(products);
+
     res.render("admin/productsManagment", { admin: true, products });
   });
 });
@@ -96,14 +96,14 @@ productHelpers.getCategory().then((category)=>{
 });
 router.post("/productmanagmnet/editproduct/:id", (req, res) => {
   let id = req.params.id;
-  console.log(id);
+
   productHelpers.updateProducts(req.params.id, req.body).then((data) => {
     let id = "" + data;
     let image1 = req.body.image1_b64;
     let image2 = req.body.image2_b64;
     let image3 = req.body.image3_b64;
     let image4 = req.body.image4_b64;
-    //console.log(image1);  
+
 
     const path1 = `./public/product-images/product-image1/${id}.jpg`;
     const path2 = `./public/product-images/product-image2/${id}.jpg`;
@@ -121,62 +121,9 @@ router.post("/productmanagmnet/editproduct/:id", (req, res) => {
     fs.writeFileSync(path4, base64Data4, { encoding: "base64" });
     res.redirect("/admin/productmanagment");
 
-    // let image1 = req.files.productimage1;
-    // let image2 = req.files.productimage2;
-    // let image3 = req.files.productimage3;
-    // let image4 = req.files.productimage4;
-    // console.log("start");
-    // console.log(image1);
-    // console.log(image2);
-    // console.log(image3);
-    // console.log(image4);
-    // console.log("end");
-    // image1.mv(
-    //   "./public/product-images/product-image1/" + id + ".jpg",
-    //   (err) => {
-    //     if (!err) {
-    //       res.render("admin/addProducts");
-    //     } else {
-    //       console.log(err);
-    //     }
-    //   }
-    // );
-    // image2.mv(
-    //   "./public/product-images/product-image2/" + id + ".jpg",
-    //   (err) => {
-    //     if (!err) {
-    //       res.render("admin/addProducts");
-    //     } else {
-    //       console.log(err);
-    //     }
-    //   }
-    // );
-    // image3.mv(
-    //   "./public/product-images/product-image3/" + id + ".jpg",
-    //   (err) => {
-    //     if (!err) {
-    //       res.render("admin/addProducts");
-    //     } else {
-    //       console.log(err);
-    //     }
-    //   }
-    // );
-    // image4.mv(
-    //   "./public/product-images/product-image4/" + id + ".jpg",
-    //   (err) => {
-    //     if (!err) {
-    //       res.render("admin/addProducts");
-    //     } else {
-    //       console.log(err);
-    //     }
-    //   }
-    // );
-    // //res.render('admin/addProducts', { admin: true })
   });
 });
-// router.post('/productmanagmnet/editproduct/:id',(req,res)=>{
-//   console.log("asxvhxhas");
-// })
+
 
 router.get("/productmanagment/adddproduct", function (req, res) {
   productHelpers.getCategory().then((category) => {
@@ -190,7 +137,7 @@ router.post("/productmanagmnet/addproduct", function (req, res) {
     let image2 = req.body.image2_b64;
     let image3 = req.body.image3_b64;
     let image4 = req.body.image4_b64;
-    //console.log(image1);
+
 
     const path1 = `./public/product-images/product-image1/${id}.jpg`;
     const path2 = `./public/product-images/product-image2/${id}.jpg`;
@@ -229,7 +176,7 @@ router.get("/categorymangament", function (req, res) {
 router.post('/categorymangament/delete-category/:id',function (req,res){
   
   let categoryId=req.params.id
-  //console.log(categoryId);
+
   productHelpers.deleteCategory(categoryId).then((response)=>{
       res.redirect('/admin/categorymangament')
   })
@@ -243,7 +190,7 @@ router.post("/categorymangament/addcategory", (req, res) => {
 
 router.get("/subcategorymangament", async (req, res) => {
   await productHelpers.getCategory().then((category) => {
-    console.log(category)
+
     res.render("admin/subcategoryManagment", { admin: true, category });
   });
 });
@@ -287,8 +234,8 @@ router.get("/ordermangment",async(req,res)=>{
     
     var values= {orderId,data}
     userHelpers.testing(data,orderId).then((res)=>{
-      console.log(res);
-      res.json({status:true})
+
+//res.json({status:true})
       
     })
 
@@ -299,6 +246,8 @@ router.get("/ordermangment",async(req,res)=>{
     //productHelpers.changeOrderStatus()
      
   })
+
+
 
 
 

@@ -136,7 +136,7 @@
 					
 						<div class="mt-2">
 						  
-						<input type="radio"  name="address" value="{{this.name}} ,  {{this.phone}}  ,  {{this.place}},  {{this.address}} ,  {{this.city}} "  /> <label for="">{{this.name}}   {{this.phone}}    {{this.place}}  {{this.address}}   {{this.city}}    </label>
+						<input type="radio"  name="address" value="{{this.name}} ,  {{this.phone}}  ,  {{this.place}},  {{this.address}} ,  {{this.city}} "  /> <label for="">{{this.name}}   {{this.phone}}    {{this.place}}  {{this.address}}   {{this.city}}  </label>
                   <button type="submit" class="btn btn-sm btn btn-danger ml-3 text-light"  onclick="removeAddress('{{this.id}}','{{this.name}}','{{../useraddres._id}}')"> Remove address</button>
 							</div>
               
@@ -166,7 +166,7 @@
                   style="height: 0px;"
                 >
                   <div class="panel-body">
-                    <table class="cart-summary table table-bordered">
+                    {{!-- <table class="cart-summary table table-bordered">
                       <thead>
                         <tr>
                           <th class="width-80 text-center">Image</th>
@@ -234,7 +234,7 @@
                           </td>
                         </tr>
                       </tbody>
-                    </table>
+                    </table> --}}
 
                     <h4 class="heading-primary">Cart Total</h4>
                     <table class="table cart-total">
@@ -244,7 +244,7 @@
                             Cart Subtotal
                           </th>
                           <td class="total">
-                            $431
+                             ₹{{total}}
                           </td>
                         </tr>
                         <tr>
@@ -260,7 +260,7 @@
                             <strong>Order Total</strong>
                           </th>
                           <td class="total">
-                            $431
+                           ₹{{total}}
                           </td>
                         </tr>
                       </tbody>
@@ -276,7 +276,7 @@
                         value="cod"
                       />
                       <label class="form-check-label" for="flexRadioDefault1">
-                        Cash om deleviery
+                        Cash on deleviery
                       </label>
                     </div>
                     <div class="form-check">
@@ -502,7 +502,8 @@ placeField.addEventListener('input',(e)=>{
 })
  
 
-   
+   </script>
+   <script>
      $('#placeorderform').submit((e)=>{ 
 	  e.preventDefault() 
 	  $.ajax({
@@ -511,7 +512,7 @@ placeField.addEventListener('input',(e)=>{
     data:$('#placeorderform').serialize(),
   success:(response)=>
   { 
-	 swal("order Placed"+response)
+	 swal("order Placed")
 	
    if(response.codSuccess)
    {
@@ -589,11 +590,10 @@ placeField.addEventListener('input',(e)=>{
     }
   }
    
-
+</script>
+<script>
    function removeAddress(address,name,addressId){
-     alert(address)
-     alert(addressId)
-     alert(name)
+   
      console.log(addressId)
        $.ajax({
          url:"/oders/deleteaddress",
