@@ -161,5 +161,18 @@ module.exports = {
             
             })
         })
+    },
+    getProductCount:()=>{
+        return new Promise((resolve,reject)=>{
+           let productCount= db.get().collection(collection.PRODUCT_COLLECTIONS).find({}).count()
+            resolve(productCount)
+        })
+    },
+    getOrderCount:()=>{
+        return new Promise((resolve,reject)=>{
+            let orderCount=db.get().collection(collection.ORDER_COLLECTIONS).find({}).count()
+            resolve(orderCount)
+        })
     }
+
 }

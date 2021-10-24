@@ -549,7 +549,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
       db.get()
         .collection(collection.ORDER_COLLECTIONS)
-        .updateOne({ _id: ObjectId(oderId) }, { $set: { status: "Cancel",userCancel:true } });
+        .updateOne({ _id: ObjectId(oderId) }, { $set: { status: "Cancel",userCancel:true ,adminCancel:false} });
     }).then((res)=>{
       resolve(res)
       console.log(res);
@@ -570,9 +570,11 @@ module.exports = {
             
           )
     }) .then((res) => {
-      console.log(res);
+      resolve(true)
       });
   },
+
+
   generateRazorPay:(orderId,totalAmount)=>{
 
     return new Promise((resolve,reject)=>{
@@ -621,6 +623,25 @@ return new Promise((resolve,reject)=>{
 {
   resolve()
 })
+},
+getuserProfile:(userId)=>{
+  return new Promise(async(resolve,reject)=>{
+   await db.get().collection(collection.USER_COLLECTIONS).findOne({_id:ObjectId(userId)}).toArray()
+  }).then((response)=>{
+      console.log(response);
+  })
+},
+
+getUserCount:()=>{
+return new Promise(async(resolve,reject)=>{
+  
+  let userCount=await db.get().collection(collection.USER_COLLECTIONS).find({}).count()
+ 
+  
+  resolve(userCount)
+})
+  
+
 }
 
 };

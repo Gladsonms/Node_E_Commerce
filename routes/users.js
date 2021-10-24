@@ -6,6 +6,8 @@ const productHelpers = require("../helpers/product-helpers");
 require("../helpers/auth");
 const passport = require("passport");
 
+
+//Google auth
 const { OAuth2Client } = require("google-auth-library");
 const CLIENT_ID =
   "367337184905-5g58ji2bdun23ep367986hqrnonn7tfm.apps.googleusercontent.com";
@@ -15,6 +17,16 @@ const userHelpers = require("../helpers/user-helpers");
 const { session } = require("passport");
 const { Router, response } = require("express");
 
+//paypal interggreation
+var paypal = require('paypal-rest-sdk');
+paypal.configure({
+  'mode': 'sandbox', //sandbox or live
+  'client_id': 'AWp1ywqyrlAJ8UAwiDeqJRu77Mr80YUAoKV862hKJ8gLsLmMk1BNhTB-BwrSzEJcfZJiZ3Z4Bla9rghu',
+  'client_secret': 'EH9c4LHAFuIlIuciPsDhOUhpaRdwHsYV7kcj3andfpPlgARK0jw6-uJ4vp7Xibwf4dNX2akfeoImPyw_'
+});
+
+
+//Twillo otp login
 const serviceSSID = "VAaaa09725d9a25b6fa22c1e395362b716";
 const accountSSID = "ACebbf9a771b4b998c20ba75f79b99372c";
 const authToken = "61193b2f815c88755989d1e8050a2094";
@@ -32,7 +44,7 @@ const verifyLogin = async(req, res, next) => {
     next();
   } else {
    await productHelpers.getAllProducts().then(async (products) => {
-  
+   
       res.render("user/index", { products });
     });
   }
@@ -339,7 +351,8 @@ router.post("/oders/deleteaddress",(req,res)=>{
    
   
 userHelpers.deleteAdddress(uaddress,userId,addId,uname).then((response)=>{
-      res.redirect("/cart/checkout")
+  console.log("this is deleted address")
+  res.status(200).json({status:true})
 })
 
 })
@@ -360,5 +373,45 @@ userHelpers.verifyPayment(req.body).then(()=>{
 router.get('/contact',(req,res)=>{
   res.render("user/contact")
 })
+router.get('/profile',checkUserAuth,(req,res)=>{
+  res.render('user/profile')
+})
+router.post('/paypal',(req,res)=>{
+  const create_payment_json = {
+    "intent": "sale",
+    "payer": {
+        "payment_method": "paypal"
+    },
+    "redirect_urls": {
+        "return_url": "http://localhost:3000/success",
+        "cancel_url": "http://localhost:300/cancel"
+    },
+    "transactions": [{
+        "item_list": {
+            "items": [{
+                "name": "item",
+                "sku": "item",
+                "price": "1.00",
+                "currency": "USD",
+                "quantity": 1
+            }]
+        },
+        "amount": {
+            "currency": "USD",
+            "total": "1.00"
+        },
+        "description": "This is the payment description."
+    }]
+};
 
+
+paypal.payment.create(create_payment_json, function (error, payment) {
+    if (error) {
+        throw error;
+    } else {
+        console.log("Create Payment Response");
+        console.log(payment);
+    }
+});
+})
 module.exports = router;

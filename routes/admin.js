@@ -40,8 +40,13 @@ router.post("/adminLogin", function (req, res, next) {
 });
 
 //home
-router.get("/home", function (req, res) {
-  res.render("admin/home", { admin: true });
+router.get("/home",async function (req, res) {
+ 
+  let userCount=await userHelpers.getUserCount();
+  let productCount=await productHelpers.getProductCount();
+  let orderCount=await productHelpers.getOrderCount();
+    
+  res.render("admin/home", { admin: true ,userCount,orderCount,productCount});
 });
 
 //usermangment

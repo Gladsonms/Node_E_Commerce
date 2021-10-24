@@ -80,14 +80,10 @@
 												
 
 												
-											 <a  class="btn btn-danger" id="removeCart" onclick="deleteProduct('{{this._id}}','{{this.product._id}}')"  >
-												{{!-- <i class="fa fa-trash"></i> --}}
-												delete
-												
-											</a>
+											 <button class="btn btn-danger" id="removeCart" onclick="deleteProduct('{{this._id}}','{{this.product._id}}')"> delete</button>
 										</td>
 									</tr>
-									  
+									  {{!-- <i class="fa fa-trash"></i> --}}
 										{{/each}}
 									
 									
@@ -125,7 +121,44 @@
 			
 
 				 <script>
-				function changeQuantity(cartId,proId,count){
+				function deleteProduct(cartId,proId){
+					Swal.fire({
+  title: 'Are you sure?',
+  text: "You won't be able to revert this!",
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Yes, delete it!'
+}).then((result) => {
+  if (result.isConfirmed) {
+					$.ajax({
+						url:'/remove-item',
+						data:{
+							cartId:cartId,
+							proId:proId
+						},
+						method:'post',
+						success:(response)=>{
+							if(response){
+								window.location.reload()
+							}
+						}
+					})
+	
+  }
+  				else{
+
+
+					}
+				
+})
+
+				}
+			</script>
+
+			{{!-- <script>
+function changeQuantity(cartId,proId,count){
 				let quantity=parseInt(document.getElementById(proId).value)
 				
 				console.log(quantity)
@@ -157,20 +190,18 @@
 						   })
 					   })
 				}
-			</script>
-			<script>
+			
 				function deleteProduct(cartId,proId){
-					
-                     
-   
-               
-
-
-
-
-				   
-                      
-
+Swal.fire({
+  title: 'Are you sure?',
+  text: "You won't be able to revert this!",
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Yes, delete it!'
+}).then((result) => {
+  if (result.isConfirmed) {
 					$.ajax({
 						
 						url:'/remove-item',
@@ -184,6 +215,12 @@
 								window.location.reload()
 							}
 						}
-					})
+						Swal.fire(
+      'Deleted!',
+      'Your file has been deleted.',
+      'success'
+    )
+  }
+})				})
 				}
-			</script>
+			</script> --}}

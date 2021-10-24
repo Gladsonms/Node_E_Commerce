@@ -45,7 +45,7 @@
 
 						
 
-							<li class="dropdown">
+							{{!-- <li class="dropdown">
 								<a href="blog-list-left-sidebar-1.html" style="color:black">Blog</a>
 								<div class="dropdown-menu">
 									<ul class="has-sub">
@@ -58,7 +58,49 @@
 										<li><a href="blog-detail.html" title="Blog Detail">Blog Detail</a></li>
 									</ul>
 								</div>
-							</li>
+							</li> --}}
+									<li class="dropdown">
+							<a href="#" title="Page">Page</a>
+							<div class="dropdown-menu">
+								<ul>
+									<li class="dropdown-submenu">
+										<a href="product-grid-left-sidebar.html" title="Product List">Product List</a>
+										<div class="dropdown-menu level2">
+											<ul>
+												<li><a href="product-grid-left-sidebar.html" title="Product Grid - Left Sidebar">Product Grid - Left Sidebar</a></li>
+												<li><a href="product-grid-right-sidebar.html" title="Product Grid - Right Sidebar">Product Grid - Right Sidebar</a></li>
+												<li><a href="product-grid-full-width.html" title="Product Grid - Full Width">Product Grid - Full Width</a></li>
+												<li><a href="product-list-left-sidebar.html" title="Product List - Left Sidebar">Product List - Left Sidebar</a></li>
+											</ul>
+										</div>
+									</li>
+									<li class="dropdown-submenu">
+										<a href="product-detail-left-sidebar.html" title="Product List">Product Detail</a>
+										<div class="dropdown-menu level2">
+											<ul>
+												<li><a href="product-detail-left-sidebar.html" title="Product Detail - Left Sidebar">Product Detail - Left Sidebar</a></li>
+												<li><a href="product-detail-full-width-1.html" title="Product List - Full Width 1">Product Detail - Full Width 1</a></li>
+												<li><a href="product-detail-full-width-2.html" title="Product List - Full Width 2">Product Detail - Full Width 2</a></li>
+											</ul>
+										</div>
+									</li>
+								
+					
+									<li class="dropdown-submenu">
+										<a href="#" title="User">User</a>
+										<div class="dropdown-menu level2">
+											<ul>
+												<li><a href="user-login.html" title="Login">Login</a></li>
+												<li><a href="user-register.html" title="Register">Register</a></li>
+												<li><a href="#" title="My Account">My Account</a></li>
+												<li><a href="#" title="My Wishlists">My Wishlists</a></li>
+											</ul>
+										</div>
+									</li>
+								
+								</ul>
+							</div>
+						</li>
 
 							<li>
 								<a href="/about" style="color:black">About Us</a>
@@ -110,52 +152,7 @@
 							<a class="cart-count" id="cart-count" href="/cart"><i class="fa fa-shopping-basket" aria-hidden="true"></i>{{cartCount}}</a>
 						</div>
 
-						{{!-- <div class="dropdown-content">
-							<div class="cart-content">
-								<table>
-									<tbody>
-									
-
-										<tr>
-											<td class="product-image">
-												<a href="product-detail-left-sidebar.html">
-													<img src="img/product/6.jpg" alt="Product">
-												</a>
-											</td>
-											<td>
-												<div class="product-name">
-													<a href="product-detail-left-sidebar.html">Organic Strawberry</a>
-												</div>
-												<div>
-													1 x <span class="product-price">$35.00</span>
-												</div>
-											</td>
-											<td class="action">
-												<a class="remove" href="#">
-													<i class="fa fa-trash-o" aria-hidden="true"></i>
-												</a>
-											</td>
-										</tr>
-
-										<tr class="total">
-											<td>Total:</td>
-											<td colspan="2">$92.96</td>
-										</tr>
-
-										<tr>
-											<td colspan="3">
-												<div class="cart-button">
-													<a class="btn btn-primary" href="/cart"
-														title="View Cart">View Cart</a>
-													<a class="btn btn-primary" href="product-checkout.html"
-														title="Checkout">Checkout</a>
-												</div>
-											</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-						</div> --}}
+					
 					</div>
 					{{/if}}
 
@@ -168,7 +165,7 @@
 						<div class="dropdown-menu">
 								{{#if user}}
 							<div class="item">
-								<a href="#" title="Log in to your customer account"><i class="fa fa-cog"></i>My
+								<a href="/profile" title="Log in to your customer account"><i class="fa fa-cog"></i>My
 									Account({{user.username}})</a>
 							</div>
 							{{/if}}

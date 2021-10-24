@@ -137,7 +137,7 @@
 						<div class="mt-2">
 						  
 						<input type="radio"  name="address" value="{{this.name}} ,  {{this.phone}}  ,  {{this.place}},  {{this.address}} ,  {{this.city}} "  /> <label for="">{{this.name}}   {{this.phone}}    {{this.place}}  {{this.address}}   {{this.city}}  </label>
-                  <button type="submit" class="btn btn-sm btn btn-danger ml-3 text-light"  onclick="removeAddress('{{this.id}}','{{this.name}}','{{../useraddres._id}}')"> Remove address</button>
+                  <a   class="btn btn-sm btn btn-danger ml-3 text-light"  onclick="removeAddress('{{this.id}}','{{this.name}}','{{../useraddres._id}}')"> Remove address</a>
 							</div>
               
 											
@@ -603,8 +603,8 @@ placeField.addEventListener('input',(e)=>{
            name:name,
           addressId:addressId
          },
-         success:()=>{
-
+         success:(status)=>{
+           window.location.href ="/cart/checkout"
          }
        })
    }
