@@ -81,14 +81,15 @@ router.get("/productmanagment", function (req, res, next) {
   });
 });
 
-router.post("/productmangment/deleteproduct/:id", function (req, res, next) {
-  
-  let productId = req.params.id;
+router.post("/productmangment/deleteproduct", function (req, res, next) {
+  let productId = req.body.proId;
+ 
   
 
-  productHelpers.deleteProduct(productId).then((response) => {
+  productHelpers.deleteProduct(productId).then(async (response) => {
     //res.render("admin/productsManagment", { admin: true });
-    res.redirect("/admin/productmanagment");
+    //res.redirect("/admin/productmanagment");
+    res.json(response)
   });
 });
 router.get("/productmangmnet/editproduct/:id", async (req, res) => {
@@ -178,12 +179,13 @@ router.get("/categorymangament", function (req, res) {
     res.render("admin/categoryManagment", { admin: true, category });
   });
 });
-router.post('/categorymangament/delete-category/:id',function (req,res){
+router.post('/categorymangament/delete-category/',function (req,res){
   
-  let categoryId=req.params.id
+  let category=req.body.categoryId
+  
 
-  productHelpers.deleteCategory(categoryId).then((response)=>{
-      res.redirect('/admin/categorymangament')
+  productHelpers.deleteCategory(category).then((response)=>{
+    res.json(response)
   })
 })
 
@@ -207,18 +209,20 @@ router.post("/categorymangament/addsubCategory", (req, res) => {
       res.redirect("/admin/subcategorymangament");
     })
     .catch((err) => {
-      //res.redirect("admin/subcategorymangament");
+      res.redirect("admin/subcategorymangament");
     });
 });
 
-router.post('/subcategorymangament/delete-category/:this',(req,res)=>{
+router.post('/subcategorymangament/delete-category',(req,res)=>{
  
-  catname=req.body.custId
+  ///catname=req.body.custId
 
-  let name=req.params.this
+  let name=req.body.subcat
+  console.log(name);
+  console.log(req.body);
   
- productHelpers.deleteSubCategory(name,catname).then((response)=>{
-   res.redirect('/admin/subcategorymangament')
+ productHelpers.deleteSubCategory(name).then(async (response)=>{
+   res.json(response)
 })
   
 })

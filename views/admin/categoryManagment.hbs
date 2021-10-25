@@ -45,9 +45,10 @@
                 <tr>
                   <td>{{this.category}}</td>
                   <td>{{this.subcategory}}</td>
-                  <form action="/admin/categorymangament/delete-category/{{this._id}}" method="post">
+                  <td><button class="btn btn-danger" onclick="deleteCategory('{{this._id}}')">delete</button></td>
+                  {{!-- <form action="/admin/categorymangament/delete-category/{{this._id}}" method="post">
                   <td><button class="btn btn-danger" onclick="return confirm('Are you sure to delete {{this.category}} ? ')">delete</button></td>
-                  </form>
+                  </form> --}}
                   {{!-- <td>2</td>
                   <td>2</td> --}}
                   {{!-- <td>{{this.}}</td>
@@ -71,4 +72,39 @@
     $(document).ready( function () {
     $('#table_id').DataTable();
 } );
+function deleteCategory(categoryId){
+  Swal.fire({
+  title: 'Are you sure ?',
+  text: "You won't be able to revert this!",
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Yes, delete it!'
+}).then((result) => {
+  if (result.isConfirmed) {
+					$.ajax({
+						url:'/admin/categorymangament/delete-category',
+                      
+						data:{
+							
+							categoryId:categoryId
+						},
+						method:'post',
+						success:(response)=>{
+							if(response){
+								window.location.reload()
+							}
+						}
+					})
+	
+  }
+  				else{
+
+
+					}
+				
+})
+
+}
 </script>

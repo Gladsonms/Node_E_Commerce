@@ -157,7 +157,7 @@
 				}
 			</script>
 
-			{{!-- <script>
+			<script>
 function changeQuantity(cartId,proId,count){
 				let quantity=parseInt(document.getElementById(proId).value)
 				
@@ -180,10 +180,10 @@ function changeQuantity(cartId,proId,count){
 							   if(response.removeProduct)
 							   {
 								   swal("Product Removed From cart")
-								location.reload()
+								window.location.reload()
 							   }
 							   else {
-								   location.reload()
+								   window.location.reload()
 								   //document.getElementById(proId).innerHTML=quantity+count
 								   //document.getElementById('total').innerHTML=response.total
 							   }
@@ -191,36 +191,5 @@ function changeQuantity(cartId,proId,count){
 					   })
 				}
 			
-				function deleteProduct(cartId,proId){
-Swal.fire({
-  title: 'Are you sure?',
-  text: "You won't be able to revert this!",
-  icon: 'warning',
-  showCancelButton: true,
-  confirmButtonColor: '#3085d6',
-  cancelButtonColor: '#d33',
-  confirmButtonText: 'Yes, delete it!'
-}).then((result) => {
-  if (result.isConfirmed) {
-					$.ajax({
-						
-						url:'/remove-item',
-						data:{
-							cartId:cartId,
-							proId:proId
-						},
-						method:'post',
-						success:(response)=>{
-							if(response){
-								window.location.reload()
-							}
-						}
-						Swal.fire(
-      'Deleted!',
-      'Your file has been deleted.',
-      'success'
-    )
-  }
-})				})
-				}
-			</script> --}}
+				
+			</script>

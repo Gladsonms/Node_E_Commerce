@@ -141,6 +141,7 @@ module.exports = {
                 :name},{$pull:{subcategory
                     :name}}).then((response)=>{
                 resolve(response)
+                
             }).catch((err)=>{
                
             })
