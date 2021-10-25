@@ -646,14 +646,12 @@ return new Promise(async(resolve,reject)=>{
   
 
 },
-updateUserInfo:(name,email,phone,userId)=>{
-  console.log(name);
-  console.log(email);
-  console.log(phone);
-  console.log(userId);
+updateUserInfo:(name,phone,email,userId)=>{
+  
   return new Promise(async(resolve,reject)=>{
     await db.get().collection(collection.USER_COLLECTIONS).updateOne({_id:ObjectId(userId)},{$set:{username:name,email:email,phone:phone}}).then((response)=>{
-             console.log(response);
+             
+             resolve()
     })
   })
 }

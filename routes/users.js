@@ -77,6 +77,7 @@ router.post("/signup", function (req, res, next) {
   });
 });
 router.post("/login", function (req, res, next) {
+  
   userHelper.doLogin(req.body).then((response) => {
   
     if (response.status) {
@@ -87,6 +88,7 @@ router.post("/login", function (req, res, next) {
 
       res.redirect("/");
     } else {
+      
       res.render("user/login", { err: "Invalid email or password" });
     }
   });
@@ -424,6 +426,7 @@ let phone=req.body.phone
 let email=req.body.email
 let userId=req.session.user._id
 userHelpers.updateUserInfo(name,phone,email,userId).then((response)=>{
+ 
   res.json({status:true})
 })
 
