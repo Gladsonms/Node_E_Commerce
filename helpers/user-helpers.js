@@ -561,15 +561,18 @@ module.exports = {
 
       
     //let address = await db.get().collection(collection.ADDRESS_COLLECTIONS).findOne({"address.id":uaddress});
-    
+    console.log("delete address");
+    console.log(userId);
+    console.log(addId);
         db.get()
           .collection(collection.ADDRESS_COLLECTIONS)
-          .update(
+          .updateOne(
             { user: ObjectId(userId) },
-            { $pull: { address: { id: uaddress } } },
+            { $pull: { address: { id: addId } } },
             
           )
     }) .then((res) => {
+      console.log(res);
       resolve(true)
       });
   },
@@ -642,6 +645,17 @@ return new Promise(async(resolve,reject)=>{
 })
   
 
+},
+updateUserInfo:(name,email,phone,userId)=>{
+  console.log(name);
+  console.log(email);
+  console.log(phone);
+  console.log(userId);
+  return new Promise(async(resolve,reject)=>{
+    await db.get().collection(collection.USER_COLLECTIONS).updateOne({_id:ObjectId(userId)},{$set:{username:name,email:email,phone:phone}}).then((response)=>{
+             console.log(response);
+    })
+  })
 }
 
 };

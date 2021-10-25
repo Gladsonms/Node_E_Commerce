@@ -348,11 +348,11 @@ router.post("/oders/deleteaddress",(req,res)=>{
    uname=req.body.name
    addId=req.body.addressId
    userId=req.session.user._id
-   
+   console.log(userId);
   
 userHelpers.deleteAdddress(uaddress,userId,addId,uname).then((response)=>{
   console.log("this is deleted address")
-  res.status(200).json({status:true})
+  res.json({status:true})
 })
 
 })
@@ -373,8 +373,11 @@ userHelpers.verifyPayment(req.body).then(()=>{
 router.get('/contact',(req,res)=>{
   res.render("user/contact")
 })
-router.get('/profile',checkUserAuth,(req,res)=>{
-  res.render('user/profile')
+router.get('/profile',verifyLogin,async(req,res)=>{
+ let user = req.session.user
+ let useraddres = await userHelpers.getUserAddress(req.session.user._id)
+
+  res.render('user/userProfile',{user,useraddres})
 })
 router.post('/paypal',(req,res)=>{
   const create_payment_json = {
@@ -413,5 +416,16 @@ paypal.payment.create(create_payment_json, function (error, payment) {
         console.log(payment);
     }
 });
+})
+
+router.post('/profile/user-details',(req,res)=>{
+let   name=req.body.username
+let phone=req.body.phone
+let email=req.body.email
+let userId=req.session.user._id
+userHelpers.updateUserInfo(name,phone,email,userId).then((response)=>{
+  res.json({status:true})
+})
+
 })
 module.exports = router;
