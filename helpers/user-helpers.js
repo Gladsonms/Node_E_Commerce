@@ -8,6 +8,7 @@ const { USER_COLLECTIONS } = require("../config/collections");
 const moment = require("moment");
 const  Razorpay=require('razorpay');
 const { resolve } = require("path");
+const { profileEnd } = require("console");
 //const { ObjectID, ObjectId } = require('bson')
 var instance = new Razorpay({
   key_id: 'rzp_test_wof2EdLxFrX857',
@@ -676,11 +677,18 @@ return new Promise(async(resolve,reject)=>{
 updateUserInfo:(name,phone,email,userId)=>{
   
   return new Promise(async(resolve,reject)=>{
-    await db.get().collection(collection.USER_COLLECTIONS).updateOne({_id:ObjectId(userId)},{$set:{username:name,email:email,phone:phone}}).then((response)=>{
-             
-             resolve()
-    })
+   let user= await db.get().collection(collection.USER_COLLECTIONS).updateOne({_id:ObjectId(userId)},{$set:{username:name,email:email,phone:phone}})
+  
+   resolve(user)
   })
+},
+getUserProfile:(userId)=>{
+  return new Promise(async(resolve,reject)=>{
+    let profile=await db.get().collection(collection.USER_COLLECTIONS).findOne({_id:ObjectId(userId)})
+  
+    resolve (profile)
+  })
+
 }
 
 };

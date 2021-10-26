@@ -452,9 +452,9 @@ router.get('/contact',(req,res)=>{
   res.render("user/contact")
 })
 router.get('/profile',verifyLogin,async(req,res)=>{
- let user = req.session.user
+ let user = await userHelpers.getUserProfile(req.session.user._id)
  let useraddres = await userHelpers.getUserAddress(req.session.user._id)
-
+ 
   res.render('user/userProfile',{user,useraddres})
 })
 router.post('/pay', (req, res) => {
@@ -470,9 +470,14 @@ let phone=req.body.phone
 let email=req.body.email
 let userId=req.session.user._id
 userHelpers.updateUserInfo(name,phone,email,userId).then((response)=>{
- 
+     console.log(response);
   res.json({status:true})
 })
 
+})
+
+
+router.post('/change-password',(req,res)=>{
+  console.log(req.body);
 })
 module.exports = router;

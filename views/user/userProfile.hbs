@@ -99,7 +99,7 @@
                                                         value="{{user.email}}" name="email">
                                                 </div>
                                             </div>
-                                            
+
 
 
                                             <button type="submit" class="btn btn-primary">Update Information</button>
@@ -107,44 +107,54 @@
                                     </div>
                                     <div>
                                         <p class="ml-5">
-  <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-    Change password
-  </a>
-  
-</p>
-<div class="collapse" id="collapseExample">
-  <div class="card card-body">
-    <!--Section: Block Content-->
-<section class="mb-5 text-center">
+                                            <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample"
+                                                role="button" aria-expanded="false" aria-controls="collapseExample">
+                                                Change password
+                                            </a>
 
-  <p>Set a new password</p>
+                                        </p>
+                                        <div class="collapse" id="collapseExample">
+                                            <div class="card card-body">
+                                                <!--Section: Block Content-->
+                                                <section class="mb-5 text-center">
 
-  <form action="#!">
+                                                    <p>Set a new password</p>
 
-    <div class="md-form md-outline mx-sm-3 mb-2">
-      <input type="password" id="newPass" class="form-control">
-      <label data-error="wrong" data-success="right" for="newPass">New password</label>
-    </div>
+                                                    <form action="/change-password" id="change">
+                                                        <div class="md-form md-outline mx-sm-3 mb-2">
+                                                            <input type="password" id="newPass" class="form-control">
+                                                            <label data-error="wrong" data-success="right"
+                                                                for="newPass">Current password</label>
+                                                        </div>
 
-    <div class="md-form md-outline mx-sm-3 mb-2">
-      <input type="password" id="newPassConfirm" class="form-control">
-      <label data-error="wrong" data-success="right" for="newPassConfirm">Confirm password</label>
-    </div>
+                                                        <div class="md-form md-outline mx-sm-3 mb-2">
+                                                            <input type="password" id="newPass" class="form-control">
+                                                            <label data-error="wrong" data-success="right"
+                                                                for="newPass">New password</label>
+                                                        </div>
 
-    <button type="submit" class="btn btn-primary mb-4">Change password</button>
+                                                        <div class="md-form md-outline mx-sm-3 mb-2">
+                                                            <input type="password" id="newPassConfirm"
+                                                                class="form-control">
+                                                            <label data-error="wrong" data-success="right"
+                                                                for="newPassConfirm">Confirm password</label>
+                                                        </div>
 
-  </form>
+                                                        <button type="submit" class="btn btn-primary mb-4">Change
+                                                            password</button>
 
-  <div class="d-flex justify-content-between align-items-center mb-2">
+                                                    </form>
 
-    
+                                                    <div class="d-flex justify-content-between align-items-center mb-2">
 
-  </div>
 
-</section>
-<!--Section: Block Content-->
-  </div>
-</div>
+
+                                                    </div>
+
+                                                </section>
+                                                <!--Section: Block Content-->
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -187,65 +197,75 @@
 
 </div>
 <script>
-     function deleteAddress(userId, username, address, addressId) {
-          
-     Swal.fire({
-  title: 'Are you sure?',
-  text: "You won't be able to revert this!",
-  icon: 'warning',
-  showCancelButton: true,
-  confirmButtonColor: '#3085d6',
-  cancelButtonColor: '#d33',
-  confirmButtonText: 'Yes, delete it!'
-}).then((result) => {
-  if (result.isConfirmed) {
-                       $.ajax({
-                        url: "/oders/deleteaddress",
-                        data: {
-                            userId,
-                            username,
-                            addressId,
-                            address
-                        },
-                        method: "POST",
-                        success: (response) => {
-                            if (response) {
+    function deleteAddress(userId, username, address, addressId) {
 
-                                window.location.reload()
-                            }
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "/oders/deleteaddress",
+                    data: {
+                        userId,
+                        username,
+                        addressId,
+                        address
+                    },
+                    method: "POST",
+                    success: (response) => {
+                        if (response) {
+
+                            window.location.reload()
                         }
-                    })
+                    }
+                })
 
-  }
-  else
-  {
+            }
+            else {
 
-  }
-           
-       
+            }
 
 
-    })
-     }
 
 
-     document.getElementById('userDetails').onsubmit=e=>{
-         e.preventDefault();
-       
-        
-         $.ajax({
-             url:"/profile/user-details",
-              data:$('#userDetails').serialize(),
-              method:"post",
-             success:(response)=>{
-                      if(response)
-                      {
-                          Swal("User Profile Upadated")
-                          window.location.reload()  
-                          
-                      }
-             }
+        })
+    }
 
-         })
-     }
+
+    document.getElementById('userDetails').onsubmit = e => {
+        e.preventDefault();
+
+
+        $.ajax({
+            url: "/profile/user-details",
+            data: $('#userDetails').serialize(),
+            method: "post",
+            success: (response) => {
+    
+                if (response.status) {
+                   
+                    window.location.reload()
+
+                }
+            }
+
+        })
+    }
+    document.getElementById('change').onsubmit=e=>{
+        e.preventDefault();
+        $.ajax({
+            url:"/change-password",
+            data:$('#change').serialize(),
+          method:post,
+          success:(response)=>{
+
+          }
+        })
+    }
 </script>
