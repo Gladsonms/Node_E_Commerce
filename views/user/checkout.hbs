@@ -535,14 +535,15 @@ placeField.addEventListener('input',(e)=>{
   success:(response)=>
   { 
 	
-	
+	console.log(response)
    if(response.codSuccess)
    {
      
 	   location.href='/order-success'
    }
     else if(response.razorpaySuccess){
-     razorPayPayment(response)
+      alert("aSDADSA")
+     razorPayPayment(response.data)
 
    }
    
@@ -597,7 +598,18 @@ placeField.addEventListener('input',(e)=>{
                  method:"post",
                  success:(response)=>{
                    if(response.status){
-                     location.href='/order-success'
+                     //location.href='/order-success'
+                     alert("delete cart")
+                     $.ajax({
+                       url:"/delete-cart-product",
+                       method:"post",
+                       data:{
+                         order
+                       },
+                       success:(response)=>{
+                        location.href='/order-success'
+                       }
+                     })
                    }
                    else {
                      swal("Payment Failed")

@@ -448,7 +448,7 @@ module.exports = {
   },
 
 
-  PlaceOrder: (order, products, total) => {
+  PlaceOrder: (user,order, products, total) => {
     return new Promise(async (resolve, reject) => {
       let status = order.payment == "cod" ? "placed" : "pending";
       let orderObj = {
@@ -462,26 +462,42 @@ module.exports = {
       };
       
       let userId = order.userId[0];
-      console.log(userId);
+     console.log(userId);
 
       db
         .get()
         .collection(collection.ORDER_COLLECTIONS)
         .insertOne(orderObj)
         .then((response) => {
+          resolve(response.insertedId)
+       
           console.log(response);
+        if(order.payment=="cod")
+        {
+
           db.get()
             .collection(collection.CART_COLLECTIONS)
-            .deleteOne({_id: ObjectId(userId) });
-          resolve(response.insertedId);
-
-        }).catch(err=>{
-          console.log(err)
-          reject(err)
-        })
+            .deleteOne({user: ObjectId(user) })
+        }
+              
+      }).catch(err=>{
+        console.log(err)
+        reject(err)
+      })
        
        
     });
+  },
+  deleteFinalCart:(user)=>{
+    return new Promise((resolve,reject)=>{
+      db.get()
+      .collection(collection.CART_COLLECTIONS)
+      .deleteOne({user: ObjectId(user) }).then((response)=>{
+        resolve()
+      })
+      
+    })
+
   },
   getUserOrders: (userId) => {
 

@@ -286,7 +286,14 @@ router.post("/cart/checkout/addAddress", (req, res) => {
   
 
 });
+  router.post("/delete-cart-product",(req,res)=>{
+    console.log("dlete cart product");
+    userId=req.session.user._id;
+    userHelpers.deleteFinalCart(userId).then((response)=>{
 
+    res.json({response:true})
+    })
+  })
 
 router.post("/place-order",async(req,res)=>{
  
@@ -294,18 +301,19 @@ router.post("/place-order",async(req,res)=>{
 let product=await userHelpers.getCartProductList(req.session.user._id)
 let totalAmount= await userHelpers.getTottalAmount(req.session.user._id)
 
-   
-  
-   userHelpers.PlaceOrder(req.body,product,totalAmount).then((orderId)=>{
+   let user=req.session.user
+   userHelpers.PlaceOrder(user._id,req.body,product,totalAmount).then((orderId)=>{
     
     if(req.body['payment']=='cod'){
      
              
       res.json({codSuccess:true})
+      
     }else if (req.body['payment']=='razorpay'){
+      
       userHelpers.generateRazorPay(orderId,totalAmount).then((response)=>{
         
-        res.json({razorpaySuccess:true})
+        res.json({data:response, razorpaySuccess:true})
 
       })
     }else if (req.body['payment']=='paypal'){
@@ -352,7 +360,7 @@ let totalAmount= await userHelpers.getTottalAmount(req.session.user._id)
   // res.redirect("/order-success")
   }).catch(err=>console.log(err))
 })
-router.get('/order-success', (req, res) => {
+router.get('/success', (req, res) => {
   const payerId = req.query.PayerID;
   const paymentId = req.query.paymentId;
 
@@ -436,7 +444,7 @@ userHelpers.verifyPayment(req.body).then(()=>{
   })
 }).catch((err)=>{
 
-  res.json({status:flase,errMsg:''})
+  res.json({status:false,errMsg:''})
 })
 })
 
