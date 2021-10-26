@@ -424,6 +424,7 @@ module.exports = {
   },
 
   getCartProductList: (userId) => {
+   
     
     return new Promise(async (resolve, reject) => {
       let cart = await db
@@ -432,6 +433,7 @@ module.exports = {
         .findOne({ user: ObjectId(userId) });
            
       resolve(cart.products);
+      
     });
   },
   getUserAddress: (userId) => {
@@ -450,7 +452,7 @@ module.exports = {
     return new Promise(async (resolve, reject) => {
       let status = order.payment == "cod" ? "placed" : "pending";
       let orderObj = {
-        userId: order.userId,
+        userId: order.userId[0],
         address: order.address,
         paymentMethod: order.payment,
         products: products,
@@ -458,19 +460,27 @@ module.exports = {
         status: status,
         date: moment().format("dddd, MMMM Do YYYY, h:mm:ss a"),
       };
-      let userId = order.userId;
+      
+      let userId = order.userId[0];
+      console.log(userId);
 
-      let orderDetails = await db
+      db
         .get()
         .collection(collection.ORDER_COLLECTIONS)
         .insertOne(orderObj)
         .then((response) => {
+          console.log(response);
           db.get()
             .collection(collection.CART_COLLECTIONS)
-            .deleteOne({ user: ObjectId(userId) });
+            .deleteOne({_id: ObjectId(userId) });
           resolve(response.insertedId);
 
-        });
+        }).catch(err=>{
+          console.log(err)
+          reject(err)
+        })
+       
+       
     });
   },
   getUserOrders: (userId) => {
@@ -616,6 +626,7 @@ return new Promise((resolve,rejcet)=>{
 
 })
 },
+
 changePaymentStatus:(orderId)=>{
 return new Promise((resolve,reject)=>{
   db.get.collection(collection.ORDER_COLLECTIONS).updateOne({_id:ObjectId(orderId)},{

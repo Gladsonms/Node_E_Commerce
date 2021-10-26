@@ -286,12 +286,27 @@
                         type="radio"
                         name="payment"
                         id="flexRadioDefault2"
-                        value="online"
+                        value="razorpay"
                       />
                       <label class="form-check-label" for="flexRadioDefault2">
-                        Online payment
+                       Razorpay
                       </label>
                     </div>
+                     <div class="form-check">
+						<input type="text" name="userId" value="{{user._id}}" hidden>
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="payment"
+                        id="flexRadioDefault3"
+                        value="paypal"
+                      />
+                      <label class="form-check-label" for="flexRadioDefault3">
+                       Paypal
+                      </label>
+                    </div>
+
+                   
 
                   </div>
                 </div>
@@ -352,7 +367,13 @@
 </div>
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-
+ <script
+    src="https://www.paypal.com/sdk/js?client-id=AWp1ywqyrlAJ8UAwiDeqJRu77Mr80YUAoKV862hKJ8gLsLmMk1BNhTB-BwrSzEJcfZJiZ3Z4Bla9rghu"> // Required. Replace YOUR_CLIENT_ID with your sandbox client ID.
+  </script>
+   <script>
+    paypal.Buttons().render('#paypal-button-container');
+    // This function displays Smart Payment Buttons on your web page.
+  </script>
 
 
 
@@ -505,6 +526,7 @@ placeField.addEventListener('input',(e)=>{
    </script>
    <script>
      $('#placeorderform').submit((e)=>{ 
+       
 	  e.preventDefault() 
 	  $.ajax({
   url:"/place-order",
@@ -512,14 +534,22 @@ placeField.addEventListener('input',(e)=>{
     data:$('#placeorderform').serialize(),
   success:(response)=>
   { 
-	 swal("order Placed")
+	
 	
    if(response.codSuccess)
    {
+     
 	   location.href='/order-success'
    }
-   else{
+    else if(response.razorpaySuccess){
      razorPayPayment(response)
+
+   }
+   
+
+   else{
+     alert("paypal")
+    location.href=response
 
    }
   }

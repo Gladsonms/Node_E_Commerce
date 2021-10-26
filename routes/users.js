@@ -289,37 +289,105 @@ router.post("/cart/checkout/addAddress", (req, res) => {
 
 
 router.post("/place-order",async(req,res)=>{
-
+ 
 
 let product=await userHelpers.getCartProductList(req.session.user._id)
-let totalAmount= await userHelpers.getTottalAmount(req.body.userId)
+let totalAmount= await userHelpers.getTottalAmount(req.session.user._id)
 
    
   
    userHelpers.PlaceOrder(req.body,product,totalAmount).then((orderId)=>{
     
     if(req.body['payment']=='cod'){
-
+     
+             
       res.json({codSuccess:true})
-    }else{
+    }else if (req.body['payment']=='razorpay'){
       userHelpers.generateRazorPay(orderId,totalAmount).then((response)=>{
-        res.json(response)
+        
+        res.json({razorpaySuccess:true})
 
       })
-    }
-
-  // res.redirect("/order-success")
-
-  })
-
-  
+    }else if (req.body['payment']=='paypal'){
+      const create_payment_json = {
+        "intent": "sale",
+        "payer": {
+            "payment_method": "paypal"
+        },
+        "redirect_urls": {
+            "return_url": "http://localhost:3000/success",
+            "cancel_url": "http://localhost:3000/cancel"
+        },
+        "transactions": [{
+            "item_list": {
+                "items": [{
+                    "name": "Red Sox Hat",
+                    "sku": "001",
+                    "price": "25.00",
+                    "currency": "USD",
+                    "quantity": 1
+                }]
+            },
+            "amount": {
+                "currency": "USD",
+                "total": "25.00"
+            },
+            "description": "Hat for the best team ever"
+        }]  
+    };
     
+    paypal.payment.create(create_payment_json, function (error, payment) {
+      if (error) {
+          throw error;
+      } else {
+          for(let i = 0;i < payment.links.length;i++){
+            if(payment.links[i].rel === 'approval_url'){
+              res.json(payment.links[i].href);
+            }
+          }
+      }
+    });
+    
+    }
+  // res.redirect("/order-success")
+  }).catch(err=>console.log(err))
 })
+router.get('/order-success', (req, res) => {
+  const payerId = req.query.PayerID;
+  const paymentId = req.query.paymentId;
 
+  const execute_payment_json = {
+    "payer_id": payerId,
+    "transactions": [{
+        "amount": {
+            "currency": "USD",
+            "total": "25.00"
+        }
+    }]
+      };
+
+  paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
+    if (error) {
+        console.log(error.response);
+        throw error;
+    } else {
+        console.log(JSON.stringify(payment));
+        res.send('Success');
+    }
+});
+
+});
 
 router.get('/order-success',verifyLogin,(req,res)=>{
   res.render('user/order-success',{user:req.session.user})
 })
+
+router.get('/cancel', (req, res) => res.send('Cancelled'));
+
+
+
+
+
 router.get("/orders",verifyLogin,async (req,res)=>{
    
  
@@ -381,44 +449,12 @@ router.get('/profile',verifyLogin,async(req,res)=>{
 
   res.render('user/userProfile',{user,useraddres})
 })
-router.post('/paypal',(req,res)=>{
-  const create_payment_json = {
-    "intent": "sale",
-    "payer": {
-        "payment_method": "paypal"
-    },
-    "redirect_urls": {
-        "return_url": "http://localhost:3000/success",
-        "cancel_url": "http://localhost:300/cancel"
-    },
-    "transactions": [{
-        "item_list": {
-            "items": [{
-                "name": "item",
-                "sku": "item",
-                "price": "1.00",
-                "currency": "USD",
-                "quantity": 1
-            }]
-        },
-        "amount": {
-            "currency": "USD",
-            "total": "1.00"
-        },
-        "description": "This is the payment description."
-    }]
-};
-
-
-paypal.payment.create(create_payment_json, function (error, payment) {
-    if (error) {
-        throw error;
-    } else {
-        console.log("Create Payment Response");
-        console.log(payment);
-    }
+router.post('/pay', (req, res) => {
+  
 });
-})
+
+
+
 
 router.post('/profile/user-details',(req,res)=>{
 let   name=req.body.username
