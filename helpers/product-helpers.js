@@ -4,6 +4,7 @@ var ObjectId = require("mongodb").ObjectId;
 const { ObjectID } = require('bson');
 const { response } = require('express');
 const { Forbidden } = require('http-errors');
+const { Db } = require('mongodb');
 module.exports = {
     addProduct: (productDetails, callback) => {
         productDetails = {
@@ -174,6 +175,41 @@ module.exports = {
             let orderCount=db.get().collection(collection.ORDER_COLLECTIONS).find({}).count()
             resolve(orderCount)
         })
+    },
+    
+    addNewProducOffer:(offerData,product)=>{
+        let productname=offerData.productname
+        let offerPercent=parseInt(offerData.offerpercentage)
+        let expdate=offerData.expdate
+        let offername=offerData.offername
+    
+        return new Promise(async(resolve,reject)=>{
+
+            let product=await db.get().collection(collection.PRODUCT_COLLECTIONS).findOne({product:productname})
+            
+            let offerPrice=product.price-(product.price*offerPercent/100)
+          
+            db.get().collection(collection.PRODUCT_COLLECTIONS).updateOne({_id:product._id},{$set:{offerPrice:offerPrice,expiryDate:expdate}}).then((response)=>{
+                console.log(response);
+            })
+        })
+    
+       // console.log(actualPrice);
+        
+       
+
+
+    },
+    getOfferProduct:()=>{
+       return new Promise(async(resolve,reject)=>{
+        let offerProduct=await db.get().collection(collection.PRODUCT_COLLECTIONS).find({offerPrice:{$exists:true}}).toArray()
+           
+          resolve(offerProduct)
+        })
+       
+       
+        
+
     }
 
 }

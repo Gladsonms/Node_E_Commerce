@@ -52,11 +52,21 @@
 															<div class="star on"></div>
 															<div class="star"></div>
 														</div>
-														
+
+														{{#if this.offerPrice}}
+															<div class="product-priccsczse">
+																<del class="sale-price">₹{{this.price}}</del>
+																<span class="base-price">₹{{this.offerPrice}}</span>
+															</div>
+
+														{{else}}
 														<div class="product-priccsczse">
-															<del class="sale-price">₹{{this.price}}</del>
 															<span class="base-price">₹{{this.price}}</span>
 														</div>
+
+														{{/if}}
+														
+														
 														
 														<div class="product-buttoncnxlkc" style="margin-top: 1.3em;">
 															{{!-- <a class="btn btn-primary" href="/add-to-cart/{{this._id}}">

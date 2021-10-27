@@ -28,19 +28,19 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <form>
+                                        <form id="productOffer">
                                             <div class="form-row">
                                                
                                                 <div class="form-group col-md-6">
                                                     <label for="offername">Offer Name</label>
-                                                    <input type="text" class="form-control" id="offername" placeholder="Offer name">
+                                                    <input type="text" class="form-control" id="offername" placeholder="Offer name" name="offername">
                                                 </div>
                                                  <div class="form-group col-md-6">
                                                     <label for="Product name">Enter Product Name</label>
                                                     <select type="text" class="form-control" id="productname" placeholder="productname" name="productname">
-                                                        <option value="">1</option>
-                                                        <option value="">1</option>
-                                                        <option value="">1</option>
+                                                        {{#each product}}
+                                                        <option value="{{this.product}}">{{this.product}}</option>
+                                                          {{/each}}
                                                         </select>
                                                 </div>
                                             </div>
@@ -76,30 +76,22 @@
                                                 <thead>
                                                     <tr>
                                                         <th scope="col">Product</th>
-                                                        <th scope="col">Discount</th>
+                                                        <th scope="col">Offer Amount</th>
                                                         <th scope="col">Expiry Date</th>
                                                         <th scope="col">Options</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    {{#each offerProduct}}
                                                     <tr>
-                                                        <th scope="row">1</th>
-                                                        <td>Mark</td>
-                                                        <td>Otto</td>
-                                                        <td>@mdo</td>
+                                                        <th scope="row">{{this.product}}</th>
+                                                        <td>{{this.offerPrice}}</td>
+                                                        <td>{{this.expiryDate}}</td>
+                                                      <td> <i class="fa fa-trash"></i></td> 
+                                                        
                                                     </tr>
-                                                    <tr>
-                                                        <th scope="row">2</th>
-                                                        <td>Jacob</td>
-                                                        <td>Thornton</td>
-                                                        <td>@fat</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">3</th>
-                                                        <td>Larry</td>
-                                                        <td>the Bird</td>
-                                                        <td>@twitter</td>
-                                                    </tr>
+                                                    {{/each}}
+                                                    
                                                 </tbody>
                                             </table>
                                         </div>
@@ -111,3 +103,18 @@
                     </div>
                     <!-- end container-fluid -->
                 </div>
+
+                <script>
+                    document.getElementById('productOffer').onsubmit=e=>{
+                        e.preventDefault();
+                        
+                        $.ajax({
+                            url:"/admin/add-new-productoffer",
+                            data:$('#productOffer').serialize(),
+                            method:"POST",
+                            success:(response)=>{
+
+                            }
+                        })
+                    }
+                </script>

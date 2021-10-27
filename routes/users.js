@@ -302,6 +302,7 @@ let product=await userHelpers.getCartProductList(req.session.user._id)
 let totalAmount= await userHelpers.getTottalAmount(req.session.user._id)
 
    let user=req.session.user
+   let userId=req.session.user._id
    userHelpers.PlaceOrder(user._id,req.body,product,totalAmount).then((orderId)=>{
     
     if(req.body['payment']=='cod'){
@@ -311,7 +312,7 @@ let totalAmount= await userHelpers.getTottalAmount(req.session.user._id)
       
     }else if (req.body['payment']=='razorpay'){
       
-      userHelpers.generateRazorPay(orderId,totalAmount).then((response)=>{
+      userHelpers.generateRazorPay(orderId,totalAmount,userId).then((response)=>{
         
         res.json({data:response, razorpaySuccess:true})
 
@@ -373,6 +374,8 @@ router.get('/success', (req, res) => {
         }
     }]
       };
+
+      userHelpers.deleteCartPaypal(req.session.user._id)
 
   paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
     if (error) {

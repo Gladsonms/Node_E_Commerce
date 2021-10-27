@@ -603,7 +603,7 @@ module.exports = {
   },
 
 
-  generateRazorPay:(orderId,totalAmount)=>{
+  generateRazorPay:(orderId,totalAmount,userId)=>{
 
     return new Promise((resolve,reject)=>{
       var options = {  
@@ -618,6 +618,10 @@ module.exports = {
           } 
           else 
           {
+            db.get()
+            .collection(collection.CART_COLLECTIONS)
+            .deleteOne({user: ObjectId(userId) }) 
+                  
             console.log("new order");
             console.log(order);
            resolve(order)  
@@ -712,6 +716,12 @@ CheckPassword:(oldpass,userId,newPass)=>{
   })
   })
 
+},
+deleteCartPaypal:(user)=>{
+  console.log(user);
+  db.get().collection(collection.CART_COLLECTIONS).deleteOne({user:ObjectId(user)}).then((response)=>{
+     resolve(response)
+  })
 }
 
 };

@@ -263,9 +263,23 @@ router.get("/ordermangment",async(req,res)=>{
      
   })
    ///Offer mnagmaent
-    router.get("/product-offer",(req,res)=>{
-        res.render('admin/productoffer',{admin:true})
+    router.get("/product-offer",async(req,res)=>{
+      let product=productHelpers.getAllProducts().then((product)=>{
+      let  offerProduct=productHelpers.getOfferProduct().then((offerProduct)=>{
+
+        res.render('admin/productoffer',{admin:true,product,offerProduct})
+             })
+      })
     })
+    router.post("/add-new-productoffer",(req,res)=>{
+      let  product=req.body.productname
+      productHelpers.addNewProductOffer(req.body).then(()=>{
+
+      })
+      
+    })
+   
+
 
     router.get("/category-offer",(req,res)=>{
       res.render('admin/categoryOffer',{admin:true})
