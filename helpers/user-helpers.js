@@ -588,9 +588,7 @@ module.exports = {
 
       
     //let address = await db.get().collection(collection.ADDRESS_COLLECTIONS).findOne({"address.id":uaddress});
-    console.log("delete address");
-    console.log(userId);
-    console.log(addId);
+   
         db.get()
           .collection(collection.ADDRESS_COLLECTIONS)
           .updateOne(
@@ -687,6 +685,31 @@ getUserProfile:(userId)=>{
     let profile=await db.get().collection(collection.USER_COLLECTIONS).findOne({_id:ObjectId(userId)})
   
     resolve (profile)
+  })
+
+},
+CheckPassword:(oldpass,userId,newPass)=>{
+  return new Promise(async(resolve,rejcet)=>{
+  console.log("check password");
+  console.log(oldpass);
+  console.log(userId);
+  console.log(newPass);
+  let user=await db.get().collection(collection.USER_COLLECTIONS).findOne({_id:ObjectId(userId)})
+  bcyrpt.compare(oldpass,user.password).then(async(status)=>{
+    console.log(status);
+    if(status)
+    {
+      
+      newPass= await bcyrpt.hash(newPass,100)
+      console.log("new pass");
+    //  console.log(newPass);
+    db.get().collection(collection.USER_COLLECTIONS).updateOne({_id:ObjectId(userId)},{$set:{password:newPass}})
+    }
+    else
+    {
+      console.log("both paSSWORD ARE NOT SAME");
+    }
+  })
   })
 
 }

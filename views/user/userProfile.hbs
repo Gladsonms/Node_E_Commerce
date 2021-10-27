@@ -122,25 +122,25 @@
 
                                                     <form action="/change-password" id="change">
                                                         <div class="md-form md-outline mx-sm-3 mb-2">
-                                                            <input type="password" id="newPass" class="form-control">
+                                                            <input type="password" id="newPass" class="form-control" name="oldpassowrd">
                                                             <label data-error="wrong" data-success="right"
                                                                 for="newPass">Current password</label>
                                                         </div>
 
                                                         <div class="md-form md-outline mx-sm-3 mb-2">
-                                                            <input type="password" id="newPass" class="form-control">
+                                                            <input type="password" id="newPass" class="form-control" name="newpassword">
                                                             <label data-error="wrong" data-success="right"
                                                                 for="newPass">New password</label>
                                                         </div>
 
                                                         <div class="md-form md-outline mx-sm-3 mb-2">
                                                             <input type="password" id="newPassConfirm"
-                                                                class="form-control">
+                                                                class="form-control" name="confirmnewpassword">
                                                             <label data-error="wrong" data-success="right"
                                                                 for="newPassConfirm">Confirm password</label>
                                                         </div>
 
-                                                        <button type="submit" class="btn btn-primary mb-4">Change
+                                                        <button  type="submit" class="btn btn-primary mb-4">Change
                                                             password</button>
 
                                                     </form>
@@ -164,7 +164,7 @@
                                         <h5 class="mb-0 py-2">Your address</h5>
                                     </div>
                                     <div class="p-4">
-                                        <form>
+                                        {{!-- <form> --}}
                                             {{#each useraddres.address}}
                                             <div class="form-group">
                                                 <span for="fb">Adresss</span>
@@ -182,7 +182,7 @@
 
 
                                             <button type="submit" class="btn btn-primary">Save & Update</button>
-                                        </form>
+                                        {{!-- </form> --}}
                                     </div>
                                 </div>
                             </div>
@@ -241,7 +241,7 @@
     document.getElementById('userDetails').onsubmit = e => {
         e.preventDefault();
 
-
+ 
         $.ajax({
             url: "/profile/user-details",
             data: $('#userDetails').serialize(),
@@ -257,15 +257,14 @@
 
         })
     }
+    
     document.getElementById('change').onsubmit=e=>{
         e.preventDefault();
-        $.ajax({
-            url:"/change-password",
-            data:$('#change').serialize(),
-          method:post,
-          success:(response)=>{
-
-          }
-        })
+        
+      $.ajax({
+          url:"/change-password",
+          method:"post",
+          data:$("#change").serialize()
+      })
     }
 </script>

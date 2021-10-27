@@ -110,6 +110,11 @@ router.post("/productmanagmnet/editproduct/:id", (req, res) => {
     let image3 = req.body.image3_b64;
     let image4 = req.body.image4_b64;
 
+        
+    //  console.log(image1);
+    //  console.log(image2);
+    //  console.log(image3);
+    //  console.log(image4);
 
     const path1 = `./public/product-images/product-image1/${id}.jpg`;
     const path2 = `./public/product-images/product-image2/${id}.jpg`;
@@ -120,6 +125,8 @@ router.post("/productmanagmnet/editproduct/:id", (req, res) => {
     const base64Data2 = image2.replace(/^data:([A-Za-z-+/]+);base64,/, "");
     const base64Data3 = image3.replace(/^data:([A-Za-z-+/]+);base64,/, "");
     const base64Data4 = image4.replace(/^data:([A-Za-z-+/]+);base64,/, "");
+    
+
 
     fs.writeFileSync(path1, base64Data1, { encoding: "base64" });
     fs.writeFileSync(path2, base64Data2, { encoding: "base64" });
@@ -255,7 +262,18 @@ router.get("/ordermangment",async(req,res)=>{
     //productHelpers.changeOrderStatus()
      
   })
+   ///Offer mnagmaent
+    router.get("/product-offer",(req,res)=>{
+        res.render('admin/productoffer',{admin:true})
+    })
 
+    router.get("/category-offer",(req,res)=>{
+      res.render('admin/categoryOffer',{admin:true})
+  })
+
+  router.get("/add-coupon",(req,res)=>{
+    res.render('admin/coupon-mange',{admin:true})
+  })
 
 
 

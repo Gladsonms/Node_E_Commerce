@@ -287,7 +287,7 @@ router.post("/cart/checkout/addAddress", (req, res) => {
 
 });
   router.post("/delete-cart-product",(req,res)=>{
-    console.log("dlete cart product");
+   
     userId=req.session.user._id;
     userHelpers.deleteFinalCart(userId).then((response)=>{
 
@@ -426,10 +426,10 @@ router.post("/oders/deleteaddress",(req,res)=>{
    uname=req.body.name
    addId=req.body.addressId
    userId=req.session.user._id
-   console.log(userId);
+   
   
 userHelpers.deleteAdddress(uaddress,userId,addId,uname).then((response)=>{
-  console.log("this is deleted address")
+  
   res.json({status:true})
 })
 
@@ -478,6 +478,11 @@ userHelpers.updateUserInfo(name,phone,email,userId).then((response)=>{
 
 
 router.post('/change-password',(req,res)=>{
-  console.log(req.body);
+let oldPass=req.body.oldpassowrd
+let userId=req.session.user._id
+let newPass=req.body.newpassword
+console.log(req.body);
+userHelpers.CheckPassword(oldPass,userId,newPass)
+
 })
 module.exports = router;
