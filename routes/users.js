@@ -43,9 +43,12 @@ const verifyLogin = async(req, res, next) => {
   if (req.session.loggedIn) {
     next();
   } else {
+    let category=await productHelpers.getCategory()
+    let  offerProduct=productHelpers.getOfferProduct() 
    await productHelpers.getAllProducts().then(async (products) => {
-   
-      res.render("user/index", { products });
+    console.log(offerProduct);
+    console.log("offer produvt ");
+      res.render("user/index", { products,category,offerProduct });
     });
   }
 };
@@ -58,9 +61,12 @@ router.get("/", verifyLogin, async function (req, res, next) {
   if (req.session.user) {
     var cartCount = await userHelpers.getCartCount(req.session.user._id);
   }
+  let category=await productHelpers.getCategory()
   productHelpers.getAllProducts().then(async (products) => {
-  
-    res.render("user/index", { user, products, cartCount });
+    let  offerProduct=productHelpers.getOfferProduct()
+    console.log(offerProduct);
+    console.log("offer produvt 1");
+    res.render("user/index", { user, products, cartCount, category,offerProduct});
   });
 });
 router.get("/login", checkUserAuth, function (req, res, next) {

@@ -14,34 +14,7 @@
 								
 							</li>
 
-							<li class="dropdown">
-								<a href="product-grid-left-sidebar.html" title="Product" style="color:black">Product</a>
-								<div class="dropdown-menu">
-									<ul>
-										<li class="has-image">
-											<img src="img/product/product-category-1.png" alt="Product Category Image">
-											<a href="product-grid-left-sidebar.html" title="Vegetables">Vegetables</a>
-										</li>
-										<li class="has-image">
-											<img src="img/product/product-category-2.png" alt="Product Category Image">
-											<a href="product-grid-left-sidebar.html" title="Fruits">Fruits</a>
-										</li>
-										<li class="has-image">
-											<img src="img/product/product-category-3.png" alt="Product Category Image">
-											<a href="product-grid-left-sidebar.html" title="Bread">Bread</a>
-										</li>
-										<li class="has-image">
-											<img src="img/product/product-category-4.png" alt="Product Category Image">
-											<a href="product-grid-left-sidebar.html" title="Juices">Juices</a>
-										</li>
-										<li class="has-image">
-											<img src="img/product/product-category-5.png" alt="Product Category Image">
-											<a href="product-grid-left-sidebar.html" title="Tea and coffee">Tea and
-												coffee</a>
-										</li>
-									</ul>
-								</div>
-							</li>
+							
 
 						
 
@@ -60,21 +33,23 @@
 								</div>
 							</li> --}}
 									<li class="dropdown">
-							<a href="#" title="Page">Page</a>
+							<a href="#" title="Page">Category</a>
 							<div class="dropdown-menu">
 								<ul>
+									{{#each category}}
 									<li class="dropdown-submenu">
-										<a href="product-grid-left-sidebar.html" title="Product List">Product List</a>
-										<div class="dropdown-menu level2">
+										<a href="product-grid-left-sidebar.html" title="Product List">{{this.category}}</a>
+										{{!-- <div class="dropdown-menu level2">
 											<ul>
 												<li><a href="product-grid-left-sidebar.html" title="Product Grid - Left Sidebar">Product Grid - Left Sidebar</a></li>
 												<li><a href="product-grid-right-sidebar.html" title="Product Grid - Right Sidebar">Product Grid - Right Sidebar</a></li>
 												<li><a href="product-grid-full-width.html" title="Product Grid - Full Width">Product Grid - Full Width</a></li>
 												<li><a href="product-list-left-sidebar.html" title="Product List - Left Sidebar">Product List - Left Sidebar</a></li>
 											</ul>
-										</div>
+										</div> --}}
 									</li>
-									<li class="dropdown-submenu">
+									{{/each}}
+									{{!-- <li class="dropdown-submenu">
 										<a href="product-detail-left-sidebar.html" title="Product List">Product Detail</a>
 										<div class="dropdown-menu level2">
 											<ul>
@@ -83,10 +58,10 @@
 												<li><a href="product-detail-full-width-2.html" title="Product List - Full Width 2">Product Detail - Full Width 2</a></li>
 											</ul>
 										</div>
-									</li>
+									</li> --}}
 								
 					
-									<li class="dropdown-submenu">
+									{{!-- <li class="dropdown-submenu">
 										<a href="#" title="User">User</a>
 										<div class="dropdown-menu level2">
 											<ul>
@@ -96,7 +71,7 @@
 												<li><a href="#" title="My Wishlists">My Wishlists</a></li>
 											</ul>
 										</div>
-									</li>
+									</li> --}}
 								
 								</ul>
 							</div>

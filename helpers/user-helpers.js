@@ -113,13 +113,15 @@ module.exports = {
     let proObj = {
       item: ObjectId(proId),
       quantity: 1,
+
     };
+   
     return new Promise(async (resolve, rejcet) => {
       let userCart = await db
         .get()
         .collection(collection.CART_COLLECTIONS)
         .findOne({ user: ObjectId(userId) });
-
+     
 
       if (userCart) {
         let proExist = userCart.products.findIndex(
@@ -200,6 +202,8 @@ module.exports = {
         .toArray();
 
       resolve(cartItems);
+      console.log("get cart items");
+      console.log(cartItems);
     });
   },
   getCartCount: (userId) => {

@@ -29,6 +29,9 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
 
             let product = await db.get().collection(collection.PRODUCT_COLLECTIONS).find({}).toArray()
+            
+        
+            
             resolve(product)
         })
     },
@@ -181,7 +184,7 @@ module.exports = {
         let productname=offerData.productname
         let offerPercent=parseInt(offerData.offerpercentage)
         let expdate=offerData.expdate
-        let offername=offerData.offername
+      ///  let offername=offerData.offername
     
         return new Promise(async(resolve,reject)=>{
 
@@ -203,10 +206,12 @@ module.exports = {
 
     },
     getOfferProduct:()=>{
-       return new Promise(async(resolve,reject)=>{
-        let offerProduct=await db.get().collection(collection.PRODUCT_COLLECTIONS).find({offerPrice:{$exists:true}}).toArray()
+       return new Promise((resolve,reject)=>{
+         db.get().collection(collection.PRODUCT_COLLECTIONS).find({offerPrice:{$exists:true}}).toArray().then((response)=>{
+
+            resolve(response)
+        })
            
-          resolve(offerProduct)
         })
        
        

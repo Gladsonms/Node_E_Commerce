@@ -31,10 +31,7 @@
                                         <form id="productOffer">
                                             <div class="form-row">
                                                
-                                                <div class="form-group col-md-6">
-                                                    <label for="offername">Offer Name</label>
-                                                    <input type="text" class="form-control" id="offername" placeholder="Offer name" name="offername">
-                                                </div>
+                                                
                                                  <div class="form-group col-md-6">
                                                     <label for="Product name">Enter Product Name</label>
                                                     <select type="text" class="form-control" id="productname" placeholder="productname" name="productname">
@@ -42,13 +39,14 @@
                                                         <option value="{{this.product}}">{{this.product}}</option>
                                                           {{/each}}
                                                         </select>
+                                                         <p class="text-danger" id="productError"></p>
                                                 </div>
                                             </div>
                                             
                                             <div class="form-row">
                                                 <div class="form-group col-md-6">
                                                     <label for="inputZip">Offer percentage</label>
-                                                    <input type="text" class="form-control" id="offerpercentage" name="offerpercentage" placeholder="percetage">
+                                                    <input type="number" class="form-control" id="offerpercentage" name="offer percentage %" placeholder="percetage" maxlength="2">
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label for="expdate">Offer Exiry Date</label>
@@ -58,7 +56,7 @@
                                                 
                                             </div>
                                         
-                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                            <button type="submit" class="btn btn-primary" >Submit</button>
                                         </form>
                                     </div>
                                 </div>
@@ -167,7 +165,67 @@
 })
                     }
 
+</script>
+{{!-- <script>
+                    //valiadtion
+                    var productField= document.getElementById('productname')
+      var validproduct=false;
+      productField.addEventListener('input',(e)=>{
+          console.log("got it")
+          console.log(e.target.value)
+          var product=productField.value
+          if(product.length==0)
+          {
+              text="please enter Product name",
+              productError.innerHTML =text
+              validproduct=false
+          }
+          else
+          {
+           validproduct=true;
+        productError.innerHTML=" ";
+          }
+      })
+
+                  var dateField= document.getElementById('expdate')
+      var validdate=false;
+      adteField.addEventListener('input',(e)=>{
+          console.log("got it")
+          console.log(e.target.value)
+          var date=dateField.value
+          if(date.length==0)
+          {
+              text="please enter Product name",
+              productError.innerHTML =text
+              dateproduct=false
+          }
+          else
+          {
+           validdate=true;
+        dateError.innerHTML=" ";
+          }
+      })
+
+                  var percentageFiled= document.getElementById('offerpercentage')
+      var validPercet=false;
+      percentageFiled.addEventListener('input',(e)=>{
+          console.log("got it")
+          console.log(e.target.value)
+          var percentage=percentageFiled.value
+          if(percentage.length==0)
+          {
+              text="please enter Product name",
+              percentageError.innerHTML =text
+              validPercet=false
+          }
+          else
+          {
+           validPercet=true;
+        percentageError.innerHTML=" ";
+          }
+      })
 
 
+              
                     
-                </script>
+                </script> --}}

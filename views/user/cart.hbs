@@ -44,7 +44,11 @@
 										</td>
 									
 										<td class="text-center">
+											{{#if this.product.offerPrice}}
+											{{this.product.offerPrice}}
+											{{else}}
 											{{this.product.price}}
+											{{/if}}
 										</td>
 										<td>
 											<div class="product-quantity">
