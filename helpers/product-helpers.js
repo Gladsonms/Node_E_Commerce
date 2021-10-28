@@ -182,9 +182,12 @@ module.exports = {
     
     addNewProductOffer:(offerData,product)=>{
         let productname=offerData.productname
+        console.log(offerData.offerpercentage);
         let offerPercent=parseInt(offerData.offerpercentage)
         let expdate=offerData.expdate
       ///  let offername=offerData.offername
+      console.log(offerPercent);
+      console.log(product.price);
     
         return new Promise(async(resolve,reject)=>{
 
@@ -206,9 +209,10 @@ module.exports = {
 
     },
     getOfferProduct:()=>{
-       return new Promise((resolve,reject)=>{
+       return new Promise(async(resolve,reject)=>{
          db.get().collection(collection.PRODUCT_COLLECTIONS).find({offerPrice:{$exists:true}}).toArray().then((response)=>{
-
+             
+             console.log("rrrrrrr",response);
             resolve(response)
         })
            

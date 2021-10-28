@@ -28,7 +28,7 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <form>
+                                        <form id="category">
                                             <div class="form-row">
                                                
                                                 
@@ -115,4 +115,17 @@
 
                     today = yyyy + '-' + mm + '-' + dd;
                     $('#expdate').attr('min',today);
+
+                    document.getElementById('category').onsubmit=e=>{
+                        e.preventDefault();
+                        alert(category)
+                        $.ajax({
+
+                            url:"/add-category-offer",
+                            method:"post",
+                            data:$('#category').serialize(),
+
+                        })
+                    }
+
                 </script>

@@ -46,8 +46,7 @@ const verifyLogin = async(req, res, next) => {
     let category=await productHelpers.getCategory()
     let  offerProduct=productHelpers.getOfferProduct() 
    await productHelpers.getAllProducts().then(async (products) => {
-    console.log(offerProduct);
-    console.log("offer produvt ");
+    
       res.render("user/index", { products,category,offerProduct });
     });
   }
@@ -64,8 +63,7 @@ router.get("/", verifyLogin, async function (req, res, next) {
   let category=await productHelpers.getCategory()
   productHelpers.getAllProducts().then(async (products) => {
     let  offerProduct=productHelpers.getOfferProduct()
-    console.log(offerProduct);
-    console.log("offer produvt 1");
+    
     res.render("user/index", { user, products, cartCount, category,offerProduct});
   });
 });

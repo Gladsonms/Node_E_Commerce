@@ -275,6 +275,7 @@ router.get("/ordermangment",async(req,res)=>{
     router.post("/add-new-productoffer",(req,res)=>{
      
       let  product=req.body.productname
+      console.log(req.body);
       productHelpers.addNewProductOffer(req.body,product).then((response)=>{
             res.json({response})
       })
@@ -300,6 +301,10 @@ router.get("/ordermangment",async(req,res)=>{
       
     })
     
+   })
+
+   router.post("/add-category-offer",(req,res)=>{
+     console.log(req.body);
    })
 
 

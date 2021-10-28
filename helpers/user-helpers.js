@@ -200,10 +200,12 @@ module.exports = {
           },
         ])
         .toArray();
+           
 
       resolve(cartItems);
       console.log("get cart items");
       console.log(cartItems);
+      //console.log(total);
     });
   },
   getCartCount: (userId) => {
@@ -306,6 +308,8 @@ module.exports = {
   },
   getSubTotal: (userId) => {
     return new Promise(async (resolve, reject) => {
+
+
       let subtotal = await db
         .get()
         .collection(collection.CART_COLLECTIONS)
@@ -708,10 +712,13 @@ CheckPassword:(oldpass,userId,newPass)=>{
       
 
       
-      newPass= await bcyrpt.hash(newPass,100)
+      newPass= await bcyrpt.hash(newPass,10)
      
     //  console.log(newPass);
-    db.get().collection(collection.USER_COLLECTIONS).updateOne({_id:ObjectId(userId)},{$set:{password:newPass1}})
+    db.get().collection(collection.USER_COLLECTIONS).updateOne({_id:ObjectId(userId)},{$set:{password:newPass}}).then((response)=>{
+     console.log(response);
+     resolve(response)
+    })
     }
     else
     {
