@@ -6,6 +6,7 @@ const productHelpers = require("../helpers/product-helpers");
 const { addCategory } = require("../helpers/product-helpers");
 var router = express.Router();
 const fs = require("fs");
+const { resolve } = require("path");
 
 const checkAuth = (req, res, next) => {
   if (req.session.isLoggedIn) {
@@ -272,9 +273,10 @@ router.get("/ordermangment",async(req,res)=>{
       })
     })
     router.post("/add-new-productoffer",(req,res)=>{
+     
       let  product=req.body.productname
-      productHelpers.addNewProductOffer(req.body).then(()=>{
-
+      productHelpers.addNewProductOffer(req.body,product).then((response)=>{
+            res.json({response})
       })
       
     })
@@ -289,7 +291,16 @@ router.get("/ordermangment",async(req,res)=>{
     res.render('admin/coupon-mange',{admin:true})
   })
 
+   router.post("/delete-product-offer",(req,res)=>{
+    console.log(req.body);
+    let productId=req.body.proId
+    productHelpers.removeOffer(productId).then((response)=>{
 
+            res.json({status:true})
+      
+    })
+    
+   })
 
 
 //logout

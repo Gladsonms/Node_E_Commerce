@@ -177,7 +177,7 @@ module.exports = {
         })
     },
     
-    addNewProducOffer:(offerData,product)=>{
+    addNewProductOffer:(offerData,product)=>{
         let productname=offerData.productname
         let offerPercent=parseInt(offerData.offerpercentage)
         let expdate=offerData.expdate
@@ -187,10 +187,12 @@ module.exports = {
 
             let product=await db.get().collection(collection.PRODUCT_COLLECTIONS).findOne({product:productname})
             
-            let offerPrice=product.price-(product.price*offerPercent/100)
+            let offerPrice=(product.price-(product.price*offerPercent/100))
+            Math.round(offerPrice)
+            console.log(offerPrice);
           
             db.get().collection(collection.PRODUCT_COLLECTIONS).updateOne({_id:product._id},{$set:{offerPrice:offerPrice,expiryDate:expdate}}).then((response)=>{
-                console.log(response);
+                resolve(response)
             })
         })
     
@@ -210,6 +212,14 @@ module.exports = {
        
         
 
+    },
+    removeOffer:(productId)=>{
+        return new Promise(async(resolve,reject)=>{
+        await db.get().collection(collection.PRODUCT_COLLECTIONS).updateOne({_id:ObjectId(productId)},{$unset:{offerPrice:"",expiryDate:""}}).then((response)=>{
+            console.log(response);
+                 resolve()
+        })
+        })
     }
 
 }

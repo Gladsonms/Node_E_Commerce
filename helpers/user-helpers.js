@@ -293,6 +293,7 @@ module.exports = {
       resolve(total[0].total);
 
       if (total[0].total == 0) {
+
         resolve(total[0].total);
       } else {
         resolve();
@@ -694,26 +695,26 @@ getUserProfile:(userId)=>{
 },
 CheckPassword:(oldpass,userId,newPass)=>{
   return new Promise(async(resolve,rejcet)=>{
-  console.log("check password");
-  console.log(oldpass);
-  console.log(userId);
-  console.log(newPass);
+  
   let user=await db.get().collection(collection.USER_COLLECTIONS).findOne({_id:ObjectId(userId)})
   bcyrpt.compare(oldpass,user.password).then(async(status)=>{
-    console.log(status);
+  
     if(status)
     {
       
+
+      
       newPass= await bcyrpt.hash(newPass,100)
-      console.log("new pass");
+     
     //  console.log(newPass);
-    db.get().collection(collection.USER_COLLECTIONS).updateOne({_id:ObjectId(userId)},{$set:{password:newPass}})
+    db.get().collection(collection.USER_COLLECTIONS).updateOne({_id:ObjectId(userId)},{$set:{password:newPass1}})
     }
     else
     {
       console.log("both paSSWORD ARE NOT SAME");
     }
   })
+  
   })
 
 },

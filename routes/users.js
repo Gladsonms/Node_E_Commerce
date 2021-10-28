@@ -332,14 +332,14 @@ let totalAmount= await userHelpers.getTottalAmount(req.session.user._id)
                 "items": [{
                     "name": "Red Sox Hat",
                     "sku": "001",
-                    "price": "25.00",
+                    "price": totalAmount,
                     "currency": "USD",
                     "quantity": 1
                 }]
             },
             "amount": {
                 "currency": "USD",
-                "total": "25.00"
+                "total": totalAmount
             },
             "description": "Hat for the best team ever"
         }]  
@@ -484,8 +484,10 @@ router.post('/change-password',(req,res)=>{
 let oldPass=req.body.oldpassowrd
 let userId=req.session.user._id
 let newPass=req.body.newpassword
-console.log(req.body);
-userHelpers.CheckPassword(oldPass,userId,newPass)
+
+userHelpers.CheckPassword(oldPass,userId,newPass).then(()=>{
+  res.redirect("/profile")
+})
 
 })
 module.exports = router;

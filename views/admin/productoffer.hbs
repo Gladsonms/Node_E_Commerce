@@ -87,7 +87,7 @@
                                                         <th scope="row">{{this.product}}</th>
                                                         <td>{{this.offerPrice}}</td>
                                                         <td>{{this.expiryDate}}</td>
-                                                      <td> <i class="fa fa-trash"></i></td> 
+                                                      <td> <button class="btn btn-sm btn-danger" onclick="deleteOffer('{{this._id}}')"><i class="fa fa-trash"></i></button></td> 
                                                         
                                                     </tr>
                                                     {{/each}}
@@ -105,6 +105,17 @@
                 </div>
 
                 <script>
+
+                     //disable pervious date
+                      var today = new Date();
+                     var dd = String(today.getDate()).padStart(2, '0');
+                    var mm = String(today.getMonth() + 1).padStart(2, '0');
+                    var yyyy = today.getFullYear();
+
+                    today = yyyy + '-' + mm + '-' + dd;
+                    $('#expdate').attr('min',today);
+
+                   //add offer
                     document.getElementById('productOffer').onsubmit=e=>{
                         e.preventDefault();
                         
@@ -113,8 +124,50 @@
                             data:$('#productOffer').serialize(),
                             method:"POST",
                             success:(response)=>{
+                             
+                                if(response){
+                                    window.location.relod()
+                                }
 
                             }
                         })
                     }
+
+                    function deleteOffer(id){
+                        Swal.fire({
+  title: 'Are you sure?',
+  text: "You won't be able to revert this!",
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Yes, delete it!'
+}).then((result) => {
+  if (result.isConfirmed) {
+                        $.ajax({
+                            url:"/admin/delete-product-offer",
+                            method:"POST",
+                            data:{
+                                proId:id
+                            },
+                            success:(response)=>{
+                           
+                                if(response.status){
+                                    window.location.reload()
+                                }
+                            }
+                        
+                        })
+                        }
+  				else{
+
+
+					}
+				
+})
+                    }
+
+
+
+                    
                 </script>
