@@ -273,11 +273,13 @@
 											<div class="product-right col-md-7 col-sm-7 col-xs-12">
 												<div class="product-info">
 													<div class="product-price">
-														
+														      {{#if product.productOffer}}
 														<span class="sale-price">₹{{products.price}}</span>
 
-														<span class="base-price">₹{{products.offerPrice}}</span>
-														
+														<span class="base-price">₹{{products.productOffer}}</span>
+														{{else}}
+														<span class="sale-price">₹{{products.price}}</span>
+														{{/if}}
 													</div>
 													
 													<div class="product-stock">

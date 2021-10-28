@@ -231,11 +231,15 @@ router.get("/cart", verifyLogin, async (req, res) => {
   {
     
   let totalAmount = await userHelpers.getTottalAmount(req.session.user._id);
-  let subtotal = await userHelpers.getSubTotal(req.session.user._id)
-  
-  products = products.map((i,index)=>{return {...i,subtotal:subtotal[index]}})
+  // let subtotal = await userHelpers.getSubTotal(req.session.user._id)
+  let totalPrice =0
 
-  res.render("user/cart", { products, user: req.session.user, totalAmount });
+  for(var i in totalAmount){
+    totalPrice = totalPrice + totalAmount[i].subtotal
+  }
+  //products = products.map((i,index)=>{return {...i,subtotal:subtotal[index]}})
+
+  res.render("user/cart", { products, user: req.session.user, totalAmount,totalPrice });
   }
   else {
 
@@ -262,10 +266,18 @@ router.post("/change-product-quantity", verifyLogin, (req, res, next) => {
 });
 
 router.get("/cart/checkout", verifyLogin, async (req, res) => {
-  let total = await userHelpers.getTottalAmount(req.session.user._id);
+ // let total = await userHelpers.getTottalAmount(req.session.user._id);
   let useraddres = await userHelpers.getUserAddress(req.session.user._id)
-  
-  res.render("user/checkout", { total, user: req.session.user, useraddres});
+  let totalAmount = await userHelpers.getTottalAmount(req.session.user._id);
+  // let subtotal = await userHelpers.getSubTotal(req.session.user._id)
+  let totalPrice =0
+
+  for(var i in totalAmount){
+    totalPrice = totalPrice + totalAmount[i].subtotal
+  }
+  console.log(totalAmount);
+  console.log("tottal amounr");
+  res.render("user/checkout", {  user: req.session.user, useraddres,totalAmount,totalPrice});
 });
 
 router.post("/remove-item", verifyLogin,async  (req, res) => {
@@ -303,8 +315,14 @@ router.post("/place-order",async(req,res)=>{
  
 
 let product=await userHelpers.getCartProductList(req.session.user._id)
-let totalAmount= await userHelpers.getTottalAmount(req.session.user._id)
+//let totalAmount= await userHelpers.getTottalAmount(req.session.user._id)
+let totalAmount = await userHelpers.getTottalAmount(req.session.user._id);
+  // let subtotal = await userHelpers.getSubTotal(req.session.user._id)
+  let totalPrice =0
 
+  for(var i in totalAmount){
+    totalPrice = totalPrice + totalAmount[i].subtotal
+  }
    let user=req.session.user
    let userId=req.session.user._id
    userHelpers.PlaceOrder(user._id,req.body,product,totalAmount).then((orderId)=>{
@@ -316,7 +334,7 @@ let totalAmount= await userHelpers.getTottalAmount(req.session.user._id)
       
     }else if (req.body['payment']=='razorpay'){
       
-      userHelpers.generateRazorPay(orderId,totalAmount,userId).then((response)=>{
+      userHelpers.generateRazorPay(orderId,totalPrice,userId).then((response)=>{
         
         res.json({data:response, razorpaySuccess:true})
 
@@ -336,14 +354,14 @@ let totalAmount= await userHelpers.getTottalAmount(req.session.user._id)
                 "items": [{
                     "name": "Red Sox Hat",
                     "sku": "001",
-                    "price": totalAmount,
-                    "currency": "USD",
+                    "price": totalPrice,
+                    "currency": "INR",
                     "quantity": 1
                 }]
             },
             "amount": {
-                "currency": "USD",
-                "total": totalAmount
+                "currency": "INR",
+                "total": totalPrice
             },
             "description": "Hat for the best team ever"
         }]  

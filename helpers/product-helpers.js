@@ -193,11 +193,11 @@ module.exports = {
 
             let product=await db.get().collection(collection.PRODUCT_COLLECTIONS).findOne({product:productname})
             
-            let offerPrice=(product.price-(product.price*offerPercent/100))
-            Math.round(offerPrice)
-            console.log(offerPrice);
+            let offerPrice=Math.round(product.price-(product.price*offerPercent/100))
+            //Math.round(offerPrice)
+            //console.log(offerPrice);
           
-            db.get().collection(collection.PRODUCT_COLLECTIONS).updateOne({_id:product._id},{$set:{offerPrice:offerPrice,expiryDate:expdate}}).then((response)=>{
+            db.get().collection(collection.PRODUCT_COLLECTIONS).updateOne({_id:product._id},{$set:{productOffer:offerPrice,expiryDate:expdate}}).then((response)=>{
                 resolve(response)
             })
         })
@@ -210,7 +210,7 @@ module.exports = {
     },
     getOfferProduct:()=>{
        return new Promise(async(resolve,reject)=>{
-         db.get().collection(collection.PRODUCT_COLLECTIONS).find({offerPrice:{$exists:true}}).toArray().then((response)=>{
+         db.get().collection(collection.PRODUCT_COLLECTIONS).find({productOffer:{$exists:true}}).toArray().then((response)=>{
              
              console.log("rrrrrrr",response);
             resolve(response)
@@ -224,7 +224,7 @@ module.exports = {
     },
     removeOffer:(productId)=>{
         return new Promise(async(resolve,reject)=>{
-        await db.get().collection(collection.PRODUCT_COLLECTIONS).updateOne({_id:ObjectId(productId)},{$unset:{offerPrice:"",expiryDate:""}}).then((response)=>{
+        await db.get().collection(collection.PRODUCT_COLLECTIONS).updateOne({_id:ObjectId(productId)},{$unset:{productOffer:"",expiryDate:""}}).then((response)=>{
             console.log(response);
                  resolve()
         })

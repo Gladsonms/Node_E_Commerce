@@ -257,7 +257,9 @@ module.exports = {
   },
   getTottalAmount: (userId) => {
     return new Promise(async (resolve, reject) => {
-      let total = await db
+      console.log("userid");
+      console.log(userId);
+      let total =await  db
         .get()
         .collection(collection.CART_COLLECTIONS)
         .aggregate([
@@ -286,24 +288,34 @@ module.exports = {
               item: 1,
               quantity: 1,
               product: { $arrayElemAt: ["$product", 0] },
-            },
+            }
           },
-          {
-            $group: {
-              _id: null,
-              total: { $sum: { $multiply: ["$quantity", "$product.price"] } },
-            },
-          },
-        ])
-        .toArray();
-      resolve(total[0].total);
-
-      if (total[0].total == 0) {
-
-        resolve(total[0].total);
-      } else {
-        resolve();
-      }
+          // {
+          //   $group: {
+          //     _id: null,
+          //     total: { $sum: { $multiply: ["$quantity", "$product.price"] } },
+          //   },
+          // },
+          // variable = result.map((i)=>i.product.offerprice?{...i,subtotal:(i.product.offrprice*i.quantity)}:{..i,subtotal:(i.product.price*i.qauntity)})
+        ]).toArray().then((result)=>{
+          console.log(result)
+          let actualPrice=result.map((i)=>i.product.productOffer?{...i,subtotal:(i.product.productOffer*i.quantity)}:{...i,subtotal:(i.product.price*i.quantity)})
+            console.log("actula price");
+            console.log(actualPrice); 
+            resolve(actualPrice)
+        })
+       
+       
+      //  let actualPrice=result.map((i)=>i.product.productOffer?{...i,subtotal:(i.product.productOffer*i.quantity)}:{...i,subtotal:(i.product.price*i.quantity)})
+      //  console.log("actula price");
+      //  console.log(actualPrice);
+      
+         
+        
+      //   console.log(total)
+      // resolve(total[0].total);
+      
+    
     });
   },
   getSubTotal: (userId) => {

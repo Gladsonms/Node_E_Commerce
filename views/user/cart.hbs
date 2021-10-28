@@ -44,8 +44,8 @@
 										</td>
 									
 										<td class="text-center">
-											{{#if this.product.offerPrice}}
-											{{this.product.offerPrice}}
+											{{#if this.product.productOffer}}
+											{{this.product.productOffer}}
 											{{else}}
 											{{this.product.price}}
 											{{/if}}
@@ -106,7 +106,7 @@
 									</tr>
 									<tr class="cart-total">
 										<td colspan="2" class="total text-right">Total</td>
-										<td colspan="1" class="total text-center"><span id="total">₹{{totalAmount}}</span></td>
+										<td colspan="1" class="total text-center"><span id="total">₹{{totalPrice}}</span></td>
 									</tr>
 								</tfoot>
 							</table>
