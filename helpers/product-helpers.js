@@ -209,8 +209,6 @@ module.exports = {
     getOfferProduct:()=>{
        return new Promise(async(resolve,reject)=>{
          db.get().collection(collection.PRODUCT_COLLECTIONS).find({productOffer:{$exists:true}}).toArray().then((response)=>{
-             
-            
             resolve(response)
         })
            
@@ -257,7 +255,7 @@ module.exports = {
                    
                     let categoryOffer=Math.round(category[i].price-(category[i].price*offerpercentage/100))
                    
-                    db.get().collection(collection.PRODUCT_COLLECTIONS).updateOne({_id:ObjectId(productId)},{$set:{categoryOffer:categoryOffer,categoryExpDate:catExpdate}}).then((response)=>{
+                    db.get().collection(collection.PRODUCT_COLLECTIONS).updateOne({_id:ObjectId(productId)},{$set:{productOffer:categoryOffer,expiryDate:catExpdate}}).then((response)=>{
                    
                     resolve(response)
                     })
@@ -271,6 +269,27 @@ module.exports = {
         // })
       
     },
+    addCoupan:(data)=>{
+        return new Promise((resolve,reject)=>{
+            
+            
+            db.get().collection(collection.COUPAN_COLLECTIONS).insertOne({couupanCode:data.coupancode,discount:data.discount,maxAmount:data.maxAmount,minAmount:data.minAmount,expdate:data.expdate}).then((response)=>{
+                console.log(response);
+                resolve()
+            })
+        })
+
+    },
+    getAllCoupons:()=>{
+        console.log("sgdhkldshi");
+        return new Promise(async(resolve,reject)=>{
+           let coupan= await db.get().collection(collection.COUPAN_COLLECTIONS).find().toArray();
+          // console.log(coupon);
+           resolve(coupan)
+        })
+    }
+
+
     
  
 

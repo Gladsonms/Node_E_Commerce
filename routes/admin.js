@@ -293,7 +293,12 @@ router.get("/ordermangment",async(req,res)=>{
   })
 
   router.get("/add-coupon",(req,res)=>{
-    res.render('admin/coupon-mange',{admin:true})
+     productHelpers.getAllCoupons().then((coupan)=>{
+
+      console.log(coupan);
+        res.render('admin/coupon-mange',{admin:true,coupan})
+    })
+    
   })
 
    router.post("/delete-product-offer",(req,res)=>{
@@ -318,6 +323,13 @@ router.get("/ordermangment",async(req,res)=>{
     })
     
    })
+   router.post("/add-new-coupan",(req,res)=>{
+     productHelpers.addCoupan(req.body).then((response)=>{
+       res.json({response})
+     })
+   })
+
+
 
 
 //logout

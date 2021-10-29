@@ -28,27 +28,27 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <form>
+                                        <form id="addcoupan">
                                             <div class="form-row">
                                                
                                                 <div class="form-group col-md-6">
                                                     <label for="offername">Coupon Code</label>
-                                                    <input type="text" class="form-control" id="offername" placeholder="Offer name">
+                                                    <input type="text" class="form-control" id="offername" placeholder="Offer name" name="coupancode">
                                                 </div>
                                                  <div class="form-group col-md-6">
                                                     <label for="category name">Discount %</label>
-                                                    <input type="text" class="form-control" id="categoryname" placeholder="categoryname" name="categoryname">
+                                                    <input type="text" class="form-control" id="discount" placeholder="discount" name="discount">
                                                 </div>
                                             </div>
                                             
                                             <div class="form-row">
                                                 <div class="form-group col-md-4">
                                                     <label for="inputZip">Max Purshase amount</label>
-                                                    <input type="text" class="form-control" id="offerpercentage" name="offerpercentage" placeholder="percetage">
+                                                    <input type="text" class="form-control" id="maxAmount" name="maxAmount" placeholder="maxAmount">
                                                 </div>
                                                  <div class="form-group col-md-4">
                                                     <label for="inputZip">Min Purshase amount</label>
-                                                    <input type="text" class="form-control" id="offerpercentage" name="offerpercentage" placeholder="percetage">
+                                                    <input type="text" class="form-control" id="minAmount" name="minAmount" placeholder="minAmount">
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label for="expdate">Offer Exiry Date</label>
@@ -75,31 +75,26 @@
                                             <table class="table table-borderless mb-0">
                                                 <thead>
                                                     <tr>
-                                                        <th scope="col">Category</th>
+                                                        <th scope="col">Coupon name</th>
                                                         <th scope="col">Discount</th>
+                                                        <th scope="col">minAmount</th>
+                                                        <th scope="col">maxAmount</th>
                                                         <th scope="col">Expiry Date</th>
                                                         <th scope="col">Options</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    {{#each coupan}}
                                                     <tr>
-                                                        <th scope="row">1</th>
-                                                        <td>Mark</td>
-                                                        <td>Otto</td>
-                                                        <td>@mdo</td>
+                                                        <th scope="row">{{this.couupanCode}}</th>
+                                                        <td>{{this.discount}}</td>
+                                                        <td>{{this.minAmount}}</td>
+                                                        <td>{{this.maxAmount}}</td>
+                                                        <td>{{this.expdate}}</td>
+                                                        <td><span><button class="btn btn-danger" onclick="removeCoupan({{this._id}})"></button></span></td>
                                                     </tr>
-                                                    <tr>
-                                                        <th scope="row">2</th>
-                                                        <td>Jacob</td>
-                                                        <td>Thornton</td>
-                                                        <td>@fat</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">3</th>
-                                                        <td>Larry</td>
-                                                        <td>the Bird</td>
-                                                        <td>@twitter</td>
-                                                    </tr>
+                                                    {{/each}}
+                                                  
                                                 </tbody>
                                             </table>
                                         </div>
@@ -111,3 +106,37 @@
                     </div>
                     <!-- end container-fluid -->
                 </div>
+
+                <script>
+                    //disable pervious date
+                      var today = new Date();
+                     var dd = String(today.getDate()).padStart(2, '0');
+                    var mm = String(today.getMonth() + 1).padStart(2, '0');
+                    var yyyy = today.getFullYear();
+
+                    today = yyyy + '-' + mm + '-' + dd;
+                    $('#expdate').attr('min',today);
+
+
+                    document.getElementById('addcoupan').onsubmit=e=>{
+                        
+                        e.preventDefault();
+                        $.ajax({
+                            url:"/admin/add-new-coupan",
+                            method:"post",
+                            data:$('#addcoupan').serialize(),
+                            success:(response)=>{
+                                if(response)
+                                {
+                                    window.location.reload()
+                                }
+
+                            }
+                        })
+
+                    }
+                      function removeCoupan(id){
+                          alert(id)
+                      }
+
+                </script>

@@ -5,6 +5,7 @@ module.exports={
     SUBCATEGORY_COLLECTIONS:'SubCategory',
     CART_COLLECTIONS:'Cart',
     ORDER_COLLECTIONS:'Order',
-    ADDRESS_COLLECTIONS:'Adresss'
+    ADDRESS_COLLECTIONS:'Adresss',
+    COUPAN_COLLECTIONS:"Coupan",
     
 }
