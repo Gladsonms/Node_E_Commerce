@@ -275,8 +275,7 @@ router.get("/cart/checkout", verifyLogin, async (req, res) => {
   for(var i in totalAmount){
     totalPrice = totalPrice + totalAmount[i].subtotal
   }
-  console.log(totalAmount);
-  console.log("tottal amounr");
+  
   res.render("user/checkout", {  user: req.session.user, useraddres,totalAmount,totalPrice});
 });
 
@@ -346,7 +345,8 @@ let totalAmount = await userHelpers.getTottalAmount(req.session.user._id);
             "payment_method": "paypal"
         },
         "redirect_urls": {
-            "return_url": "http://localhost:3000/success",
+          "return_url": "http://localhost:3000/order-success",
+            // "return_url": "http://localhost:3000/success",
             "cancel_url": "http://localhost:3000/cancel"
         },
         "transactions": [{
@@ -471,6 +471,14 @@ userHelpers.verifyPayment(req.body).then(()=>{
 
   res.json({status:false,errMsg:''})
 })
+})
+
+router.post('/apply-coupon',(req,res)=>{
+  let coupon=req.body.coupon
+  let userId=req.session.user._id
+  let allCoupon=productHelpers.getAllCoupons()
+  userHelpers.addUsersCoupon(coupon,userId)
+
 })
 
 router.get('/contact',(req,res)=>{

@@ -243,6 +243,7 @@ module.exports = {
         let categoryOffer=Math.round()
         
         return new Promise(async(resolve,reject)=>{
+           // db.get().collection(collection.CATEGORYOFFER_COLLECTIONS).insertOne({category:categoryname,discount:offerpercentage,expdate:catExpdate})
             let category=await db.get().collection(collection.PRODUCT_COLLECTIONS).find({category:categoryname}).toArray()
             
             for(var i in category){
@@ -281,7 +282,7 @@ module.exports = {
 
     },
     getAllCoupons:()=>{
-        console.log("sgdhkldshi");
+        
         return new Promise(async(resolve,reject)=>{
            let coupan= await db.get().collection(collection.COUPAN_COLLECTIONS).find().toArray();
           // console.log(coupon);

@@ -203,8 +203,7 @@ module.exports = {
            
 
       resolve(cartItems);
-      console.log("get cart items");
-      console.log(cartItems);
+     
       //console.log(total);
     });
   },
@@ -257,8 +256,7 @@ module.exports = {
   },
   getTottalAmount: (userId) => {
     return new Promise(async (resolve, reject) => {
-      console.log("userid");
-      console.log(userId);
+     
       let total =await  db
         .get()
         .collection(collection.CART_COLLECTIONS)
@@ -298,7 +296,7 @@ module.exports = {
           // },
           // variable = result.map((i)=>i.product.offerprice?{...i,subtotal:(i.product.offrprice*i.quantity)}:{..i,subtotal:(i.product.price*i.qauntity)})
         ]).toArray().then((result)=>{
-          console.log(result)
+        
           let actualPrice=result.map((i)=>i.product.productOffer?{...i,subtotal:(i.product.productOffer*i.quantity)}:{...i,subtotal:(i.product.price*i.quantity)})
           
             resolve(actualPrice)
@@ -476,7 +474,7 @@ module.exports = {
       };
       
       let userId = order.userId[0];
-     console.log(userId);
+    
 
       db
         .get()
@@ -635,8 +633,7 @@ module.exports = {
             .collection(collection.CART_COLLECTIONS)
             .deleteOne({user: ObjectId(userId) }) 
                   
-            console.log("new order");
-            console.log(order);
+            
            resolve(order)  
           }
           
@@ -734,10 +731,20 @@ CheckPassword:(oldpass,userId,newPass)=>{
 
 },
 deleteCartPaypal:(user)=>{
-  console.log(user);
+  
   db.get().collection(collection.CART_COLLECTIONS).deleteOne({user:ObjectId(user)}).then((response)=>{
      resolve(response)
   })
+},
+addUsersCoupon:(caupon,userId)=>{
+  return new Promise((resolve,reject)=>{
+    db.get().collection(collection.USER_COLLECTIONS).updateOne({_id:ObjectId(userId)},{$push:{appliedCoupons:caupon}}).then((response)=>{
+      console.log(response);
+      resolve()
+    })
+  })
+
 }
+
 
 };

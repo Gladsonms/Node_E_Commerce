@@ -357,7 +357,19 @@
                 <td>
                   <strong><span class="amount">₹{{totalPrice}}</span></strong>
                 </td>
+                
               </tr>
+              <tr class="coupon">
+              <th>
+                Add coupon
+              </th>
+                <form id="applyCoupon">
+              <td><input type="text" name="coupon" id=""></td>  </tr>
+             <tr><td><input type="hidden"></td> <td><button class="btn btn-sm-success"> Apply coupon</button></td></tr>
+                  
+                </form>
+              
+            
             </tbody>
           </table>
         </div>
@@ -382,6 +394,15 @@
 
 
 <script>
+   document.getElementById("applyCoupon").onsubmit=e=>{
+      $.ajax({
+        url:"/apply-coupon",
+        method:"POST",
+        data:$("#applyCoupon").serialize(),
+      })
+   }
+
+
        ////To check Name  in form
 var nameField = document.getElementById('name')
 var validname=false;
@@ -544,6 +565,7 @@ placeField.addEventListener('input',(e)=>{
     else if(response.razorpaySuccess){
      
      razorPayPayment(response.data)
+     // location.href='/order-success'
 
    }
    
@@ -607,7 +629,11 @@ placeField.addEventListener('input',(e)=>{
                          order
                        },
                        success:(response)=>{
+                         if(razorpaySuccess)
+                         {
+
                         location.href='/order-success'
+                         }
                        }
                      })
                    }

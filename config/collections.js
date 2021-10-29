@@ -7,5 +7,6 @@ module.exports={
     ORDER_COLLECTIONS:'Order',
     ADDRESS_COLLECTIONS:'Adresss',
     COUPAN_COLLECTIONS:"Coupan",
+    CATEGORYOFFER_COLLECTIONS:"categoryOffer",
     
 }
