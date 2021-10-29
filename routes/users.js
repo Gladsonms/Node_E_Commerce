@@ -355,12 +355,12 @@ let totalAmount = await userHelpers.getTottalAmount(req.session.user._id);
                     "name": "Red Sox Hat",
                     "sku": "001",
                     "price": totalPrice,
-                    "currency": "INR",
+                    "currency": "USD",
                     "quantity": 1
                 }]
             },
             "amount": {
-                "currency": "INR",
+                "currency": "USD",
                 "total": totalPrice
             },
             "description": "Hat for the best team ever"

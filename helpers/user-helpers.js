@@ -300,20 +300,12 @@ module.exports = {
         ]).toArray().then((result)=>{
           console.log(result)
           let actualPrice=result.map((i)=>i.product.productOffer?{...i,subtotal:(i.product.productOffer*i.quantity)}:{...i,subtotal:(i.product.price*i.quantity)})
-            console.log("actula price");
-            console.log(actualPrice); 
+          
             resolve(actualPrice)
         })
        
        
-      //  let actualPrice=result.map((i)=>i.product.productOffer?{...i,subtotal:(i.product.productOffer*i.quantity)}:{...i,subtotal:(i.product.price*i.quantity)})
-      //  console.log("actula price");
-      //  console.log(actualPrice);
-      
-         
-        
-      //   console.log(total)
-      // resolve(total[0].total);
+
       
     
     });

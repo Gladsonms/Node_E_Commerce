@@ -29,14 +29,16 @@
                                     </div>
                                     <div class="card-body">
                                         <form id="category">
-                                            <div class="form-row">
+                                            <div class="form-row"> 
                                                
                                                 
                                                  <div class="form-group col-md-6">
                                                     <label for="category name">Enter Category Name</label>
                                                     <select type="text" class="form-control" id="categoryname" placeholder="categoryname" name="categoryname">
-                                                        <option value="">1</option>
-                                                        </select>
+                                                      {{#each category}}
+                                                        <option value="{{this.category}}">{{this.category}}</option>
+                                                        {{/each}}
+                                                        </select> 
                                                 </div>
                                             </div>
                                             
@@ -62,7 +64,7 @@
                                 <div class="card card-statistics">
                                     <div class="card-header">
                                         <div class="card-heading">
-                                            <h4 class="card-title">Offer list</h4>
+                                            <h4 class="card-title">Category offer</h4>
                                         </div>
                                     </div>
                                     <div class="card-body">
@@ -78,23 +80,12 @@
                                                 </thead>
                                                 <tbody>
                                                     <tr>
-                                                        <th scope="row">1</th>
+                                                        <th scope="row"></th>
                                                         <td>Mark</td>
                                                         <td>Otto</td>
                                                         <td>@mdo</td>
                                                     </tr>
-                                                    <tr>
-                                                        <th scope="row">2</th>
-                                                        <td>Jacob</td>
-                                                        <td>Thornton</td>
-                                                        <td>@fat</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">3</th>
-                                                        <td>Larry</td>
-                                                        <td>the Bird</td>
-                                                        <td>@twitter</td>
-                                                    </tr>
+                                                   
                                                 </tbody>
                                             </table>
                                         </div>
@@ -118,12 +109,18 @@
 
                     document.getElementById('category').onsubmit=e=>{
                         e.preventDefault();
-                        alert(category)
+                       
                         $.ajax({
 
-                            url:"/add-category-offer",
+                            url:"/admin/add-category-offer",
                             method:"post",
                             data:$('#category').serialize(),
+                            success:(response)=>{
+                                if(response){
+                                    window.location.reload()
+                                }
+                            
+                            }
 
                         })
                     }

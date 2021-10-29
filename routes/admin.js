@@ -285,7 +285,11 @@ router.get("/ordermangment",async(req,res)=>{
 
 
     router.get("/category-offer",(req,res)=>{
-      res.render('admin/categoryOffer',{admin:true})
+      let categoryOffer=productHelpers.getCategoryOffers()
+      productHelpers.getCategory().then((category)=>{
+        
+        res.render('admin/categoryOffer',{admin:true,category,categoryOffer})
+      })
   })
 
   router.get("/add-coupon",(req,res)=>{
@@ -304,7 +308,15 @@ router.get("/ordermangment",async(req,res)=>{
    })
 
    router.post("/add-category-offer",(req,res)=>{
-     console.log(req.body);
+     let category=req.body.categoryname
+     let percetage=req.body.offerpercentage
+     let offerexpdate=req.body.expdate
+     
+  
+     productHelpers.addCategoryOffer(req.body).then((response)=>{
+          res.json({response})
+    })
+    
    })
 
 

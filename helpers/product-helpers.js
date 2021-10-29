@@ -186,8 +186,6 @@ module.exports = {
         let offerPercent=parseInt(offerData.offerpercentage)
         let expdate=offerData.expdate
       ///  let offername=offerData.offername
-      console.log(offerPercent);
-      console.log(product.price);
     
         return new Promise(async(resolve,reject)=>{
 
@@ -212,7 +210,7 @@ module.exports = {
        return new Promise(async(resolve,reject)=>{
          db.get().collection(collection.PRODUCT_COLLECTIONS).find({productOffer:{$exists:true}}).toArray().then((response)=>{
              
-             console.log("rrrrrrr",response);
+            
             resolve(response)
         })
            
@@ -222,6 +220,7 @@ module.exports = {
         
 
     },
+    //product offer
     removeOffer:(productId)=>{
         return new Promise(async(resolve,reject)=>{
         await db.get().collection(collection.PRODUCT_COLLECTIONS).updateOne({_id:ObjectId(productId)},{$unset:{productOffer:"",expiryDate:""}}).then((response)=>{
@@ -229,6 +228,51 @@ module.exports = {
                  resolve()
         })
         })
-    }
+    },
+    getCategoryOffers:()=>{
+      return new Promise((resolve,reject)=>{
+         db.get().collection(collection.PRODUCT_COLLECTIONS).find({categoryExpDate:{$exists:true}}).toArray().then((response)=>{
+              resolve(response)
+          })
+      }) 
+    },
+    //category offer adding
+    addCategoryOffer:(data)=>{
+        
+        let categoryname=data.categoryname
+        let offerpercentage=data.offerpercentage
+        let catExpdate=data.expdate
+        let categoryOffer=Math.round()
+        
+        return new Promise(async(resolve,reject)=>{
+            let category=await db.get().collection(collection.PRODUCT_COLLECTIONS).find({category:categoryname}).toArray()
+            
+            for(var i in category){
+                if(category[i].productOffer){
+                    console.log("yes exist product offer");
+                }
+                else{
+                    let price=category[i].price
+                    let productId=category[i]._id
+                   
+                    let categoryOffer=Math.round(category[i].price-(category[i].price*offerpercentage/100))
+                   
+                    db.get().collection(collection.PRODUCT_COLLECTIONS).updateOne({_id:ObjectId(productId)},{$set:{categoryOffer:categoryOffer,categoryExpDate:catExpdate}}).then((response)=>{
+                   
+                    resolve(response)
+                    })
+                }
+            }
+
+          
+        })
+        // return new Promise((resolve,reject)=>{
+        //    let product= db.get().collection(collection.PRODUCT_COLLECTIONS)
+        // })
+      
+    },
+    
+ 
+
 
 }
