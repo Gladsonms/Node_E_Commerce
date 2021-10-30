@@ -476,8 +476,17 @@ userHelpers.verifyPayment(req.body).then(()=>{
 router.post('/apply-coupon',(req,res)=>{
   let coupon=req.body.coupon
   let userId=req.session.user._id
-  let allCoupon=productHelpers.getAllCoupons()
-  userHelpers.addUsersCoupon(coupon,userId)
+  
+  userHelpers.checkCoupon(coupon).then((response)=>{
+    if(response){
+      res.json({vmesssage:true,message:"Valid coupon"})
+    }
+    else
+    {
+      res.json({vmesssage:false,message:"Invalid coupon"})
+    }
+  })
+  //userHelpers.addUsersCoupon(coupon,userId)
 
 })
 

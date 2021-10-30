@@ -4,7 +4,7 @@ const bcyrpt = require("bcrypt");
 var ObjectId = require("mongodb").ObjectId;
 const { response } = require("express");
 const { get } = require("../routes/admin");
-const { USER_COLLECTIONS } = require("../config/collections");
+const { USER_COLLECTIONS, CATEGORYOFFER_COLLECTIONS } = require("../config/collections");
 const moment = require("moment");
 const  Razorpay=require('razorpay');
 const { resolve } = require("path");
@@ -737,13 +737,37 @@ deleteCartPaypal:(user)=>{
   })
 },
 addUsersCoupon:(caupon,userId)=>{
-  return new Promise((resolve,reject)=>{
-    db.get().collection(collection.USER_COLLECTIONS).updateOne({_id:ObjectId(userId)},{$push:{appliedCoupons:caupon}}).then((response)=>{
-      console.log(response);
-      resolve()
-    })
+  return new Promise(async(resolve,reject)=>{
+    let coupan= await db.get().collection(collection.COUPAN_COLLECTIONS).find().toArray()
+     for (var i in coupan){
+       console.log("ecah coupon");
+       console.log(coupan[i].couupanCode);
+        console.log("coupon");
+       console.log(caupon);
+       if(caupon==coupan[i].couupanCode)
+       {
+         console.log("valid coupon");
+         db.get().collection(collection.USER_COLLECTIONS).updateOne({_id:ObjectId(userId)},{$push:{appliedCoupons:caupon}}).then((response)=>{
+          console.log(response);
+          resolve()
+        })
+       }
+       else{
+         console.log("invalid coupon");
+       }
+     }
+     
+  
   })
 
+},
+checkCoupon:(coupon)=>{
+    return new Promise((resolve,reject)=>{
+      db.get().collection(collection.COUPAN_COLLECTIONS).find({couupanCode:coupon}).toArray().then((response)=>{
+                 console.log(response);
+                 resolve()
+      })
+    })
 }
 
 

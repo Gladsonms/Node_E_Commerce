@@ -366,7 +366,9 @@
                 <form id="applyCoupon">
               <td><input type="text" name="coupon" id=""></td>  </tr>
              <tr><td><input type="hidden"></td> <td><button class="btn btn-sm-success"> Apply coupon</button></td></tr>
-                  
+             <tr><td> <span id="msgsuccess"></span>
+                    <span id="msgfail"></span>
+                  </td></tr>     
                 </form>
               
             
@@ -399,6 +401,16 @@
         url:"/apply-coupon",
         method:"POST",
         data:$("#applyCoupon").serialize(),
+        success:(response)=>{
+          if(response.vmessage)
+          {
+           document.getElementById("msgsuccess").innerHTML=response.message
+          }
+          else
+          {
+           document.getElementById("msgfail").innerHTML=response.message
+          }
+        }
       })
    }
 
