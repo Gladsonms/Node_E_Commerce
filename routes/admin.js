@@ -105,13 +105,14 @@ router.post("/productmanagmnet/editproduct/:id", (req, res) => {
   let id = req.params.id;
 
   productHelpers.updateProducts(req.params.id, req.body).then((data) => {
+   
     let id = "" + data;
     let image1 = req.body.image1_b64;
     let image2 = req.body.image2_b64;
     let image3 = req.body.image3_b64;
     let image4 = req.body.image4_b64;
 
-        
+   
     //  console.log(image1);
     //  console.log(image2);
     //  console.log(image3);
@@ -151,8 +152,7 @@ router.post("/productmanagmnet/addproduct", function (req, res) {
     let image2 = req.body.image2_b64;
     let image3 = req.body.image3_b64;
     let image4 = req.body.image4_b64;
-
-
+      
     const path1 = `./public/product-images/product-image1/${id}.jpg`;
     const path2 = `./public/product-images/product-image2/${id}.jpg`;
     const path3 = `./public/product-images/product-image3/${id}.jpg`;
@@ -293,11 +293,13 @@ router.get("/ordermangment",async(req,res)=>{
   })
 
   router.get("/add-coupon",(req,res)=>{
-     productHelpers.getAllCoupons().then((coupan)=>{
+     productHelpers.getAllCoupons().then((coupon)=>{
+          
+       res.render('admin/coupon-mange',{admin:true,coupon})
+     })
 
-      console.log(coupan);
-        res.render('admin/coupon-mange',{admin:true,coupan})
-    })
+      
+   
     
   })
 
@@ -328,7 +330,13 @@ router.get("/ordermangment",async(req,res)=>{
        res.json({response})
      })
    })
-
+  router.post("/delete-coupon-admin",(req,res)=>{
+    
+    let couponid=req.body.id
+    productHelpers.deleteCoupons(couponid).then((response)=>{
+                res.json({status:true})
+    })
+  })
 
 
 

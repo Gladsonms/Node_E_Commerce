@@ -24,7 +24,7 @@
                                 <div class="card card-statistics">
                                     <div class="card-header">
                                         <div class="card-heading">
-                                            <h4 class="card-title">Add COupanr</h4>
+                                            <h4 class="card-title">Add Coupon</h4>
                                         </div>
                                     </div>
                                     <div class="card-body">
@@ -34,6 +34,7 @@
                                                 <div class="form-group col-md-6">
                                                     <label for="offername">Coupon Code</label>
                                                     <input type="text" class="form-control" id="offername" placeholder="Offer name" name="coupancode">
+                                                    <span class="text-danger" id="CouponError"></span>
                                                 </div>
                                                  <div class="form-group col-md-6">
                                                     <label for="category name">Discount %</label>
@@ -67,7 +68,7 @@
                                 <div class="card card-statistics">
                                     <div class="card-header">
                                         <div class="card-heading">
-                                            <h4 class="card-title">Offer list</h4>
+                                            <h4 class="card-title">Coupon  list</h4>
                                         </div>
                                     </div>
                                     <div class="card-body">
@@ -84,14 +85,14 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {{#each coupan}}
+                                                    {{#each coupon}}
                                                     <tr>
                                                         <th scope="row">{{this.couupanCode}}</th>
                                                         <td>{{this.discount}}</td>
                                                         <td>{{this.minAmount}}</td>
                                                         <td>{{this.maxAmount}}</td>
                                                         <td>{{this.expdate}}</td>
-                                                        <td><span><button class="btn btn-danger" onclick="removeCoupan({{this._id}})"></button></span></td>
+                                                        <td><span><button class="btn-sm btn-danger" onclick="removeCoupan('{{this._id}}')"><i class="fa fa-trash"></i></button></span></td>
                                                     </tr>
                                                     {{/each}}
                                                   
@@ -108,6 +109,32 @@
                 </div>
 
                 <script>
+                                 var OfferField=document.getElementById('offername')
+                    var validOffer=false;
+                    console.log("_______________")
+                    console.log(OfferField)
+                    OfferField.addEventListener('input',(e)=>{
+                        var offer=OfferField.value
+                        if(offer.length==0)
+                        {
+                            text="Please enter Coupon name",
+                            CouponError.innerHtml=text,
+                            validOffer=false
+                        }
+                        else{
+                           validOffer=true
+                           CouponError.innerHtml=" ",
+                        }
+                    })
+
+
+
+
+
+
+
+
+
                     //disable pervious date
                       var today = new Date();
                      var dd = String(today.getDate()).padStart(2, '0');
@@ -116,6 +143,8 @@
 
                     today = yyyy + '-' + mm + '-' + dd;
                     $('#expdate').attr('min',today);
+
+                   
 
 
                     document.getElementById('addcoupan').onsubmit=e=>{
@@ -136,7 +165,38 @@
 
                     }
                       function removeCoupan(id){
-                          alert(id)
+                             Swal.fire({
+  title: 'Are you sure?',
+  text: "You won't be able to revert this!",
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Yes, delete it!'
+}).then((result) => {
+  if (result.isConfirmed) {
+                         $.ajax({
+                             url:"/admin/delete-coupon-admin",
+                             method:"post",
+                             data:{
+                                 id:id
+                             },
+                             success:(response)=>{
+
+                               if(response)
+                               {
+                                   window.location.reload()
+                               }
+                             }
+                         })
+                      }
+                       
+  				else{
+
+
+					}
+				
+})
                       }
 
                 </script>

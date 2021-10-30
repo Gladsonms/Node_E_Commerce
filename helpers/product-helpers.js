@@ -281,15 +281,22 @@ module.exports = {
         })
 
     },
-    getAllCoupons:()=>{
-        
-        
+    getAllCoupons:async()=>{
         return new Promise((resolve,reject)=>{
-           let coupan=  db.get().collection(collection.COUPAN_COLLECTIONS).find().toArray().then((coupon)=>{
+           db.get().collection(collection.COUPAN_COLLECTIONS).find({}).toArray().then((coupon)=>{
             
-            resolve(coupan)
+            resolve(coupon)
            })
           
+        })
+    },
+    deleteCoupons:(couponId)=>{
+        
+        return new Promise((resolve,reject)=>{
+            db.get().collection(collection.COUPAN_COLLECTIONS).deleteOne({_id:ObjectId(couponId)}).then((response)=>{
+                
+               resolve(response)
+            })
         })
     }
 

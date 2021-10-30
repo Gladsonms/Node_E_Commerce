@@ -425,7 +425,7 @@ router.get("/orders",verifyLogin,async (req,res)=>{
    
  
   let orders=await userHelpers.getUserOrders(req.session.user._id)
-
+  console.log(orders);
   res.render('user/odersList',{user:req.session.user,orders})
  
 })
