@@ -312,13 +312,14 @@ router.post("/cart/checkout/addAddress", (req, res) => {
 
 router.post("/place-order",async(req,res)=>{
  
-
+  //let coupon=userHelpers.checkCoupon(coupon)
 let product=await userHelpers.getCartProductList(req.session.user._id)
+//let coupon=userHelpers.checkCoupon(req.body)
 //let totalAmount= await userHelpers.getTottalAmount(req.session.user._id)
 let totalAmount = await userHelpers.getTottalAmount(req.session.user._id);
   // let subtotal = await userHelpers.getSubTotal(req.session.user._id)
   let totalPrice =0
-
+  
   for(var i in totalAmount){
     totalPrice = totalPrice + totalAmount[i].subtotal
   }
@@ -473,20 +474,38 @@ userHelpers.verifyPayment(req.body).then(()=>{
 })
 })
 
-router.post('/apply-coupon',(req,res)=>{
+router.post('/apply-coupon',async (req,res)=>{
   let coupon=req.body.coupon
   let userId=req.session.user._id
   
-  userHelpers.checkCoupon(coupon).then((response)=>{
-    if(response){
-      res.json({vmesssage:true,message:"Valid coupon"})
+ userHelpers.checkCoupon(coupon).then(async(response)=>{
+  
+    if(response)
+    { 
+     
+      let totalAmount = await userHelpers.getTottalAmount(req.session.user._id)
+      let totalPrice =0
+    
+      for(var i in totalAmount){
+        totalPrice = totalPrice + totalAmount[i].subtotal
+      }
+       //console.log(totalAmount);
+       
+       
+        let discount =parseInt(response.discount)
+       console.log(response.discount);
+       let newPrice = Math.round(totalPrice-(totalPrice*discount/100))
+       
+       console.log(newPrice);
+      res.json({newPrice})
+      // userHelpers.CheckUserCoupon(coupon,userId).then((response)=>{
+      //   console.log("check user coupon");
+      //   console.log(coupon);
+      // })
     }
-    else
-    {
-      res.json({vmesssage:false,message:"Invalid coupon"})
-    }
+    
   })
-  //userHelpers.addUsersCoupon(coupon,userId)
+  
 
 })
 

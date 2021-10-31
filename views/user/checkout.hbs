@@ -327,7 +327,7 @@
 
         <div class="checkout-right col-lg-3 col-md-3 col-sm-3 col-xs-12">
           <h4 class="title">Cart Total</h4>
-          <table class="table cart-total">
+          <table class="table cart-total" id="tableAmount">
             <tbody>
               <tr class="cart-subtotal">
                 <th>
@@ -355,7 +355,11 @@
                   <strong>Order Total</strong>
                 </th>
                 <td>
-                  <strong><span class="amount">₹{{totalPrice}}</span></strong>
+                  <strong><span id="totaount">₹{{totalPrice}}</span></strong>
+                  <span id="totalAmount"></span>
+                </td>
+                <td>
+
                 </td>
                 
               </tr>
@@ -402,14 +406,12 @@
         method:"POST",
         data:$("#applyCoupon").serialize(),
         success:(response)=>{
-          if(response.vmessage)
-          {
-           document.getElementById("msgsuccess").innerHTML=response.message
-          }
-          else
-          {
-           document.getElementById("msgfail").innerHTML=response.message
-          }
+         
+                 if(response.newPrice){
+                  document.getElementById("tableAmount").innerHTML+=`<td><span>Discount Price </span> <span id=""> ${response.newPrice}</span></td>  `
+                   
+                   
+                 }
         }
       })
    }

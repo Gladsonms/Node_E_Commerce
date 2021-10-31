@@ -298,7 +298,7 @@ module.exports = {
         ]).toArray().then((result)=>{
         
           let actualPrice=result.map((i)=>i.product.productOffer?{...i,subtotal:(i.product.productOffer*i.quantity)}:{...i,subtotal:(i.product.price*i.quantity)})
-          
+              
             resolve(actualPrice)
         })
        
@@ -762,12 +762,30 @@ addUsersCoupon:(caupon,userId)=>{
 
 },
 checkCoupon:(coupon)=>{
+  
     return new Promise((resolve,reject)=>{
-      db.get().collection(collection.COUPAN_COLLECTIONS).find({couupanCode:coupon}).toArray().then((response)=>{
-                 console.log(response);
-                 resolve()
+   db.get().collection(collection.COUPAN_COLLECTIONS).findOne({couupanCode:coupon}).then((response)=>{
+              
+                 resolve(response)
       })
     })
+},
+CheckUserCoupon:(coupan,userId,couponId)=>{
+  console.log("______________________");
+  return new Promise(async(resolve,reject)=>{
+    let user=db.get().collection(collection.USER_COLLECTIONS).findOne({_id: ObjectId(userId)});
+    if(user.appliedCoupons)
+    {
+      let couponExist=user.appliedCoupons.find(coupon => coupan.coupanId.equals(couponId))
+      resolve(couponExist ? true : false)
+      
+    }
+    else {
+      resolve(false)
+    }
+
+    
+  })
 }
 
 
