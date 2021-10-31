@@ -218,6 +218,7 @@ router.get("/about",function(req,res,next){
 
 router.get("/productdetails/:id",verifyLogin, async function (req, res, next) {
   
+  
   let products = await productHelpers.getProductDetails(req.params.id);
   
   res.render("user/productDetails", { products });
