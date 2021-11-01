@@ -41,14 +41,17 @@ const checkUserAuth = (req, res, next) => {
 };
 const verifyLogin = async(req, res, next) => {
   if (req.session.loggedIn) {
+   
     next();
   } else {
-    let category=await productHelpers.getCategory()
+   
+   let category=await productHelpers.getCategory()
     let  offerProduct=productHelpers.getOfferProduct() 
    await productHelpers.getAllProducts().then(async (products) => {
-    
-      res.render("user/index", { products,category,offerProduct });
+        
+      res.render("user/index", {user:false, products,category,offerProduct });
     });
+    //res.redirect("/login")
   }
 };
 
@@ -254,6 +257,7 @@ router.get("/cart", verifyLogin, async (req, res) => {
 //  response.total= await userHelpers.getTottalAmount(req.body.user)
 
 router.get("/add-to-cart/:id", (req, res) => {
+  
   userHelpers.addToCart(req.params.id, req.session.user._id).then(() => {
     res.json({ status: true });
   });
@@ -312,8 +316,33 @@ router.post("/cart/checkout/addAddress", (req, res) => {
   })
 
 router.post("/place-order",async(req,res)=>{
+ let coupon = req.body.couponCode;
+
+
  
-  //let coupon=userHelpers.checkCoupon(coupon)
+  let usercoupon=userHelpers.checkCoupon(coupon).then(async(usercoupon)=>{
+   
+    let couponId = usercoupon._id
+   
+    let totalAmount = await userHelpers.getTottalAmount(req.session.user._id)
+    let totalPrice =0
+ 
+    for(var i in totalAmount){
+      totalPrice = totalPrice + totalAmount[i].subtotal
+    }
+    
+     console.log(totalPrice);
+     
+     
+      let discount =parseInt(usercoupon.discount)
+     console.log(usercoupon.discount);
+     let newPrice = Math.round(totalPrice-(totalPrice*discount/100))
+     console.log("newPrice in place order");
+     console.log(newPrice);
+
+  })
+  
+  
 let product=await userHelpers.getCartProductList(req.session.user._id)
 //let coupon=userHelpers.checkCoupon(req.body)
 //let totalAmount= await userHelpers.getTottalAmount(req.session.user._id)

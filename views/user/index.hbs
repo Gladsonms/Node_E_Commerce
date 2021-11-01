@@ -70,15 +70,11 @@
 														
 														<div class="product-buttoncnxlkc" style="margin-top: 1.3em;">
 												
-                                                                   {{#if user}}       
+                                                                 
                                                             <button class="btn btn-primary" onclick="addToCart('{{this._id}}')">
 																<i class="fa fa-shopping-basket" aria-hidden="true">Add to Cart</i>
 															</button>
-															{{else}}
-															  <a class="btn btn-primary" href="/login">
-																<i class="fa fa-shopping-basket" aria-hidden="true">Add to Cart</i>
-															</a>
-															{{/if}}
+															
 															
 															
 															
@@ -849,6 +845,7 @@
 	
 
 	function  addToCart(proId){
+		console.log("")
 		$.ajax({
 			url:'/add-to-cart/'+proId,
 			method:'get',

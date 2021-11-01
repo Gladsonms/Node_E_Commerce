@@ -368,7 +368,7 @@
                 Add coupon
               </th>
                 <form id="applyCoupon">
-              <td><input type="text" name="coupon" id=""></td>  </tr>
+              <td><input type="text" name="coupon" id="appliedCoupon"/></td>  </tr>
              <tr><td><input type="hidden"></td> <td><button class="btn btn-sm-success"> Apply coupon</button></td></tr>
              <tr><td> <span id="msgsuccess"></span>
                     <span id="msgfail"></span>
@@ -400,7 +400,9 @@
 
 
 <script>
+
    document.getElementById("applyCoupon").onsubmit=e=>{
+     e.preventDefault();
       $.ajax({
         url:"/apply-coupon",
         method:"POST",
@@ -408,7 +410,10 @@
         success:(response)=>{
          
                  if(response.newPrice){
-                  document.getElementById("tableAmount").innerHTML+=`<td><span>Discount Price </span> <span id=""> ${response.newPrice}</span></td>  `
+
+                let price =  document.getElementById("totaount").innerHTML=response.newPrice;  
+               
+                 document.getElementById("totaount").innerHTML
                    
                    
                  }
@@ -560,13 +565,23 @@ placeField.addEventListener('input',(e)=>{
 
    </script>
    <script>
+     var newCoupon 
+
      $('#placeorderform').submit((e)=>{ 
-       
-	  e.preventDefault() 
+        e.preventDefault() 
+           alert("dajgadkgdajs")
+      var newCouponcode = document.getElementById("appliedCoupon").value;
+      
+      console.log(newCouponcode)
+    alert(newCouponcode)
+
+	 
+     
+  
 	  $.ajax({
   url:"/place-order",
    method:"post",
-    data:$('#placeorderform').serialize(),
+    data:$('#placeorderform').serialize()+"&couponCode="+newCouponcode,
   success:(response)=>
   { 
 	

@@ -765,6 +765,7 @@ checkCoupon:(coupon)=>{
   
     return new Promise((resolve,reject)=>{
    db.get().collection(collection.COUPAN_COLLECTIONS).findOne({couupanCode:coupon}).then((response)=>{
+         console.log("response check coupon");
               
                  resolve(response)
       })
