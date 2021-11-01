@@ -179,7 +179,9 @@ function changeQuantity(cartId,proId,count){
 							   quantity:quantity,
 						   },
 						    method:'post',
+
 						   success:(response=>{
+							 
 							
 							   if(response.removeProduct)
 							   {
@@ -188,9 +190,9 @@ function changeQuantity(cartId,proId,count){
 							
 							   }
 							   else {
-								   window.location.reload()
-								   //document.getElementById(proId).innerHTML=quantity+count
-								   //document.getElementById('total').innerHTML=response.total
+								        window.location.reload()
+								   //document.getElementById('proId').innerHTML=quantity+count
+								  // document.getElementById('total').innerHTML=response.total
 							   }
 						   })
 					   })

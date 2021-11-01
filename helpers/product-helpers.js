@@ -274,7 +274,7 @@ module.exports = {
         return new Promise((resolve,reject)=>{
             
             
-            db.get().collection(collection.COUPAN_COLLECTIONS).insertOne({couupanCode:data.coupancode,discount:data.discount,maxAmount:data.maxAmount,minAmount:data.minAmount,expdate:data.expdate}).then((response)=>{
+            db.get().collection(collection.COUPAN_COLLECTIONS).insertOne({couupanCode:data.coupancode,discount:data.discount,maxAmount:data.maxAmount,minAmount:data.minAmount,expireAt:data.expdate}).then((response)=>{
                 console.log(response);
                 resolve()
             })

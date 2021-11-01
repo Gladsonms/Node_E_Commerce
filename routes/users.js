@@ -312,7 +312,7 @@ router.post("/cart/checkout/addAddress", (req, res) => {
  
   userHelpers.addAddress(userId,address).then((response)=>{
 
-    res.redirect("/")
+    res.redirect("/cart/checkout")
   })
  
   
@@ -330,55 +330,56 @@ router.post("/cart/checkout/addAddress", (req, res) => {
 router.post("/place-order",async(req,res)=>{
  let coupon = req.body.couponCode;
  let newPrice;
-
-
- 
+ //GET TOTTAL AMOUNT
   let response =await userHelpers.checkCoupon(coupon)
-   console.log(response);
-    let couponId = response._id
+    //let couponId = response._id
    if(response){
     let minAmount=response.minAmount;
    
     let totalAmount= await userHelpers.getTottalAmount(req.session.user._id)
-    let totalPrice =0
- 
+    let totalPrice=0 ;
+    
     for(var i in totalAmount){
       totalPrice = totalPrice + totalAmount[i].subtotal
     }
     
-     console.log(totalPrice);
-     
+    console.log("totalPrice");
+    console.log(totalPrice);
      if(totalPrice>=minAmount)
+
      {
-          
+      
        let discount =parseInt(response.discount)
-      console.log(response.discount);
        newPrice = Math.round(totalPrice-(totalPrice*discount/100))
-      console.log("newPrice in place order");
+       console.log("newPrice");
       console.log(newPrice);
+      
       productHelpers.saveUserCoupon(req.session.user._id,response._id)
      }
      else
      {
+      let totalAmount = await userHelpers.getTottalAmount(req.session.user._id);
+     
+      let totalPrice =0
+    
+      for(var i in totalAmount){
+        totalPrice = totalPrice + totalAmount[i].subtotal
+      }
        newPrice=totalPrice
      }
   }
+  else{
+    newPrice=totalPrice
+  }
  
-  
-
-  
-  
 let product=await userHelpers.getCartProductList(req.session.user._id)
 //let coupon=userHelpers.checkCoupon(req.body)
 //let totalAmount= await userHelpers.getTottalAmount(req.session.user._id)
 let totalAmount = await userHelpers.getTottalAmount(req.session.user._id);
   // let subtotal = await userHelpers.getSubTotal(req.session.user._id)
   
-  let totalPrice =0
-  for(var i in totalAmount){
-    totalPrice = totalPrice + totalAmount[i].subtotal
-  }
- newPrice=totalPrice
+  
+ 
    let user=req.session.user
    let userId=req.session.user._id
    userHelpers.PlaceOrder(user._id,req.body,product,newPrice).then((orderId)=>{
@@ -387,7 +388,7 @@ let totalAmount = await userHelpers.getTottalAmount(req.session.user._id);
      
              
       res.json({codSuccess:true})
-      
+      //RAXORPAY
     }else if (req.body['payment']=='razorpay'){
       
       userHelpers.generateRazorPay(orderId,newPrice,userId).then((response)=>{
@@ -483,7 +484,9 @@ router.get("/orders",verifyLogin,async (req,res)=>{
    
  
   let orders=await userHelpers.getUserOrders(req.session.user._id)
-  console.log(orders);
+  //  let orderStatus=await userHelpers.getOrderStatus(req.session.user._id)
+  //  console.log("orderstatus");
+  //  console.log(orderStatus);
   res.render('user/odersList',{user:req.session.user,orders})
  
 })
@@ -504,7 +507,7 @@ router.post('/oders/cancelorder/:id',async(req,res)=>{
 
 router.post("/oders/deleteaddress",(req,res)=>{
   
-   
+      
    uaddress=req.body.address
    uname=req.body.name
    addId=req.body.addressId
@@ -512,8 +515,8 @@ router.post("/oders/deleteaddress",(req,res)=>{
    
   
 userHelpers.deleteAdddress(uaddress,userId,addId,uname).then((response)=>{
-  
-  res.json({status:true})
+         
+  res.json({response});
 })
 
 })
@@ -550,10 +553,10 @@ router.post('/apply-coupon',async (req,res)=>{
        
        
         let discount =parseInt(response.discount)
-       console.log(response.discount);
+       
        let newPrice = Math.round(totalPrice-(totalPrice*discount/100))
        
-       console.log(newPrice);
+      
       res.json({newPrice})
       // userHelpers.CheckUserCoupon(coupon,userId).then((response)=>{
       //   console.log("check user coupon");
@@ -588,7 +591,7 @@ let phone=req.body.phone
 let email=req.body.email
 let userId=req.session.user._id
 userHelpers.updateUserInfo(name,phone,email,userId).then((response)=>{
-     console.log(response);
+     
   res.json({status:true})
 })
 

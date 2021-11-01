@@ -410,14 +410,14 @@ module.exports = {
             { $push: { address: addressObj } }
           )
           .then((response) => {
-
+            resolve(response);
           });
       } else {
         db.get()
           .collection(collection.ADDRESS_COLLECTIONS)
           .insertOne(userAddresssObj)
           .then((response) => {
-
+            resolve(response);
           });
       }
     });
@@ -594,11 +594,10 @@ module.exports = {
     
     });
   },
-  deleteAdddress: async(uaddress, userId, addId, uname) => {
-    return new Promise((resolve,reject)=>{
+  deleteAdddress: (uaddress, userId, addId, uname) => {
+    return new Promise(async(resolve,reject)=>{
 
-      
-    //let address = await db.get().collection(collection.ADDRESS_COLLECTIONS).findOne({"address.id":uaddress});
+    let address = await db.get().collection(collection.ADDRESS_COLLECTIONS).findOne({"address.id":uaddress});
    
         db.get()
           .collection(collection.ADDRESS_COLLECTIONS)
@@ -607,8 +606,9 @@ module.exports = {
             { $pull: { address: { id: addId } } },
             
           )
-    }) .then((res) => {
-      console.log(res);
+    }) .then((response) => {
+      
+      console.log(response);
       resolve(true)
       });
   },
@@ -787,6 +787,12 @@ CheckUserCoupon:(coupan,userId,couponId)=>{
 
     
   })
+},
+getOrderStatus:()=>{
+db.get().collection(collection.ORDER_COLLECTIONS).findOne({$or:[{status:"Cancel"},{status:"pending"}]}).then((data) => {
+  console.log(data);
+  resolve(data)
+})
 }
 
 
