@@ -845,7 +845,7 @@
 	
 
 	function  addToCart(proId){
-		console.log("")
+		console.log("jhnacldh")
 		$.ajax({
 			url:'/add-to-cart/'+proId,
 			method:'get',
@@ -856,8 +856,10 @@
 					let count=$('#cart-count').html()
 					count=parseInt(count)
 					$('#cart-count').html(count)
+				}else{ 
+					location.href='/login'
 				}
-                  swal(" ","Item added succefully","success")
+                  
 			}
 
 

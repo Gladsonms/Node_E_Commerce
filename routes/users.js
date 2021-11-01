@@ -70,7 +70,7 @@ router.get("/", verifyLogin, async function (req, res, next) {
     res.render("user/index", { user, products, cartCount, category,offerProduct});
   });
 });
-router.get("/login", checkUserAuth, function (req, res, next) {
+router.get("/login", function (req, res, next) {
   res.render("user/login");
 });
 router.get("/signup", function (req, res, next) {
@@ -210,7 +210,7 @@ router.post("/enterOtp", (req, res) => {
 
 router.get("/logout", function (req, res, next) {
   req.session.loggedIn = false;
-  delete req.session.loggedIn;
+  delete req.session.user;
 
   res.redirect("/");
 });
@@ -230,6 +230,7 @@ router.get("/productdetails/:id",verifyLogin, async function (req, res, next) {
 //cart
 router.get("/cart", verifyLogin, async (req, res) => {
   
+  console.log(req.session.user);
   let products = await userHelpers.getCartProducts(req.session.user._id);
   if(products.length!=0)
   {
@@ -257,10 +258,21 @@ router.get("/cart", verifyLogin, async (req, res) => {
 //  response.total= await userHelpers.getTottalAmount(req.body.user)
 
 router.get("/add-to-cart/:id", (req, res) => {
+  // console.log(req.session.user)
   
-  userHelpers.addToCart(req.params.id, req.session.user._id).then(() => {
-    res.json({ status: true });
-  });
+  
+  if(req.session.user){
+   
+    userHelpers.addToCart(req.params.id, req.session.user._id).then(() => {
+      res.json({ status: true });
+    });
+    
+   
+}
+else{
+  
+  res.json({status:false})
+  }
 });
 
 router.post("/change-product-quantity", verifyLogin, (req, res, next) => {
