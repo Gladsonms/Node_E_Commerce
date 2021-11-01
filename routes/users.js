@@ -317,14 +317,17 @@ router.post("/cart/checkout/addAddress", (req, res) => {
 
 router.post("/place-order",async(req,res)=>{
  let coupon = req.body.couponCode;
+ let newPrice;
 
 
  
-  let usercoupon=userHelpers.checkCoupon(coupon).then(async(usercoupon)=>{
+  let response =await userHelpers.checkCoupon(coupon)
+   console.log(response);
+    let couponId = response._id
+   if(response){
+    let minAmount=response.minAmount;
    
-    let couponId = usercoupon._id
-   
-    let totalAmount = await userHelpers.getTottalAmount(req.session.user._id)
+    let totalAmount= await userHelpers.getTottalAmount(req.session.user._id)
     let totalPrice =0
  
     for(var i in totalAmount){
@@ -333,14 +336,24 @@ router.post("/place-order",async(req,res)=>{
     
      console.log(totalPrice);
      
-     
-      let discount =parseInt(usercoupon.discount)
-     console.log(usercoupon.discount);
-     let newPrice = Math.round(totalPrice-(totalPrice*discount/100))
-     console.log("newPrice in place order");
-     console.log(newPrice);
+     if(totalPrice>=minAmount)
+     {
+          
+       let discount =parseInt(response.discount)
+      console.log(response.discount);
+       newPrice = Math.round(totalPrice-(totalPrice*discount/100))
+      console.log("newPrice in place order");
+      console.log(newPrice);
+      productHelpers.saveUserCoupon(req.session.user._id,response._id)
+     }
+     else
+     {
+       newPrice=totalPrice
+     }
+  }
+ 
+  
 
-  })
   
   
 let product=await userHelpers.getCartProductList(req.session.user._id)
@@ -348,14 +361,15 @@ let product=await userHelpers.getCartProductList(req.session.user._id)
 //let totalAmount= await userHelpers.getTottalAmount(req.session.user._id)
 let totalAmount = await userHelpers.getTottalAmount(req.session.user._id);
   // let subtotal = await userHelpers.getSubTotal(req.session.user._id)
-  let totalPrice =0
   
+  let totalPrice =0
   for(var i in totalAmount){
     totalPrice = totalPrice + totalAmount[i].subtotal
   }
+ newPrice=totalPrice
    let user=req.session.user
    let userId=req.session.user._id
-   userHelpers.PlaceOrder(user._id,req.body,product,totalAmount).then((orderId)=>{
+   userHelpers.PlaceOrder(user._id,req.body,product,newPrice).then((orderId)=>{
     
     if(req.body['payment']=='cod'){
      
@@ -364,7 +378,7 @@ let totalAmount = await userHelpers.getTottalAmount(req.session.user._id);
       
     }else if (req.body['payment']=='razorpay'){
       
-      userHelpers.generateRazorPay(orderId,totalPrice,userId).then((response)=>{
+      userHelpers.generateRazorPay(orderId,newPrice,userId).then((response)=>{
         
         res.json({data:response, razorpaySuccess:true})
 
@@ -385,14 +399,14 @@ let totalAmount = await userHelpers.getTottalAmount(req.session.user._id);
                 "items": [{
                     "name": "Red Sox Hat",
                     "sku": "001",
-                    "price": totalPrice,
+                    "price": newPrice,
                     "currency": "USD",
                     "quantity": 1
                 }]
             },
             "amount": {
                 "currency": "USD",
-                "total": totalPrice
+                "total": newPrice
             },
             "description": "Hat for the best team ever"
         }]  
@@ -414,6 +428,7 @@ let totalAmount = await userHelpers.getTottalAmount(req.session.user._id);
   // res.redirect("/order-success")
   }).catch(err=>console.log(err))
 })
+
 router.get('/success', (req, res) => {
   const payerId = req.query.PayerID;
   const paymentId = req.query.paymentId;

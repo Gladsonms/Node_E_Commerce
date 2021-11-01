@@ -298,6 +298,24 @@ module.exports = {
                resolve(response)
             })
         })
+    },
+    saveUserCoupon:(userId,couponId)=>{
+        console.log("saveUserCoupon");
+        console.log(userId);
+        console.log(couponId);
+        return new Promise(async(resolve, reject)=>{
+            let user=db.get().collection(collection.USER_COLLECTIONS).findOne({_id: ObjectId(userId)});
+            if(user.coupons){
+                await db.get().collection(collection.USER_COLLECTIONS).updateOne({_id: ObjectId(userId)},{$push:{coupons:{cid:couponId}}}).then((response)=>{
+                   resolve()
+                })
+            }else{
+                await db.get().collection(collection.USER_COLLECTIONS).updateOne({_id: ObjectId(userId)},{$set:{coupons:[{cid:couponId}]}}).then(()=>{
+                    resolve()
+                })
+            }
+            //db,get().collection(collection.USER_COLLECTIONS).updateOne({_id: ObjectId(userId)},$push{})
+        })
     }
 
 
