@@ -179,6 +179,7 @@ module.exports = {
             resolve(orderCount)
         })
     },
+   
     
     addNewProductOffer:(offerData,product)=>{
         let productname=offerData.productname
@@ -316,7 +317,20 @@ module.exports = {
             }
             //db,get().collection(collection.USER_COLLECTIONS).updateOne({_id: ObjectId(userId)},$push{})
         })
-    }
+    },
+    getOrderStatus:()=>{
+        return new Promise(async(resolve,reject)=>{
+      const data = await db.get().collection(collection.ORDER_COLLECTIONS).aggregate([
+          {
+          
+              $group:{_id :'$status', count: {$sum: 1}}
+          
+      },
+
+    ]).toArray()
+   
+    resolve(data)
+    },
 
 
 
@@ -324,4 +338,25 @@ module.exports = {
  
 
 
-}
+        )},
+
+ getPaymentMethod:()=>{
+     return new Promise(async(resolve,reject)=>{
+         const data = await db.get().collection(collection.ORDER_COLLECTIONS).aggregate([
+             {
+                 $group:{_id:"$paymentMethod",count:{$sum:1}}
+             }
+         ]).toArray()
+         console.log(data);
+         resolve(data)
+     })
+ },
+ getLastOrderList:()=>{
+     return new Promise(async(resolve,reject)=>{
+         const data = await db.get().collection(collection.ORDER_COLLECTIONS).find().sort({"date":-1}).limit(7).toArray().then((data)=>{
+             console.log(data);
+             resolve(data)
+         })
+     })
+ }       
+    }

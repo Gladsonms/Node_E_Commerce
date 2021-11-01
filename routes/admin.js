@@ -46,8 +46,11 @@ router.get("/home",async function (req, res) {
   let userCount=await userHelpers.getUserCount();
   let productCount=await productHelpers.getProductCount();
   let orderCount=await productHelpers.getOrderCount();
-    
-  res.render("admin/home", { admin: true ,userCount,orderCount,productCount});
+  let oderStatus= await productHelpers.getOrderStatus();
+  let paymentMethod=await productHelpers.getPaymentMethod();
+  let lastOrderList=await productHelpers.getLastOrderList();
+
+  res.render("admin/home", { admin: true ,userCount,orderCount,productCount,oderStatus,paymentMethod,lastOrderList});
 });
 
 //usermangment

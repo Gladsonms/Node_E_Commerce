@@ -627,7 +627,7 @@
                                 <div class="card card-statistics h-100 mb-0">
                                     <div class="card-header d-flex justify-content-between">
                                         <div class="card-heading">
-                                            <h4 class="card-title">Lifetime sales</h4>
+                                            <h4 class="card-title">Payment Method</h4>
                                         </div>
                                         <div class="dropdown">
                                             <a class="p-2" href="#!" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -654,18 +654,20 @@
                                                 </div>
                                             </div>
                                             <div class="col-lg-4 mt-4">
+                                                {{#each paymentMethod}}
                                                 <div class="mb-3">
-                                                    <h3 class="mb-0">680</h3>
-                                                    <p class="mb-0 text-info">Total sales</p>
+                                                    <h3 class="mb-0">{{this.count}}</h3>
+                                                    <p class="mb-0 text-info">{{this._id}}</p>
                                                 </div>
-                                                <div class="mb-3">
+                                                {{/each}}
+                                                {{!-- <div class="mb-3">
                                                     <h3 class="mb-0">800</h3>
                                                     <p class="mb-0 text-primary">Open campaign</p>
                                                 </div>
                                                 <div class="mb-3">
                                                     <h3 class="mb-0">500</h3>
                                                     <p class="mb-0">Daily sales</p>
-                                                </div>
+                                                </div> --}}
                                             </div>
                                         </div>
                                     </div>
@@ -757,83 +759,25 @@
                                             <table id="datatable-buttons" class="table">
                                                 <thead>
                                                     <tr>
-                                                        <th>No.</th>
-                                                        <th>Name</th>
-                                                        <th>Date</th>
-                                                        <th>Total</th>
+                                                        <th>date</th>
+                                                        <th>Payment method</th> 
                                                         <th>Status</th>
+                                                        <th>tottal</th>
+                                                       
                                                     </tr>
                                                 </thead>
                                                 <tbody class="text-muted">
+                                                    {{#each lastOrderList}}
                                                     <tr>
-                                                        <td>1</td>
-                                                        <td>Smith Drake</td>
-                                                        <td>27/3/2014</td>
-                                                        <td>$1,00,000</td>
+                                                        <td>{{this.date}}</td>
+                                                        <td>{{this.paymentMethod}}</td>
+                                                        <td>{{this.status}}</td>
+                                                        <td>{{this.tottal}}</td>
                                                         <td>
                                                             <label class="badge mb-0 badge-primary-inverse"> Overdue</label>
                                                         </td>
                                                     </tr>
-                                                    <tr>
-                                                        <td>2</td>
-                                                        <td>Martha Doe</td>
-                                                        <td>28/3/2015</td>
-                                                        <td>$70,000</td>
-                                                        <td>
-                                                            <label class="badge mb-0 badge-warning-inverse
-                                                                "> Outstanding</label>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>3</td>
-                                                        <td>Fenish Paul</td>
-                                                        <td>24/3/2015</td>
-                                                        <td>$60,000</td>
-                                                        <td>
-                                                            <label class="badge mb-0 badge-info-inverse
-                                                                "> Open</label>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>4</td>
-                                                        <td>Albom Mitch</td>
-                                                        <td>29/3/2016</td>
-                                                        <td>$60,000</td>
-                                                        <td>
-                                                            <label class="badge mb-0 badge-success-inverse
-                                                                "> Paid</label>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>5</td>
-                                                        <td>Bacon Francis</td>
-                                                        <td>21/3/2016</td>
-                                                        <td>$50,000</td>
-                                                        <td>
-                                                            <label class="badge mb-0 badge-primary-inverse
-                                                                "> Overdue</label>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>6</td>
-                                                        <td>Vanessa Angel</td>
-                                                        <td>18/3/2016</td>
-                                                        <td>$42,000</td>
-                                                        <td>
-                                                            <label class="badge mb-0 badge-warning-inverse
-                                                                "> Outstanding</label>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>7</td>
-                                                        <td>Fenish Paul</td>
-                                                        <td>24/3/2015</td>
-                                                        <td>$60,000</td>
-                                                        <td>
-                                                            <label class="badge mb-0 badge-info-inverse
-                                                                "> Open</label>
-                                                        </td>
-                                                    </tr>
+                                                    {{/each}}
                                                 </tbody>
                                             </table>
                                         </div>
@@ -847,47 +791,49 @@
                                     <div class="col-xl-6 col-xxl-4">
                                         <div class="card card-statistics">
                                             <div class="card-header">
-                                                <h4 class="card-title">Conversion Visualizer</h4>
+                                                <h4 class="card-title">Order Status</h4>
                                             </div>
                                             <div class="card-body pb-2">
                                                 <div class="row no-gutters">
                                                     <div class="col-sm-4 mt-3">
                                                         <ul class="list-group list-group-flush">
-                                                            <li class="list-group-item px-0 pt-0 d-flex justify-content-between align-items-center">
+                                                            {{!-- <li class="list-group-item px-0 pt-0 d-flex justify-content-between align-items-center">
                                                                 <p class="text-muted m-b-0">
                                                                     <i class="fa fa-circle-o mr-2 text-primary"></i>
-                                                                    Direct
+                                                    
                                                                 </p>
                                                                 <p class="text-primary mb-0">44</p>
-                                                            </li>
+                                                            </li> --}}
+                                                            {{#each oderStatus}}
                                                             <li class="list-group-item d-flex px-0 justify-content-between align-items-center">
                                                                 <p class="text-muted m-b-0">
                                                                     <i class="fa fa-circle-o mr-2 text-warning"></i>
-                                                                    Referral
+                                                                   {{this._id}}
                                                                 </p>
-                                                                <p class="text-warning mb-0">55</p>
+                                                                <p class="text-warning mb-0">{{this.count}}</p>
                                                             </li>
-                                                            <li class="list-group-item d-flex px-0 justify-content-between align-items-center">
+                                                            {{/each}}
+                                                            {{!-- <li class="list-group-item d-flex px-0 justify-content-between align-items-center">
                                                                 <p class="text-muted m-b-0">
                                                                     <i class="fa fa-circle-o mr-2 text-info"></i>
                                                                     Organic Search
                                                                 </p>
                                                                 <p class="text-info mb-0">13</p>
-                                                            </li>
-                                                            <li class="list-group-item d-flex px-0 justify-content-between align-items-center">
+                                                            </li> --}}
+                                                            {{!-- <li class="list-group-item d-flex px-0 justify-content-between align-items-center">
                                                                 <p class="text-muted m-b-0">
                                                                     <i class="fa fa-circle-o mr-2 text-danger"></i>
                                                                     Social Network
                                                                 </p>
                                                                 <p class="text-danger mb-0">53</p>
-                                                            </li>
-                                                            <li class="list-group-item d-flex px-0 justify-content-between align-items-center">
+                                                            </li> --}}
+                                                            {{!-- <li class="list-group-item d-flex px-0 justify-content-between align-items-center">
                                                                 <p class="text-muted m-b-0">
                                                                     <i class="fa fa-circle-o mr-2 text-dark"></i>
                                                                     Other Advertising
                                                                 </p>
                                                                 <p class="text-dark mb-0">35</p>
-                                                            </li>
+                                                            </li> --}}
                                                         </ul>
                                                     </div>
                                                     <div class="col-sm-8">
