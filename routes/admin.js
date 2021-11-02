@@ -341,6 +341,14 @@ router.get("/ordermangment",async(req,res)=>{
     })
   })
 
+  //sales Report
+  router.get("/salereport",async(req,res)=>{
+   
+    let oders=await productHelpers.getDeliveredReports()
+    
+    res.render('admin/salereport',{admin:true,oders})
+  })
+
 
 
 //logout

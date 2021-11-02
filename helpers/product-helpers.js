@@ -358,5 +358,15 @@ module.exports = {
              resolve(data)
          })
      })
+ },
+ getDeliveredReports:()=>{
+    return new Promise(async(resolve,reject)=>{
+
+        const data = await db.get().collection(collection.ORDER_COLLECTIONS).find({status:"placed"}).toArray().then((data)=>{
+          resolve(data)
+          
+        })
+
+    })
  }       
     }
