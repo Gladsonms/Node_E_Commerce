@@ -278,6 +278,17 @@ else{
 router.post("/change-product-quantity", verifyLogin, (req, res, next) => {
   
   userHelpers.changeProductQauntity(req.body).then(async (response) => {
+    
+    let totalAmount = await userHelpers.getTottalAmount(req.session.user._id);
+   
+    let totalPrice =0
+  
+    for(var i in totalAmount){
+      totalPrice = totalPrice + totalAmount[i].subtotal
+    }
+    console.log("totalPrice: " + totalPrice);
+    response.total=totalPrice;
+    console.log(response);
     res.json(response);
   });
 });
@@ -542,6 +553,7 @@ router.post('/apply-coupon',async (req,res)=>{
   
     if(response)
     { 
+    
      
       let totalAmount = await userHelpers.getTottalAmount(req.session.user._id)
       let totalPrice =0
@@ -549,19 +561,29 @@ router.post('/apply-coupon',async (req,res)=>{
       for(var i in totalAmount){
         totalPrice = totalPrice + totalAmount[i].subtotal
       }
-       //console.log(totalAmount);
-       
-       
+      let minAmount=response.minAmount
+      if(totalPrice>=minAmount)
+       {
         let discount =parseInt(response.discount)
        
-       let newPrice = Math.round(totalPrice-(totalPrice*discount/100))
+        let newPrice = Math.round(totalPrice-(totalPrice*discount/100))
+        
+       
+       res.json({newPrice,couponMessage:true,message:"Coupon Applied"})
+       }
+       else
+       {
+        res.json({couponMessage1:true,Amessage:"Coupon   valid for this purshase above" +minAmount})
+       }
        
       
-      res.json({newPrice})
       // userHelpers.CheckUserCoupon(coupon,userId).then((response)=>{
       //   console.log("check user coupon");
       //   console.log(coupon);
       // })
+    }
+    else{
+      res.json({couponMessage2:true,Invalidmessage:"Coupon not  valid "})
     }
     
   })

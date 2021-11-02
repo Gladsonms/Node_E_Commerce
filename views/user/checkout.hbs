@@ -370,9 +370,10 @@
                 <form id="applyCoupon">
               <td><input type="text" name="coupon" id="appliedCoupon"/></td>  </tr>
              <tr><td><input type="hidden"></td> <td><button class="btn btn-sm-success"> Apply coupon</button></td></tr>
-             <tr><td> <span id="msgsuccess"></span>
-                    <span id="msgfail"></span>
-                  </td></tr>     
+             <tr><td> <span id="msgsuccess"></span></td></tr>
+              <tr><td> <span id="msgfail"></span></td></tr> 
+              <tr><td> <span id="msgfailed"></span></td></tr>       
+                     
                 </form>
               
             
@@ -414,8 +415,16 @@
                 let price =  document.getElementById("totaount").innerHTML=response.newPrice;  
                
                  document.getElementById("totaount").innerHTML
-                   
-                   
+                 document.getElementById("msgsuccess").innerHTML=response.message
+                 document.getElementById("msgfail").innerHTML=" "
+                 }
+                 else if(response.couponMessage == true)
+                 {
+                   document.getElementById("msgfail").innerHtml=" "
+                  document.getElementById("msgfailed").innerHtml=response.Amessage
+
+
+
                  }
         }
       })

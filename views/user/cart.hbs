@@ -106,7 +106,7 @@
 									</tr>
 									<tr class="cart-total">
 										<td colspan="2" class="total text-right">Total</td>
-										<td colspan="1" class="total text-center"><span id="total">₹{{totalPrice}}</span></td>
+										<td colspan="1" class="total text-center"><span id="total5">₹{{totalPrice}}</span></td>
 									</tr>
 								</tfoot>
 							</table>
@@ -163,6 +163,7 @@
 
 			<script>
 function changeQuantity(cartId,proId,count){
+	console.log(proId)
 				let quantity=parseInt(document.getElementById(proId).value)
 				
 				console.log(quantity)
@@ -190,9 +191,10 @@ function changeQuantity(cartId,proId,count){
 							
 							   }
 							   else {
-								        window.location.reload()
-								   //document.getElementById('proId').innerHTML=quantity+count
-								  // document.getElementById('total').innerHTML=response.total
+								   
+								       // window.location.reload()
+								   document.getElementById(proId).value=quantity+count
+								   document.getElementById('total5').innerHTML=response.total
 							   }
 						   })
 					   })
