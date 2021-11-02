@@ -138,6 +138,7 @@
                         <textarea name="image1_b64" id="imageValue1" cols="30" rows="10" hidden></textarea>
                     </span>
                 </div>
+                 <span id="error"></span>
             </div>
         </div>
 
@@ -161,6 +162,7 @@
                         <textarea name="image2_b64" id="imageValue2" cols="30" rows="10" hidden></textarea>
                     </span>
                 </div>
+                 <span id="error1"></span>
             </div>
         </div>
 
@@ -183,6 +185,7 @@
                         <textarea name="image3_b64" id="imageValue3" cols="30" rows="10" hidden></textarea>
                     </span>
                 </div>
+                 <span id="error2"></span>
             </div>
         </div>
 
@@ -205,6 +208,7 @@
                         <textarea name="image4_b64" id="imageValue4" cols="30" rows="10" hidden></textarea>
                     </span>
                 </div>
+                <span id="error3"></span>
             </div>
         </div>
 
@@ -394,12 +398,16 @@
      }
 </script>
 <script>
-    $('document').ready(function() {
-//modal1 and image 1
-    var image1 = document.getElementById('sampleImage1');
+    //image 1
+    var imgformat1;var imgformat2;var imgformat3;var imgformat4; 
+document.getElementById("image1").onchange=e=>{
+    value=e.target.files[0]
+    value=value.type
+    if(value=="image/jpeg"||value=="image/jpg"||value=="image/png"){
+        imgformat1=true
+  var image1 = document.getElementById('sampleImage1');
     var modal1 = $('#modal1');
     var cropper1;
-    $('#image1').change(function (event) {
         var files = event.target.files;
         var done = function (url) {
             image1.src = url;
@@ -412,7 +420,7 @@
             };
             reader.readAsDataURL(files[0]);
         }
-    });
+    
     modal1.on('shown.bs.modal', function () {
         cropper1 = new Cropper(image1, {
             aspectRatio: 1,
@@ -440,12 +448,22 @@
             };
         });
     });
-//modal1 and image 1 end
-//modal2 and image 2
-    var image2 = document.getElementById('sampleImage2');
+    }else{
+        imgformat1=false;
+        document.getElementById('error').innerHTML ="Can only select Image"
+    }
+}
+
+//image 2
+document.getElementById("image2").onchange=e=>{
+    value=e.target.files[0]
+    value=value.type
+    if(value=="image/jpeg"||value=="image/jpg"||value=="image/png"){
+
+ var image2 = document.getElementById('sampleImage2');
     var modal2 = $('#modal2');
     var cropper2;
-    $('#image2').change(function (event) {
+  imgformat2=true
         var files = event.target.files;
         var done = function (url) {
             image2.src = url;
@@ -458,7 +476,6 @@
             };
             reader.readAsDataURL(files[0]);
         }
-    });
     modal2.on('shown.bs.modal', function () {
         cropper2 = new Cropper(image2, {
             aspectRatio: 1,
@@ -486,12 +503,28 @@
             };
         });
     });
-//image 2 and modal 2 end
+    }else{ 
+        imgformat2=false;
+         document.getElementById('error1').innerHTML ="Can only select Image"
+    }
+    }
+
+
+
+
+
+    $('document').ready(function() {
+
 //modal3 and image 3 start
-    var image3 = document.getElementById('sampleImage3');
+   document.getElementById("image3").onchange=e=>{
+    value=e.target.files[0]
+    value=value.type
+    if(value=="image/jpeg"||value=="image/jpg"||value=="image/png"){
+       
+  var image3 = document.getElementById('sampleImage3');
     var modal3 = $('#modal3');
     var cropper3;
-    $('#image3').change(function (event) {
+     imgformat3=true
         var files = event.target.files;
         var done = function (url) {
             image3.src = url;
@@ -504,7 +537,7 @@
             };
             reader.readAsDataURL(files[0]);
         }
-    });
+    
     modal3.on('shown.bs.modal', function () {
         cropper3 = new Cropper(image3, {
             aspectRatio: 1,
@@ -532,12 +565,21 @@
             };
         });
     });
+    }else{
+        imgformat3=false;
+        document.getElementById('error2').innerHTML ="Can only select Image"
+    }
+}
 //image 3 and modal 3 end
 //modal4 and image 4 start
-    var image4 = document.getElementById('sampleImage4');
+  document.getElementById("image4").onchange=e=>{
+    value=e.target.files[0]
+    value=value.type
+    if(value=="image/jpeg"||value=="image/jpg"||value=="image/png"){
+        imgformat4=true
+  var image4 = document.getElementById('sampleImage4');
     var modal4 = $('#modal4');
     var cropper4;
-    $('#image4').change(function (event) {
         var files = event.target.files;
         var done = function (url) {
             image4.src = url;
@@ -550,12 +592,12 @@
             };
             reader.readAsDataURL(files[0]);
         }
-    });
+    
     modal4.on('shown.bs.modal', function () {
         cropper4 = new Cropper(image4, {
             aspectRatio: 1,
             viewMode: 1,
-            preview: '#preview4'
+            preview: '#preview1'
         });
     }).on('hidden.bs.modal', function () {
         cropper4.destroy();
@@ -578,8 +620,12 @@
             };
         });
     });
-//image 4 and modal 4 end
-  });
+    }else{
+        imgformat4=false;
+        document.getElementById('error3').innerHTML ="Can only select Image"
+    }
+}  
+    })
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
  
@@ -723,6 +769,7 @@
           }
       })
       
+
 
 
     
