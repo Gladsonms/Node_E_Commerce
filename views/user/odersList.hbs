@@ -54,8 +54,11 @@
                                                          <span>Order Cancel</span>
                                                          {{else}}
                                                            
-                                                           
+                                                          {{#if this.userCancel}}
+
+                                                          {{else}} 
                                                         <button class="btn btn-danger" href="" onclick="cancelOder('{{this._id}}'); ">cancel</button>
+                                                        {{/if}}
                                                          {{/if}}
                                                             
                                                           

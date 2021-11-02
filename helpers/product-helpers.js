@@ -152,8 +152,8 @@ module.exports = {
         })
     },
     getAllUserOrder:()=>{
-           return new Promise((resolve,reject)=>{
-             let userOders=  db.get().collection(collection.ORDER_COLLECTIONS).find({}).toArray()
+           return new Promise(async(resolve,reject)=>{
+             let userOders= await db.get().collection(collection.ORDER_COLLECTIONS).find({}).toArray()
                    resolve(userOders)
            })
     },

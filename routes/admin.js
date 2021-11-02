@@ -241,9 +241,17 @@ router.post('/subcategorymangament/delete-category',(req,res)=>{
 
 //order Manngment
 router.get("/ordermangment",async(req,res)=>{
-  let oders=await productHelpers.getAllUserOrder().then((oders)=>{
+  await productHelpers.getAllUserOrder().then((oders)=>{
+    let newOrders = oders.map((order,index)=>{
+      order.isCancelled=order.status === 'Cancel'
+    order.isDeleviered=order.status === 'Deliverd';
+    return order;
+
+    })
     
-    res.render('admin/ordermangment',{admin:true,oders})
+    console.log(newOrders);
+    console.log("newOrders");
+    res.render('admin/ordermangment',{admin:true,newOrders})
     
   })
 })

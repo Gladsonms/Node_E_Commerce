@@ -39,7 +39,7 @@
                 </thead>
                 <tbody>
                
-                  {{#each oders}}
+                  {{#each newOrders}}
                      
                     <tr>
 
@@ -57,13 +57,19 @@
                             {{#if userCancel}}
                             <span>User Cancel</span>
                             {{else}}
+                            {{#if isCancelled}}
+                            {{else}}
+                            {{#if isDeleviered}}
+                            {{else}}
                           <label for="status"></label>
                               <select name="status" id="status{{this._id}}" onchange="changeStatus('{{this._id}}')">
     
     <option value="Pending">Pending</option>
     <option value="Deliverd">Deliverd</option>
     <option value="Cancel">Cancel</option>
-  </select
+  </select>
+  {{/if}}
+  {{/if}}
   {{/if}}
                          </span></td>
                     </tr>
