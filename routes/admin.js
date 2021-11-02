@@ -252,10 +252,11 @@ router.get("/ordermangment",async(req,res)=>{
     let orderId=req.params.id
     let data = req.body
     
+    
     var values= {orderId,data}
-    userHelpers.testing(data,orderId).then((res)=>{
+    userHelpers.testing(data,orderId).then((response)=>{
 
-//res.json({status:true})
+res.json({status:true})
       
     })
 

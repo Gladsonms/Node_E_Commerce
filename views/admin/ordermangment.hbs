@@ -1,8 +1,10 @@
 <div class="app-main" id="main">
   <!-- begin container-fluid -->
   <div class="container-fluid">
+    <container>
     <!-- begin row -->
     <div class="row">
+      
       <div class="col-md-12 m-b-30">
         <!-- begin page title -->
         <div class="d-block d-sm-flex flex-nowrap align-items-center">
@@ -56,8 +58,8 @@
                             <span>User Cancel</span>
                             {{else}}
                           <label for="status"></label>
-                              <select name="status" id="status" onchange="changeStatus('{{this._id}}')">
-    {{!-- <option value="{{this.status}}" selected></option> --}}
+                              <select name="status" id="status{{this._id}}" onchange="changeStatus('{{this._id}}')">
+    
     <option value="Pending">Pending</option>
     <option value="Deliverd">Deliverd</option>
     <option value="Cancel">Cancel</option>
@@ -77,20 +79,31 @@
     </div>
     <!-- end row -->
   </div>
+  </container>
   <!-- end container-fluid -->
 </div>
   <script>
                  function changeStatus(orderId) {
-                    
-                    let  status= document.getElementById('status').value
+                      
+                    let  status= document.getElementById('status'+orderId).value
+                   
+                   
                    $.ajax({
                      //  url:'/changeorderstatus/'+orderId
                       url:'/admin/changeorderstatus/'+orderId,
                        method:'POST',
+                      
                        data:{
                            status
                        },
-                       success:()=>{
+                       success:(response)=>
+                       {
+                         if(response.status)
+                         {
+
+
+                           window.location.reload()
+                         }
                        }
                    })
                       

@@ -566,15 +566,17 @@ module.exports = {
     });
   },
   testing: (data, orderId) => {
+         console.log(orderId);
+         console.log(data);
     return new Promise((resolve, reject) => {
       db.get()
         .collection(collection.ORDER_COLLECTIONS)
         .updateOne(
           { _id: ObjectId(orderId) },
-          { $set: { status: data.status,adminCancel:true }, }
+          { $set: { status: data.status }, }
         )
         .then((result) => {
-
+             
          resolve({status:true})
         })
         .catch((err) => {
