@@ -287,7 +287,7 @@ router.post("/change-product-quantity", verifyLogin, (req, res, next) => {
       totalPrice = totalPrice + totalAmount[i].subtotal
     }
     console.log("totalPrice: " + totalPrice);
-    response.total=totalPrice;
+    response.total=totalPrice
     console.log(response);
     res.json(response);
   });

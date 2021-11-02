@@ -138,7 +138,7 @@ module.exports = {
               }
             )
             .then(() => {
-              resolve();
+              resolve({statusCount: true});
             });
         } else {
           db.get()

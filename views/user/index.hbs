@@ -850,12 +850,13 @@
 			url:'/add-to-cart/'+proId,
 			method:'get',
 			success:(respone)=>{
-				location.href='/'
+				
 				if(respone.status)
 				{
-					let count=$('#cart-count').html()
+					let count=$('#addcount').html()
 					count=parseInt(count)
-					$('#cart-count').html(count)
+					count++;
+					$('#addcount').html(count)
 				}else{ 
 					location.href='/login'
 				}
