@@ -49,9 +49,19 @@ router.get("/home",async function (req, res) {
   let oderStatus= await productHelpers.getOrderStatus();
   let paymentMethod=await productHelpers.getPaymentMethod();
   let lastOrderList=await productHelpers.getLastOrderList();
+  let paymentMethodLabels = [...paymentMethod.map((value)=>(value._id))]
+  let paymentMethodValues = [...paymentMethod.map((value)=>(value.count))]
+  console.log(paymentMethodLabels);
+  console.log(paymentMethodValues);
 
-  res.render("admin/home", { admin: true ,userCount,orderCount,productCount,oderStatus,paymentMethod,lastOrderList});
+  res.render("admin/home", { admin: true ,userCount,orderCount,productCount,oderStatus,paymentMethodLabels,paymentMethodValues,lastOrderList});
 });
+router.post("/home",async(req,res)=>{
+  let paymentMethod=await productHelpers.getPaymentMethod();
+  let paymentMethodLabels = [...paymentMethod.map((value)=>(value._id))]
+  let paymentMethodValues = [...paymentMethod.map((value)=>(value.count))]
+  res.json({labels:paymentMethodLabels,values:paymentMethodValues})
+})
 
 //usermangment
 router.get("/usermanagment", function (req, res) {

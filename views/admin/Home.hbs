@@ -1,3 +1,4 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 <div class="app-main" id="main">
                     <!-- begin container-fluid -->
                     <div class="container-fluid">
@@ -645,21 +646,13 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <h5>We only started collecting data from February 2019 </h5>
-                                        <p>Questions about the Net Earnings number? <a class="btn btn-square btn-inverse-success btn-xs ml-1" href="#">Click here</a> </p>
+                                       
                                         <div class="row mt-4">
-                                            <div class="col-lg-8">
-                                                <div class="morris-wrapper">
-                                                    <div id="morrisecommerce1" style="height: 260px;"></div>
-                                                </div>
+                                            
+                                                <canvas id="pie-chart" width="800" height="450"></canvas>
                                             </div>
-                                            <div class="col-lg-4 mt-4">
-                                                {{#each paymentMethod}}
-                                                <div class="mb-3">
-                                                    <h3 class="mb-0">{{this.count}}</h3>
-                                                    <p class="mb-0 text-info">{{this._id}}</p>
-                                                </div>
-                                                {{/each}}
+                                            {{!-- <div class="col-lg-4 mt-4"> --}}
+                                                
                                                 {{!-- <div class="mb-3">
                                                     <h3 class="mb-0">800</h3>
                                                     <p class="mb-0 text-primary">Open campaign</p>
@@ -668,7 +661,7 @@
                                                     <h3 class="mb-0">500</h3>
                                                     <p class="mb-0">Daily sales</p>
                                                 </div> --}}
-                                            </div>
+                                            {{!-- </div> --}}
                                         </div>
                                     </div>
                                 </div>
@@ -940,3 +933,33 @@
                     </div>
                     <!-- end container-fluid -->
                 </div>
+                <script>
+                    $.ajax({
+                        url:'/admin/home',
+                        method:'POST',
+                        data:{},
+                        success: (response)=>{
+if(response){
+    
+      new Chart(document.getElementById("pie-chart"), {
+    type: 'pie',
+    data: {
+      labels: response.labels,
+      datasets: [{
+        label: "Population (millions)",
+        backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f"],
+        data: response.values,
+      }]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Payment Method '
+      }
+    }
+});
+}
+                        }
+                    })
+                  
+                </script>
