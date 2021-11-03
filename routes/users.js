@@ -221,10 +221,10 @@ router.get("/about",function(req,res,next){
 
 router.get("/productdetails/:id",verifyLogin, async function (req, res, next) {
   
-  
+  let category=await productHelpers.getCategory()
   let products = await productHelpers.getProductDetails(req.params.id);
   
-  res.render("user/productDetails", { products });
+  res.render("user/productDetails", { products,category });
 });
 
 //cart
@@ -339,11 +339,14 @@ router.post("/cart/checkout/addAddress", (req, res) => {
   })
 
 router.post("/place-order",async(req,res)=>{
+  
  let coupon = req.body.couponCode;
  let newPrice;
  //GET TOTTAL AMOUNT
   let response =await userHelpers.checkCoupon(coupon)
     //let couponId = response._id
+
+    
    if(response){
     let minAmount=response.minAmount;
    
@@ -380,6 +383,15 @@ router.post("/place-order",async(req,res)=>{
      }
   }
   else{
+    let totalAmount= await userHelpers.getTottalAmount(req.session.user._id)
+    let totalPrice=0 ;
+    
+    for(var i in totalAmount){
+      totalPrice = totalPrice + totalAmount[i].subtotal
+    }
+    
+    console.log("totalPrice");
+    console.log(totalPrice);
     newPrice=totalPrice
   }
  

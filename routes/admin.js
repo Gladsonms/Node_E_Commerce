@@ -49,11 +49,13 @@ router.get("/home",async function (req, res) {
   
  
   let lastOrderList=await productHelpers.getLastOrderList();
+  let totalSalesAmount=await productHelpers.getTotalSalesAmount();
+  console.log(totalSalesAmount);
   
  
   
     
-  res.render("admin/home", { admin: true ,userCount,orderCount,productCount,lastOrderList});
+  res.render("admin/home", { admin: true ,userCount,orderCount,productCount,lastOrderList,totalSalesAmount});
 });
 router.post("/home",async(req,res)=>{
   let paymentMethod=await productHelpers.getPaymentMethod();

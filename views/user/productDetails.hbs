@@ -22,14 +22,15 @@
 								<h3 class="block-title">Categories</h3>
 								
 								<div class="block-content">
+									{{#each category}}
 									<div class="item">
-										<span class="arrow collapsed" data-toggle="collapse" data-target="#vegetables" aria-expanded="false" role="button">
+										{{!-- <span class="arrow collapsed" data-toggle="collapse" data-target="#vegetables" aria-expanded="false" role="button">
 											<i class="zmdi zmdi-minus"></i>
 											<i class="zmdi zmdi-plus"></i>
-										</span>
+										</span> --}}
 										
-										<a class="category-title" href="product-grid-left-sidebar.html">Vegetables</a>
-										<div class="sub-category collapse" id="vegetables" aria-expanded="true" role="main">
+										<a class="category-title" href="product-grid-left-sidebar.html">{{this.category}}</a>
+										{{!-- <div class="sub-category collapse" id="vegetables" aria-expanded="true" role="main">
 											<div class="item">
 												<a href="product-grid-left-sidebar.html">Tomato</a>
 											</div>
@@ -42,70 +43,15 @@
 											<div class="item">
 												<a href="product-grid-left-sidebar.html">Cucumber</a>
 											</div>
-										</div>
+										</div> --}}
 									</div>
+									{{/each}}
 									
-									<div class="item">
-										<span class="arrow collapsed" data-toggle="collapse" data-target="#fruits" aria-expanded="false" role="button">
-											<i class="zmdi zmdi-minus"></i>
-											<i class="zmdi zmdi-plus"></i>
-										</span>
-										
-										<a class="category-title" href="product-grid-left-sidebar.html">Fruits</a>
-										<div class="sub-category collapse" id="fruits" aria-expanded="true" role="main">
-											<div class="item">
-												<a href="product-grid-left-sidebar.html">Orange</a>
-											</div>
-											<div class="item">
-												<a href="product-grid-left-sidebar.html">Apple</a>
-											</div>
-											<div class="item">
-												<a href="product-grid-left-sidebar.html">Banana</a>
-											</div>
-											<div class="item">
-												<a href="product-grid-left-sidebar.html">Strawberry</a>
-											</div>
-										</div>
-									</div>
 									
-									<div class="item">
-										<span class="arrow collapsed" data-toggle="collapse" data-target="#juices" aria-expanded="false" role="button">
-											<i class="zmdi zmdi-minus"></i>
-											<i class="zmdi zmdi-plus"></i>
-										</span>
-										
-										<a class="category-title" href="product-grid-left-sidebar.html">Juices</a>
-										<div class="sub-category collapse" id="juices" aria-expanded="true" role="main">
-											<div class="item">
-												<a href="product-grid-left-sidebar.html">Orange Juices</a>
-											</div>
-											<div class="item">
-												<a href="product-grid-left-sidebar.html">Tomato Juices</a>
-											</div>
-											<div class="item">
-												<a href="product-grid-left-sidebar.html">Apple Juices</a>
-											</div>
-											<div class="item">
-												<a href="product-grid-left-sidebar.html">Peaches Juices</a>
-											</div>
-										</div>
-									</div>
 									
-									<div class="item">
-										<a class="category-title" href="product-grid-left-sidebar.html">Tea and Coffee</a>
-									</div>
 									
-									<div class="item">
-										<a class="category-title" href="product-grid-left-sidebar.html">Jam</a>
-									</div>
 									
-									<div class="item">
-										<a class="category-title" href="product-grid-left-sidebar.html">SeaFood</a>
-									</div>
 									
-									<div class="item">
-										<a class="category-title" href="product-grid-left-sidebar.html">Fresh Meats</a>
-									</div>
 								</div>
 							</div>
 							
@@ -353,13 +299,13 @@
 																<i class="fa fa-shopping-basket" aria-hidden="true"></i>
 																<span>Add To Cart</span>
 															</button>
-																<a class="add-to-cart" href="#">
+																{{!-- <a class="add-to-cart" href="#">
 																<i class="fa fa-shopping-cart" aria-hidden="true"></i>
 																<span>Buy Now</span>
-															</a>
-															<a class="add-wishlist" href="#">
+															</a> --}}
+															{{!-- <a class="add-wishlist" href="#">
 																<i class="fa fa-heart" aria-hidden="true"></i>												
-															</a>
+															</a> --}}
 														</div>
 													</div>
 													

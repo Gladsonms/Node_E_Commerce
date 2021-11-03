@@ -361,10 +361,39 @@ module.exports = {
     return new Promise(async(resolve,reject)=>{
 
         const data = await db.get().collection(collection.ORDER_COLLECTIONS).find({status:"placed"}).toArray().then((data)=>{
-          resolve()
+          
+          resolve(data)
           
         })
 
     })
+ },
+ getTotalSalesAmount:()=>{
+     return new Promise(async(resolve,reject)=>{
+         const sales = await db.get().collection(collection.ORDER_COLLECTIONS).aggregate([
+             {
+              $match:{
+                  status:{$ne :"Cancel"}
+              }
+             },
+             { 
+                 $group: {
+                     _id: null,
+                     revenue:{
+                         $sum:'$total'
+                     }
+                 }
+             },
+             {
+                 $project: {
+                     _id:0,
+                     revenue:1
+                 }
+             }
+         ]).toArray();
+         
+         resolve(sales[0]);
+         
+     })
  }       
     }
