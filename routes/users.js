@@ -209,8 +209,8 @@ router.post("/enterOtp", (req, res) => {
 
 
 router.get("/logout", function (req, res, next) {
+  req.session.user = null;
   req.session.loggedIn = false;
-  delete req.session.user;
 
   res.redirect("/");
 });
@@ -645,6 +645,7 @@ userHelpers.CheckPassword(oldPass,userId,newPass).then(()=>{
 router.get("/category/:category",async(req, res)=>{
  
  let categoryProduct=await productHelpers.getCategoryProduct(req.params.category)
+ 
 
   res.render("user/CategoryProduct",{categoryProduct})
 })

@@ -378,7 +378,7 @@ res.json({status:true})
 //logout
 router.get("/logout", function (req, res) {
   req.session.isLoggedIn = false;
-  req.session.destroy();
+ 
   res.redirect("/admin");
 });
 
