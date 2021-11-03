@@ -642,4 +642,10 @@ userHelpers.CheckPassword(oldPass,userId,newPass).then(()=>{
 })
 
 })
+router.get("/category/:category",async(req, res)=>{
+ 
+
+console.log(req.params.category);
+  res.render("user/CategoryProduct")
+})
 module.exports = router;

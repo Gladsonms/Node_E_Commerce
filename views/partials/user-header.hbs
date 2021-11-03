@@ -38,7 +38,7 @@
 								<ul>
 									{{#each category}}
 									<li class="dropdown-submenu">
-										<a href="product-grid-left-sidebar.html" title="Product List">{{this.category}}</a>
+										<a  class="btn btn-sm" style="color:#fff;" title="Product List" onclick="CategoryProducts('{{this.category}}')">{{this.category}}</a>
 										{{!-- <div class="dropdown-menu level2">
 											<ul>
 												<li><a href="product-grid-left-sidebar.html" title="Product Grid - Left Sidebar">Product Grid - Left Sidebar</a></li>
@@ -195,8 +195,8 @@
     });
 	function onLoad(){
 		gapi.load('auth2', function () {
-        gapi.auth2.init();
-    });
+      	  gapi.auth2.init();
+   	 }	);
 	}
     function signOut() {
 
@@ -205,5 +205,14 @@
         auth2.signOut().then(function () {
             console.log('User signed out.');
         });
-    }</script>
+    }
+	function CategoryProducts(category) {
+	$.ajax({
+		url:"/category/"+category,
+		
+		method:'GET',
+
+	})
+	}	
+	</script>
 </header>

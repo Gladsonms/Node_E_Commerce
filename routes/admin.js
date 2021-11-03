@@ -50,7 +50,7 @@ router.get("/home",async function (req, res) {
  
   let lastOrderList=await productHelpers.getLastOrderList();
   let totalSalesAmount=await productHelpers.getTotalSalesAmount();
-  console.log(totalSalesAmount);
+  
   
  
   
