@@ -301,9 +301,7 @@ module.exports = {
         })
     },
     saveUserCoupon:(userId,couponId)=>{
-        console.log("saveUserCoupon");
-        console.log(userId);
-        console.log(couponId);
+       
         return new Promise(async(resolve, reject)=>{
             let user=db.get().collection(collection.USER_COLLECTIONS).findOne({_id: ObjectId(userId)});
             if(user.coupons){
@@ -347,14 +345,14 @@ module.exports = {
                  $group:{_id:"$paymentMethod",count:{$sum:1}}
              }
          ]).toArray()
-         console.log(data);
+         
          resolve(data)
      })
  },
  getLastOrderList:()=>{
      return new Promise(async(resolve,reject)=>{
          const data = await db.get().collection(collection.ORDER_COLLECTIONS).find().sort({"date":-1}).limit(7).toArray().then((data)=>{
-             console.log(data);
+         
              resolve(data)
          })
      })

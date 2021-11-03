@@ -46,21 +46,24 @@ router.get("/home",async function (req, res) {
   let userCount=await userHelpers.getUserCount();
   let productCount=await productHelpers.getProductCount();
   let orderCount=await productHelpers.getOrderCount();
-  let oderStatus= await productHelpers.getOrderStatus();
-  let paymentMethod=await productHelpers.getPaymentMethod();
+  
+ 
   let lastOrderList=await productHelpers.getLastOrderList();
-  let paymentMethodLabels = [...paymentMethod.map((value)=>(value._id))]
-  let paymentMethodValues = [...paymentMethod.map((value)=>(value.count))]
-  console.log(paymentMethodLabels);
-  console.log(paymentMethodValues);
-
-  res.render("admin/home", { admin: true ,userCount,orderCount,productCount,oderStatus,paymentMethodLabels,paymentMethodValues,lastOrderList});
+  
+ 
+  
+    
+  res.render("admin/home", { admin: true ,userCount,orderCount,productCount,lastOrderList});
 });
 router.post("/home",async(req,res)=>{
   let paymentMethod=await productHelpers.getPaymentMethod();
   let paymentMethodLabels = [...paymentMethod.map((value)=>(value._id))]
   let paymentMethodValues = [...paymentMethod.map((value)=>(value.count))]
-  res.json({labels:paymentMethodLabels,values:paymentMethodValues})
+  let oderStatus= await productHelpers.getOrderStatus();
+  let orderStatusLabel=[...oderStatus.map((data)=>(data._id))]
+  let orderStatusvalue=[...oderStatus.map((data)=>(data.count))]
+  
+  res.json({labels:paymentMethodLabels,values:paymentMethodValues,orderstatus:orderStatusLabel,ordervalue:orderStatusvalue})
 })
 
 //usermangment
