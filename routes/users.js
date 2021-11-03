@@ -644,8 +644,8 @@ userHelpers.CheckPassword(oldPass,userId,newPass).then(()=>{
 })
 router.get("/category/:category",async(req, res)=>{
  
+ let categoryProduct=await productHelpers.getCategoryProduct(req.params.category)
 
-console.log(req.params.category);
-  res.render("user/CategoryProduct")
+  res.render("user/CategoryProduct",{categoryProduct})
 })
 module.exports = router;

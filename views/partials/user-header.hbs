@@ -38,7 +38,7 @@
 								<ul>
 									{{#each category}}
 									<li class="dropdown-submenu">
-										<a  class="btn btn-sm" style="color:#fff;" title="Product List" onclick="CategoryProducts('{{this.category}}')">{{this.category}}</a>
+										<a  class="btn btn-sm" style="color:#fff;" title="Product List" href="/category/{{this.category}}">{{this.category}}</a>
 										{{!-- <div class="dropdown-menu level2">
 											<ul>
 												<li><a href="product-grid-left-sidebar.html" title="Product Grid - Left Sidebar">Product Grid - Left Sidebar</a></li>
@@ -206,13 +206,6 @@
             console.log('User signed out.');
         });
     }
-	function CategoryProducts(category) {
-	$.ajax({
-		url:"/category/"+category,
 		
-		method:'GET',
-
-	})
-	}	
 	</script>
 </header>

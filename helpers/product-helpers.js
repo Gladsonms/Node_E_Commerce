@@ -395,5 +395,16 @@ module.exports = {
          resolve(sales[0]);
          
      })
+ },
+ getCategoryProduct:(category)=>{
+     console.log(category);
+     return new Promise(async(resolve, reject)=>{
+         
+         db.get().collection(collection.PRODUCT_COLLECTIONS).find({category:category}).toArray().then((response)=>{
+            
+             resolve(response);
+         })
+
+     })
  }       
     }
