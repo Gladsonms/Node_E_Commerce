@@ -583,7 +583,7 @@ router.get('/view-order-product/:id',async(req,res)=>{
 router.post('/oders/cancelorder/:id',async(req,res)=>{
   let orderId=req.params.id
   await userHelpers.cancelOrder(orderId).then((response)=>{
-    console.log(response);
+    
     res.json(response)
   })
 
@@ -597,9 +597,11 @@ router.post("/oders/deleteaddress",(req,res)=>{
    addId=req.body.addressId
    userId=req.session.user._id
    
+    
   
 userHelpers.deleteAdddress(uaddress,userId,addId,uname).then((response)=>{
-         
+  console.log("______");
+         console.log(response);
   res.json({response});
 })
 

@@ -599,21 +599,21 @@ module.exports = {
   },
   deleteAdddress: (uaddress, userId, addId, uname) => {
     return new Promise(async(resolve,reject)=>{
-
-    let address = await db.get().collection(collection.ADDRESS_COLLECTIONS).findOne({"address.id":uaddress});
-   
+     
+    //let address = await db.get().collection(collection.ADDRESS_COLLECTIONS).findOne({"address.id":uaddress});
+   console.log(uaddress);
+  
         db.get()
           .collection(collection.ADDRESS_COLLECTIONS)
           .updateOne(
             { user: ObjectId(userId) },
-            { $pull: { address: { id: addId } } },
+            { $pull: { address: { id: uaddress } } },
             
-          )
-    }) .then((response) => {
-      
-      console.log(response);
-      resolve(true)
-      });
+          ).then((response) => {
+          
+          resolve(true)
+          });
+    })
   },
 
 
