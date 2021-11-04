@@ -775,7 +775,7 @@ checkCoupon:(coupon)=>{
     })
 },
 CheckUserCoupon:(coupan,userId,couponId)=>{
-  console.log("______________________");
+ 
   return new Promise(async(resolve,reject)=>{
     let user=db.get().collection(collection.USER_COLLECTIONS).findOne({_id: ObjectId(userId)});
     if(user.appliedCoupons)
@@ -793,9 +793,32 @@ CheckUserCoupon:(coupan,userId,couponId)=>{
 },
 getOrderStatus:()=>{
 db.get().collection(collection.ORDER_COLLECTIONS).findOne({$or:[{status:"Cancel"},{status:"pending"}]}).then((data) => {
-  console.log(data);
+ 
   resolve(data)
 })
+},
+//buynow
+buyNow:(proId)=>{
+ 
+  return new Promise(async(resolve, reject)=>{
+   await db.get().collection(collection.PRODUCT_COLLECTIONS).findOne({_id:ObjectId(proId)}).then((data) => {
+     
+      resolve(data);
+    })
+  })
+
+},
+//get buy now product
+buyNowProduct:(buyNowProduct) => {
+  
+  return new Promise(async(resolve,reject)=>{
+    let product = await db.get().collection(collection.PRODUCT_COLLECTIONS).find({_id:ObjectId(buyNowProduct)}).toArray().then((response) => {
+      console.log("buy now product details");
+      console.log(response);
+      resolve(response);
+    })
+  })
+
 }
 
 

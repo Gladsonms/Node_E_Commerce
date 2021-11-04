@@ -309,6 +309,23 @@ router.post("/change-product-quantity", verifyLogin, (req, res, next) => {
 
 router.get("/cart/checkout", verifyLogin, async (req, res) => {
  // let total = await userHelpers.getTottalAmount(req.session.user._id);
+ let proId=req.query.id
+ let  singleProductPrice
+  
+ 
+
+ if(proId){
+  let buyNowproduct=await userHelpers.buyNow(proId)
+ 
+  console.log(buyNowproduct);
+  console.log(buyNowproduct.price);
+  singleProductPrice=buyNowproduct.price;
+  req.session.buyNow=buyNowproduct._id
+ 
+ }
+ let user=req.session.user
+ let userId = req.session.user._id
+
   let useraddres = await userHelpers.getUserAddress(req.session.user._id)
   let totalAmount = await userHelpers.getTottalAmount(req.session.user._id);
   // let subtotal = await userHelpers.getSubTotal(req.session.user._id)
@@ -317,8 +334,14 @@ router.get("/cart/checkout", verifyLogin, async (req, res) => {
   for(var i in totalAmount){
     totalPrice = totalPrice + totalAmount[i].subtotal
   }
+  let buyproductPrice
+  if(proId){
+    buyproductPrice =singleProductPrice
+  }else{
+    buyproductPrice = totalPrice
+  }
   
-  res.render("user/checkout", {  user: req.session.user, useraddres,totalAmount,totalPrice});
+  res.render("user/checkout", {  user: req.session.user, useraddres,totalAmount,buyproductPrice});
 });
 
 router.post("/remove-item", verifyLogin,async  (req, res) => {
@@ -359,6 +382,19 @@ router.post("/place-order",async(req,res)=>{
  //GET TOTTAL AMOUNT
   let response =await userHelpers.checkCoupon(coupon)
     //let couponId = response._id
+    let product
+    let buyProducts
+    let buyNowOrder
+    let buyNow = req.session.buyNow
+    let productPrice
+    if(buyNow)
+    {
+      product=await userHelpers.buyNowProduct(buyNow)
+      productPrice = product[0].price
+    }else{
+      product=await userHelpers.getCartProductList(req.session.user._id)
+    }
+     
 
     
    if(response){
@@ -408,18 +444,25 @@ router.post("/place-order",async(req,res)=>{
     console.log(totalPrice);
     newPrice=totalPrice
   }
- 
-let product=await userHelpers.getCartProductList(req.session.user._id)
+
 //let coupon=userHelpers.checkCoupon(req.body)
 //let totalAmount= await userHelpers.getTottalAmount(req.session.user._id)
 let totalAmount = await userHelpers.getTottalAmount(req.session.user._id);
   // let subtotal = await userHelpers.getSubTotal(req.session.user._id)
   
   
+  
  
    let user=req.session.user
    let userId=req.session.user._id
-   userHelpers.PlaceOrder(user._id,req.body,product,newPrice).then((orderId)=>{
+    let totalPrice 
+    if(buyNow){
+      totalPrice = productPrice
+    }else{
+      totalPrice = newPrice
+    }
+    console.log("buy now to " + totalPrice);
+   userHelpers.PlaceOrder(user._id,req.body,product,totalPrice).then((orderId)=>{
     
     if(req.body['payment']=='cod'){
      
@@ -508,6 +551,10 @@ router.get('/success', (req, res) => {
 });
 
 router.get('/order-success',verifyLogin,(req,res)=>{
+  if(req.session.buyNow){
+    //delete session in buynow product
+    delete req.session.buyNow;
+  }
   res.render('user/order-success',{user:req.session.user})
 })
 
@@ -663,4 +710,5 @@ router.get("/category/:category",async(req, res)=>{
 
   res.render("user/CategoryProduct",{categoryProduct})
 })
+
 module.exports = router;

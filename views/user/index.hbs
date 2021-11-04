@@ -82,15 +82,11 @@
 																<i class="fa fa-heart" aria-hidden="true"></i>
 															</a> --}}
 														</div>
-														{{#if user}}
-														{{!-- <div class="mt-2" style="margin-top: 0.8em;">
-															<a href="" class="btn btn-primary">Buy now</a>
-														</div> --}}
-														{{else}}
-														{{!-- <div class="mt-2" style="margin-top: 0.8em;">
-															<a href="/login" class="btn btn-primary">Buy now</a>
-														</div> --}}
-														{{/if}}
+													
+														<div class="mt-2" style="margin-top: 0.8em;">
+															<a href="/cart/checkout?id={{this._id}}" class="btn btn-primary">Buy now</a>
+														</div>
+													
 													</div>
 												</div>
 												
@@ -842,7 +838,8 @@
 
 </div>
 <script>
-	
+	  
+	  
 
 	function  addToCart(proId){
 		
