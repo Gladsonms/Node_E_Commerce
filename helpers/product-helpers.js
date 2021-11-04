@@ -397,7 +397,7 @@ module.exports = {
      })
  },
  getCategoryProduct:(category)=>{
-     console.log(category);
+     
      return new Promise(async(resolve, reject)=>{
          
          db.get().collection(collection.PRODUCT_COLLECTIONS).find({category:category}).toArray().then((response)=>{
@@ -406,5 +406,55 @@ module.exports = {
          })
 
      })
+ },
+ gettopSellingProducts:()=>{
+     return new Promise(async(resolve,reject)=>{
+       let topSellingProducts=await  db.get().collection(collection.ORDER_COLLECTIONS).aggregate([
+             {
+                 $match:{status:{$ne:"Cancel"}}
+             },
+             {
+                 $unwind: "$products"
+             },
+             {
+                 $group:{
+                    _id:"$products.item",
+                    count:{$sum:"$products.quantity"}
+                 }
+
+             },
+             {
+                 $sort:{count:-1}
+             },
+             {
+                 $limit:10
+             },
+             {
+                 $lookup:{
+                     from:"PRODUCT",
+                     pipeline:[
+                        {
+                            $project:{
+                                product:1,category:1,price:1,quantity:1
+                            }
+                        }
+                     ],
+                     localField: "_id",
+                     foreignField:"_id",
+                     as:"product"
+                 },
+             },
+             {
+                 $unwind:'$product'
+             }
+
+         ]).toArray()
+         
+         resolve(topSellingProducts)
+     })
+
+
  }       
+
+
     }

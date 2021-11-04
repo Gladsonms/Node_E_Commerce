@@ -50,12 +50,18 @@ router.get("/home",async function (req, res) {
  
   let lastOrderList=await productHelpers.getLastOrderList();
   let totalSalesAmount=await productHelpers.getTotalSalesAmount();
+  let topSellingProducts= await productHelpers.gettopSellingProducts()
+  let aTopProduct=topSellingProducts[0]
+  
+  
+  
+
   
   
  
   
     
-  res.render("admin/home", { admin: true ,userCount,orderCount,productCount,lastOrderList,totalSalesAmount});
+  res.render("admin/home", { admin: true ,userCount,orderCount,productCount,lastOrderList,totalSalesAmount,topSellingProducts,aTopProduct});
 });
 router.post("/home",async(req,res)=>{
   let paymentMethod=await productHelpers.getPaymentMethod();
@@ -64,6 +70,8 @@ router.post("/home",async(req,res)=>{
   let oderStatus= await productHelpers.getOrderStatus();
   let orderStatusLabel=[...oderStatus.map((data)=>(data._id))]
   let orderStatusvalue=[...oderStatus.map((data)=>(data.count))]
+ 
+
   
   res.json({labels:paymentMethodLabels,values:paymentMethodValues,orderstatus:orderStatusLabel,ordervalue:orderStatusvalue})
 })
@@ -371,6 +379,11 @@ res.json({status:true})
     let oders=await productHelpers.getDeliveredReports()
     
     res.render('admin/salereport',{admin:true,oders})
+  })
+
+  router.get("/banner",(req,res)=>{
+    
+    res.render('admin/banner',{admin:true})
   })
 
 
