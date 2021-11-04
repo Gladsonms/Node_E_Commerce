@@ -230,7 +230,7 @@ router.get("/productdetails/:id",verifyLogin, async function (req, res, next) {
 //cart
 router.get("/cart", verifyLogin, async (req, res) => {
   
-  console.log(req.session.user);
+
   let products = await userHelpers.getCartProducts(req.session.user._id);
   if(products.length!=0)
   {
@@ -242,7 +242,15 @@ router.get("/cart", verifyLogin, async (req, res) => {
   for(var i in totalAmount){
     totalPrice = totalPrice + totalAmount[i].subtotal
   }
-  //products = products.map((i,index)=>{return {...i,subtotal:subtotal[index]}})
+ 
+  
+  let subtotal
+  
+ for(var i in totalAmount){
+  subtotal = totalAmount[i].subtotal
+  products[i].product = {...products[i].product, subtotal: subtotal}
+ 
+ }
 
   res.render("user/cart", { products, user: req.session.user, totalAmount,totalPrice });
   }
@@ -282,12 +290,18 @@ router.post("/change-product-quantity", verifyLogin, (req, res, next) => {
     let totalAmount = await userHelpers.getTottalAmount(req.session.user._id);
    
     let totalPrice =0
+    let subtotal=0
   
     for(var i in totalAmount){
       totalPrice = totalPrice + totalAmount[i].subtotal
     }
-    console.log("totalPrice: " + totalPrice);
+    for (var i in totalAmount){
+      subtotal = totalAmount[i].subtotal
+    }
+   console.log("subtotal" +subtotal);
     response.total=totalPrice
+    response.subtotal=subtotal
+    console.log("change quanity");
     console.log(response);
     res.json(response);
   });

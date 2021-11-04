@@ -350,13 +350,16 @@ res.json({status:true})
    })
 
    router.post("/add-category-offer",(req,res)=>{
+     
      let category=req.body.categoryname
      let percetage=req.body.offerpercentage
      let offerexpdate=req.body.expdate
+  
      
   
      productHelpers.addCategoryOffer(req.body).then((response)=>{
           res.json({response})
+          console.log(response);
     })
     
    })

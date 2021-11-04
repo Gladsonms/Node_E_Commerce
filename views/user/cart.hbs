@@ -21,7 +21,7 @@
 										<th>Name</th>
 										<th class="width-100 text-center">Unit price</th>
 										<th class="width-100 text-center">Qty</th>
-										{{!-- <th class="width-100 text-center">Total</th> --}}
+										<th class="width-100 text-center">Total</th>
 																				<th class="width-20">Option</th>
 
 									</tr>
@@ -66,11 +66,9 @@
 												</div>
 											</div>
 									 </td>
-										<td> {{this.subtotal.subtotal}}</td> 
+										<td> <span id="subtotal">{{this.product.subtotal}}</span> </td> 
 
-										{{!-- <td>
-											{{this.subtotal}}
-										</td> --}}
+										
 								
 										   		
 						
@@ -195,6 +193,7 @@ function changeQuantity(cartId,proId,count){
 								       // window.location.reload()
 								   document.getElementById(proId).value=quantity+count
 								   document.getElementById('total5').innerHTML=response.total
+								   document.getElementById('subtotal').innerHTML=response.subtotal
 							   }
 						   })
 					   })
