@@ -29,6 +29,26 @@
                                 <div class="card card-statistics">
                                     <div class="card-body">
                                         <div class="export-table-wrapper table-responsive">
+                                            <div class="mb-4">
+                                                <div class="row col-md-6" >
+                                                  <form action="" id="dateReport">
+                                                    <label for="start">Start date:</label>
+
+<input type="date" id="start" name="start" > <label for="start">End date:</label>
+
+<input type="date" id="end" name="end"
+      >   <button type="submit" class="btn btn-primary">Submit</button>
+                                                </form>
+                                                </div>
+                                                <div class="row col=md-6  pr-4">
+                                              <button class="btn btn-primary align-items-right mr-5">Yearly</button>
+                                              <button class="btn btn-primary align-items-right mr-5">Monthly</button>
+                                              <button class="btn btn-primary align-items-right mr-5">Dailys</button>
+                                                </div>
+                                               
+                                              
+                                            </div>
+
                                             <table id="example" class="table table-bordered">
                                                 <thead class="thead-light">
                                                     <tr>
@@ -111,4 +131,36 @@
             ],
         });
     });
+
+
+
+      document.getElementById('dateReport').onsubmit = e => {
+      e.preventDefault();
+      
+      $.ajax({
+
+          url:"/admin/datewisereport",
+          data:$("#dateReport").serialize(),
+          method:"POST",
+          
+          success:(response)=>{
+             document.getElementById('example').innerHTML="";
+             let newElement;
+             console.log(response.dateOders);
+             for(let i=0; i<response.dateOders.length;i++){
+                 newElement =`
+                 <tr> 
+                     <td>${response.dateOders[i].date}</td>
+                     <td>${response.dateOders[i].status}</td>
+                     <td>${response.dateOders[i].total}</td>
+                     <td>${response.dateOders[i].userId}</td>
+                 </tr>
+                 `
+             document.getElementById('example').innerHTML += newElement;
+             }
+            
+
+          }
+      })
+  }
 </script>                

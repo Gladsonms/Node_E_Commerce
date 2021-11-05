@@ -454,6 +454,22 @@ module.exports = {
      })
 
 
+ },
+ getOrderDates:(start, end) => {
+     return new Promise(async(resolve, reject) => {
+       let odersDateWise= await  db.get().collection(collection.ORDER_COLLECTIONS).aggregate([
+        {
+            $match:{
+                createdAt:{$gte:new Date(start),$lte:new Date(end)}
+               }
+
+        },
+    
+
+    ]).toArray()
+   
+    resolve(odersDateWise)
+     })
  }       
 
 

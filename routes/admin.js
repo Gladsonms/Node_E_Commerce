@@ -389,6 +389,18 @@ res.json({status:true})
     res.render('admin/banner',{admin:true})
   })
 
+  //salereport data from and to 
+  router.post('/datewisereport',async(req,res)=>{
+  startDate = req.body.start
+  endDate = req.body.end
+  
+  let dateOders=await productHelpers.getOrderDates(startDate, endDate)
+  
+  
+    res.json({dateOders})
+
+  })
+
 
 
 //logout

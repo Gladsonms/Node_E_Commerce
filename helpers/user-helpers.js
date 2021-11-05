@@ -300,7 +300,7 @@ module.exports = {
           let actualPrice=result.map((i)=>i.product.productOffer?{...i,subtotal:(i.product.productOffer*i.quantity)}:{...i,subtotal:(i.product.price*i.quantity)})
               
             resolve(actualPrice)
-            console.log(actualPrice);
+            
         })
        
        
@@ -472,6 +472,7 @@ module.exports = {
         total: total,
         status: status,
         date: moment().format("dddd, MMMM Do YYYY, h:mm:ss a"),
+        createdAt:new Date(),
       };
       
       let userId = order.userId[0];
