@@ -70,10 +70,13 @@ router.post("/home",async(req,res)=>{
   let oderStatus= await productHelpers.getOrderStatus();
   let orderStatusLabel=[...oderStatus.map((data)=>(data._id))]
   let orderStatusvalue=[...oderStatus.map((data)=>(data.count))]
+  let salesDateWise=await productHelpers.getSalesDate()
+  
+  
  
 
   
-  res.json({labels:paymentMethodLabels,values:paymentMethodValues,orderstatus:orderStatusLabel,ordervalue:orderStatusvalue})
+  res.json({labels:paymentMethodLabels,values:paymentMethodValues,orderstatus:orderStatusLabel,ordervalue:orderStatusvalue,salesWise:salesDateWise})
 })
 
 //usermangment
