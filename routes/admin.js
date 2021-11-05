@@ -252,8 +252,7 @@ router.post('/subcategorymangament/delete-category',(req,res)=>{
   ///catname=req.body.custId
 
   let name=req.body.subcat
-  console.log(name);
-  console.log(req.body);
+
   
  productHelpers.deleteSubCategory(name).then(async (response)=>{
    res.json(response)
@@ -272,8 +271,7 @@ router.get("/ordermangment",async(req,res)=>{
 
     })
     
-    console.log(newOrders);
-    console.log("newOrders");
+  
     res.render('admin/ordermangment',{admin:true,newOrders})
     
   })
@@ -310,7 +308,7 @@ res.json({status:true})
     router.post("/add-new-productoffer",(req,res)=>{
      
       let  product=req.body.productname
-      console.log(req.body);
+      
       productHelpers.addNewProductOffer(req.body,product).then((response)=>{
             res.json({response})
       })
@@ -339,7 +337,7 @@ res.json({status:true})
   })
 
    router.post("/delete-product-offer",(req,res)=>{
-    console.log(req.body);
+    
     let productId=req.body.proId
     productHelpers.removeOffer(productId).then((response)=>{
 
@@ -359,7 +357,7 @@ res.json({status:true})
   
      productHelpers.addCategoryOffer(req.body).then((response)=>{
           res.json({response})
-          console.log(response);
+          
     })
     
    })
@@ -399,6 +397,14 @@ res.json({status:true})
   
     res.json({dateOders})
 
+  })
+  router.post('/getSorrtedReport',async(req,res)=>{
+    
+    let type=req.body.date
+    
+  let sorttedOrder=await  productHelpers.getSorrtedReport(type)
+  
+  res.json({sorttedOrder})
   })
 
 

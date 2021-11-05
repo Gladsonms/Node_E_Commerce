@@ -41,9 +41,10 @@
                                                 </form>
                                                 </div>
                                                 <div class="row col=md-6  pr-4">
-                                              <button class="btn btn-primary align-items-right mr-5">Yearly</button>
-                                              <button class="btn btn-primary align-items-right mr-5">Monthly</button>
-                                              <button class="btn btn-primary align-items-right mr-5">Dailys</button>
+                                              <button class="btn btn-primary align-items-right mr-5"  onclick="getSorrtedReport('yearly');" value="year">Yearly</button>
+                                              <button class="btn btn-primary align-items-right mr-5" onclick="getSorrtedReport('monthly');" value="month">Monthly</button>
+                                              <button class="btn btn-primary align-items-right mr-5" onclick="getSorrtedReport('daily');" value="daily">Dailys</button>
+                                              
                                                 </div>
                                                
                                               
@@ -161,6 +162,34 @@
             
 
           }
+      })
+  }
+
+  function getSorrtedReport(date){
+     
+      $.ajax({
+          url:"/admin/getSorrtedReport",
+          method:"POST",
+          data:{date},
+           success:(response)=>{
+             document.getElementById('example').innerHTML="";
+             let newElement;
+             console.log(response.sorttedOrder);
+             for(let i=0; i<response.sorttedOrder.length;i++){
+                 newElement =`
+                 <tr> 
+                     <td>${response.sorttedOrder[i].date}</td>
+                     <td>${response.sorttedOrder[i].status}</td>
+                     <td>${response.sorttedOrder[i].total}</td>
+                     <td>${response.sorttedOrder[i].userId}</td>
+                 </tr>
+                 `
+             document.getElementById('example').innerHTML += newElement;
+             }
+            
+
+          }
+
       })
   }
 </script>                

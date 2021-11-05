@@ -485,7 +485,7 @@ module.exports = {
         .then((response) => {
           resolve(response.insertedId)
        
-          console.log(response);
+          
         if(order.payment=="cod")
         {
 
@@ -495,7 +495,7 @@ module.exports = {
         }
               
       }).catch(err=>{
-        console.log(err)
+        
         reject(err)
       })
        
@@ -568,8 +568,7 @@ module.exports = {
     });
   },
   testing: (data, orderId) => {
-         console.log(orderId);
-         console.log(data);
+         
     return new Promise((resolve, reject) => {
       db.get()
         .collection(collection.ORDER_COLLECTIONS)
@@ -594,15 +593,14 @@ module.exports = {
         .updateOne({ _id: ObjectId(oderId) }, { $set: { status: "Cancel",userCancel:true ,adminCancel:false} });
     }).then((res)=>{
       resolve(res)
-      console.log(res);
+      
     
     });
   },
   deleteAdddress: (uaddress, userId, addId, uname) => {
     return new Promise(async(resolve,reject)=>{
      
-    //let address = await db.get().collection(collection.ADDRESS_COLLECTIONS).findOne({"address.id":uaddress});
-   console.log(uaddress);
+    
   
         db.get()
           .collection(collection.ADDRESS_COLLECTIONS)
@@ -619,7 +617,7 @@ module.exports = {
 
 
   generateRazorPay:(orderId,totalAmount,userId)=>{
-
+      console.log(totalAmount);
     return new Promise((resolve,reject)=>{
       var options = {  
         amount: totalAmount*100,  // amount in the smallest currency unit  
@@ -675,7 +673,7 @@ getuserProfile:(userId)=>{
   return new Promise(async(resolve,reject)=>{
    await db.get().collection(collection.USER_COLLECTIONS).findOne({_id:ObjectId(userId)}).toArray()
   }).then((response)=>{
-      console.log(response);
+      
   })
 },
 
@@ -721,13 +719,13 @@ CheckPassword:(oldpass,userId,newPass)=>{
      
     //  console.log(newPass);
     db.get().collection(collection.USER_COLLECTIONS).updateOne({_id:ObjectId(userId)},{$set:{password:newPass}}).then((response)=>{
-     console.log(response);
+     
      resolve(response)
     })
     }
     else
     {
-      console.log("both paSSWORD ARE NOT SAME");
+      
     }
   })
   
@@ -744,20 +742,17 @@ addUsersCoupon:(caupon,userId)=>{
   return new Promise(async(resolve,reject)=>{
     let coupan= await db.get().collection(collection.COUPAN_COLLECTIONS).find().toArray()
      for (var i in coupan){
-       console.log("ecah coupon");
-       console.log(coupan[i].couupanCode);
-        console.log("coupon");
-       console.log(caupon);
+      
        if(caupon==coupan[i].couupanCode)
        {
-         console.log("valid coupon");
+         
          db.get().collection(collection.USER_COLLECTIONS).updateOne({_id:ObjectId(userId)},{$push:{appliedCoupons:caupon}}).then((response)=>{
-          console.log(response);
+          
           resolve()
         })
        }
        else{
-         console.log("invalid coupon");
+         
        }
      }
      
@@ -769,7 +764,7 @@ checkCoupon:(coupon)=>{
   
     return new Promise((resolve,reject)=>{
    db.get().collection(collection.COUPAN_COLLECTIONS).findOne({couupanCode:coupon}).then((response)=>{
-         console.log("response check coupon");
+         
               
                  resolve(response)
       })
@@ -814,8 +809,7 @@ buyNowProduct:(buyNowProduct) => {
   
   return new Promise(async(resolve,reject)=>{
     let product = await db.get().collection(collection.PRODUCT_COLLECTIONS).find({_id:ObjectId(buyNowProduct)}).toArray().then((response) => {
-      console.log("buy now product details");
-      console.log(response);
+      
       resolve(response);
     })
   })

@@ -219,33 +219,8 @@
                                         <h4 class="card-title">Yearly Sales Report</h4>
                                     </div>
                                     <div class="card-body pb-0">
-                                        <div class="row m-b-20">
-                                            <div class="col-xxs-6 col-xl-4 col-xxl-4 mb-2 mb-xxl-0">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="icon-container img-icon m-r-20 bg-light-gray rounded">
-                                                        <i class="fa fa-cart-plus text-primary"></i>
-                                                    </div>
-                                                    <div class="report-details">
-                                                        <p>Annual Sales</p>
-                                                        <h3>15,236</h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xxs-6 col-md-4 col-xxl-4 mb-2 mb-xxl-0">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="icon-container img-icon m-r-20 bg-light-gray rounded">
-                                                        <i class="fa fa-dollar text-primary"></i>
-                                                    </div>
-                                                    <div class="report-details">
-                                                        <p>Annual Revenue</p>
-                                                        <h3>$40,516</h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="apexchart-wrapper">
-                                            <div id="ecommerce5" class="chart-fit"></div>
-                                        </div>
+                                       <canvas id="line-chart" width="800" height="450"></canvas>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -482,5 +457,48 @@ new Chart(document.getElementById("polar-chart"), {
 
                         }
                     })
+
+
+
+                    //line 3
+                    new Chart(document.getElementById("line-chart"), {
+  type: 'line',
+  data: {
+    labels: [1500,1600,1700,1750,1800,1850,1900,1950,1999,2050],
+    datasets: [{ 
+        data: [86,114,106,106,107,111,133,221,783,2478],
+        label: "Africa",
+        borderColor: "#3e95cd",
+        fill: false
+      }, { 
+        data: [282,350,411,502,635,809,947,1402,3700,5267],
+        label: "Asia",
+        borderColor: "#8e5ea2",
+        fill: false
+      }, { 
+        data: [168,170,178,190,203,276,408,547,675,734],
+        label: "Europe",
+        borderColor: "#3cba9f",
+        fill: false
+      }, { 
+        data: [40,20,10,16,24,38,74,167,508,784],
+        label: "Latin America",
+        borderColor: "#e8c3b9",
+        fill: false
+      }, { 
+        data: [6,3,2,2,7,26,82,172,312,433],
+        label: "North America",
+        borderColor: "#c45850",
+        fill: false
+      }
+    ]
+  },
+  options: {
+    title: {
+      display: true,
+      text: 'World population per region (in millions)'
+    }
+  }
+});
                   
                 </script>

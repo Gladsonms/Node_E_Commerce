@@ -298,11 +298,10 @@ router.post("/change-product-quantity", verifyLogin, (req, res, next) => {
     for (var i in totalAmount){
       subtotal = totalAmount[i].subtotal
     }
-   console.log("subtotal" +subtotal);
+   
     response.total=totalPrice
     response.subtotal=subtotal
-    console.log("change quanity");
-    console.log(response);
+    
     res.json(response);
   });
 });
@@ -317,8 +316,7 @@ router.get("/cart/checkout", verifyLogin, async (req, res) => {
  if(proId){
   let buyNowproduct=await userHelpers.buyNow(proId)
  
-  console.log(buyNowproduct);
-  console.log(buyNowproduct.price);
+  
   singleProductPrice=buyNowproduct.price;
   req.session.buyNow=buyNowproduct._id
  
@@ -407,16 +405,14 @@ router.post("/place-order",async(req,res)=>{
       totalPrice = totalPrice + totalAmount[i].subtotal
     }
     
-    console.log("totalPrice");
-    console.log(totalPrice);
+    
      if(totalPrice>=minAmount)
 
      {
       
        let discount =parseInt(response.discount)
        newPrice = Math.round(totalPrice-(totalPrice*discount/100))
-       console.log("newPrice");
-      console.log(newPrice);
+       
       
       productHelpers.saveUserCoupon(req.session.user._id,response._id)
      }
@@ -440,8 +436,7 @@ router.post("/place-order",async(req,res)=>{
       totalPrice = totalPrice + totalAmount[i].subtotal
     }
     
-    console.log("totalPrice");
-    console.log(totalPrice);
+    
     newPrice=totalPrice
   }
 
@@ -461,7 +456,7 @@ let totalAmount = await userHelpers.getTottalAmount(req.session.user._id);
     }else{
       totalPrice = newPrice
     }
-    console.log("buy now to " + totalPrice);
+    
    userHelpers.PlaceOrder(user._id,req.body,product,totalPrice).then((orderId)=>{
     
     if(req.body['payment']=='cod'){
@@ -492,14 +487,14 @@ let totalAmount = await userHelpers.getTottalAmount(req.session.user._id);
                 "items": [{
                     "name": "Red Sox Hat",
                     "sku": "001",
-                    "price": newPrice,
+                    "price": totalPrice,
                     "currency": "USD",
                     "quantity": 1
                 }]
             },
             "amount": {
                 "currency": "USD",
-                "total": newPrice
+                "total": totalPrice
             },
             "description": "Hat for the best team ever"
         }]  
@@ -600,8 +595,7 @@ router.post("/oders/deleteaddress",(req,res)=>{
     
   
 userHelpers.deleteAdddress(uaddress,userId,addId,uname).then((response)=>{
-  console.log("______");
-         console.log(response);
+
   res.json({response});
 })
 

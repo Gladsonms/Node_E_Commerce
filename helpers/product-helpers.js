@@ -183,7 +183,7 @@ module.exports = {
     
     addNewProductOffer:(offerData,product)=>{
         let productname=offerData.productname
-        console.log(offerData.offerpercentage);
+       
         let offerPercent=parseInt(offerData.offerpercentage)
         let expdate=offerData.expdate
       ///  let offername=offerData.offername
@@ -201,7 +201,7 @@ module.exports = {
             })
         })
     
-       // console.log(actualPrice);
+       
         
        
 
@@ -223,7 +223,7 @@ module.exports = {
     removeOffer:(productId)=>{
         return new Promise(async(resolve,reject)=>{
         await db.get().collection(collection.PRODUCT_COLLECTIONS).updateOne({_id:ObjectId(productId)},{$unset:{productOffer:"",expiryDate:""}}).then((response)=>{
-            console.log(response);
+           
                  resolve()
         })
         })
@@ -249,7 +249,7 @@ module.exports = {
             
             for(var i in category){
                 if(category[i].productOffer){
-                    console.log("yes exist product offer");
+                    
                 }
                 else{
                     let price=category[i].price
@@ -276,7 +276,7 @@ module.exports = {
             
             
             db.get().collection(collection.COUPAN_COLLECTIONS).insertOne({couupanCode:data.coupancode,discount:data.discount,maxAmount:data.maxAmount,minAmount:data.minAmount,expireAt:data.expdate}).then((response)=>{
-                console.log(response);
+             
                 resolve()
             })
         })
@@ -470,6 +470,28 @@ module.exports = {
    
     resolve(odersDateWise)
      })
+ },
+ getSorrtedReport:(type)=>{
+    const numberOfDays = type === 'weekly' ? 7 : type === 'monthly' ? 30 : type === 'yearly' ? 365 : 0
+    const dayOfYear = (date) =>
+        Math.floor(
+            (date - new Date(date.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24
+        )
+    return new Promise(async (resolve, reject) => {
+        const data = await db.get().collection(collection.ORDER_COLLECTIONS).aggregate([
+            {
+                $match: {
+                    $and: [{ status: { $eq: 'placed' } }],
+                    createdAt: { $gte: new Date(new Date() - numberOfDays * 60 * 60 * 24 * 1000) },
+                },
+            },
+
+
+        ]).toArray()
+        
+        resolve(data)
+
+    })
  }       
 
 
