@@ -472,7 +472,9 @@ module.exports = {
      })
  },
  getSorrtedReport:(type)=>{
-    const numberOfDays = type === 'weekly' ? 7 : type === 'monthly' ? 30 : type === 'yearly' ? 365 : 0
+     console.log("+++++++++++++++++++++++");
+     console.log(type);
+    const numberOfDays = type ===  'daily'? 1 : type === 'weekly' ? 7 : type === 'monthly' ? 30 : type === 'yearly' ? 365 : 0
     const dayOfYear = (date) =>
         Math.floor(
             (date - new Date(date.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24
@@ -481,14 +483,14 @@ module.exports = {
         const data = await db.get().collection(collection.ORDER_COLLECTIONS).aggregate([
             {
                 $match: {
-                    $and: [{ status: { $eq: 'placed' } }],
+                    //$and: [{ status: { $eq: 'placed' } }],
                     createdAt: { $gte: new Date(new Date() - numberOfDays * 60 * 60 * 24 * 1000) },
                 },
             },
 
 
         ]).toArray()
-        
+        console.log(data);
         resolve(data)
 
     })

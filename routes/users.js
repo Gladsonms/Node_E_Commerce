@@ -298,7 +298,7 @@ router.post("/change-product-quantity", verifyLogin, (req, res, next) => {
     for (var i in totalAmount){
       subtotal = totalAmount[i].subtotal
     }
-   
+    
     response.total=totalPrice
     response.subtotal=subtotal
     
@@ -466,7 +466,7 @@ let totalAmount = await userHelpers.getTottalAmount(req.session.user._id);
       //RAXORPAY
     }else if (req.body['payment']=='razorpay'){
       
-      userHelpers.generateRazorPay(orderId,newPrice,userId).then((response)=>{
+      userHelpers.generateRazorPay(orderId,totalPrice,userId).then((response)=>{
         
         res.json({data:response, razorpaySuccess:true})
 

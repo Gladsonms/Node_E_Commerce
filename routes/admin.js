@@ -394,16 +394,16 @@ res.json({status:true})
   
   let dateOders=await productHelpers.getOrderDates(startDate, endDate)
   
-  
+   
     res.json({dateOders})
 
   })
   router.post('/getSorrtedReport',async(req,res)=>{
     
     let type=req.body.date
-    
+    console.log(type);
   let sorttedOrder=await  productHelpers.getSorrtedReport(type)
-  
+   
   res.json({sorttedOrder})
   })
 

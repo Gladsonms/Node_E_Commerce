@@ -61,7 +61,7 @@
                                                         <th>Salary</th> --}}
                                                     </tr>
                                                 </thead>
-                                                <tbody>
+                                                <tbody id="tbody">
                                                     {{#each oders}}
                                                     <tr>
                                                         <td>{{this.date}}</td>
@@ -103,7 +103,6 @@
         $('#example').DataTable({
             "footerCallback": function (row, data, start, end, display) {
                 var api = this.api(), data;
-
                 // Remove the formatting to get integer data for summation
                 var intVal = function (i) {
                     return typeof i === 'string' ?
@@ -111,7 +110,6 @@
                         typeof i === 'number' ?
                             i : 0;
                 };
-
                 // Total over all pages
                 total = api
                     .column(4)
@@ -119,7 +117,6 @@
                     .reduce(function (a, b) {
                         return intVal(a) + intVal(b);
                     }, 0);
-
               
                 // Update footer
                 $(api.column(4).footer()).html(
@@ -132,20 +129,16 @@
             ],
         });
     });
-
-
-
       document.getElementById('dateReport').onsubmit = e => {
       e.preventDefault();
       
       $.ajax({
-
           url:"/admin/datewisereport",
           data:$("#dateReport").serialize(),
           method:"POST",
           
           success:(response)=>{
-             document.getElementById('example').innerHTML="";
+             document.getElementById('tbody').innerHTML="";
              let newElement;
              console.log(response.dateOders);
              for(let i=0; i<response.dateOders.length;i++){
@@ -157,14 +150,12 @@
                      <td>${response.dateOders[i].userId}</td>
                  </tr>
                  `
-             document.getElementById('example').innerHTML += newElement;
+             document.getElementById('tbody').innerHTML += newElement;
              }
             
-
           }
       })
   }
-
   function getSorrtedReport(date){
      
       $.ajax({
@@ -172,7 +163,7 @@
           method:"POST",
           data:{date},
            success:(response)=>{
-             document.getElementById('example').innerHTML="";
+             document.getElementById('tbody').innerHTML="";
              let newElement;
              console.log(response.sorttedOrder);
              for(let i=0; i<response.sorttedOrder.length;i++){
@@ -184,12 +175,10 @@
                      <td>${response.sorttedOrder[i].userId}</td>
                  </tr>
                  `
-             document.getElementById('example').innerHTML += newElement;
+             document.getElementById('tbody').innerHTML += newElement;
              }
             
-
           }
-
       })
   }
-</script>                
+</script>             

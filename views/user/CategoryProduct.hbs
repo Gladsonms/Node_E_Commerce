@@ -450,6 +450,10 @@
 																<i class="fa fa-heart" aria-hidden="true"></i>
 															</a> --}}
 														</div>
+
+														<div class="mt-2" style="margin-top: 0.8em;">
+															<a href="/cart/checkout?id={{this._id}}" class="btn btn-primary">Buy now</a>
+														</div>
 														{{#if user}}
 														{{!-- <div class="mt-2" style="margin-top: 0.8em;">
 															<a href="" class="btn btn-primary">Buy now</a>
@@ -795,3 +799,31 @@
 						</div>
 					</div>
 				</div>
+
+				<script>
+	  
+	  
+
+	function  addToCart(proId){
+		
+		$.ajax({
+			url:'/add-to-cart/'+proId,
+			method:'get',
+			success:(respone)=>{
+				
+				if(respone.status)
+				{
+					let count=$('#addcount').html()
+					count=parseInt(count)
+					count++;
+					$('#addcount').html(count)
+				}else{ 
+					location.href='/login'
+				}
+                  
+			}
+
+
+		})
+	}
+</script>
