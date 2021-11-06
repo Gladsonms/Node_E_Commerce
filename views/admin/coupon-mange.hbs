@@ -33,27 +33,29 @@
                                                
                                                 <div class="form-group col-md-6">
                                                     <label for="offername">Coupon Code</label>
-                                                    <input type="text" class="form-control" id="offername" placeholder="Offer name" name="coupancode">
-                                                    <span class="text-danger" id="CouponError"></span>
+                                                    <input type="text" class="form-control" id="categoryname" placeholder="Offer name" name="coupancode">
+                                                   <p class="text-danger" id="error1"></p>
                                                 </div>
                                                  <div class="form-group col-md-6">
                                                     <label for="category name">Discount %</label>
-                                                    <input type="text" class="form-control" id="discount" placeholder="discount" name="discount">
+                                                    <input type="text" class="form-control" id="offerpercentage" placeholder="discount" name="discount">
+                                                    <p class="text-danger" id="error2"></p>
                                                 </div>
                                             </div>
                                             
                                             <div class="form-row">
                                                 <div class="form-group col-md-4">
                                                     <label for="inputZip">Max Purshase amount</label>
-                                                    <input type="text" class="form-control" id="maxAmount" name="maxAmount" placeholder="maxAmount">
+                                                    <input type="number" class="form-control" id="maxAmount" name="maxAmount" placeholder="maxAmount">
                                                 </div>
                                                  <div class="form-group col-md-4">
                                                     <label for="inputZip">Min Purshase amount</label>
-                                                    <input type="text" class="form-control" id="minAmount" name="minAmount" placeholder="minAmount">
+                                                    <input type="number" class="form-control" id="minAmount" name="minAmount" placeholder="minAmount">
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label for="expdate">Offer Exiry Date</label>
                                                     <input type="date" class="form-control" id="expdate" name="expdate">
+                                                    <p class="text-danger" id="error3"></p>
                                                 </div>
                                                 
                                                 
@@ -131,8 +133,91 @@
                    
 
 
+                             $(document).ready(function () {
+                $('#categoryname').change(function () {
+                    checkcategoryName()
+
+                })
+
+            })
+            function checkcategoryName() {
+                let namevalue = $("#categoryname").val()
+                
+                if (namevalue == "") {
+                    $('#error1').html('please select category name')
+                   
+                }
+                else {
+                    categoryName = true
+                    $('#error1').html('')
+
+                }
+
+            }
+            //  Discount
+            $(document).ready(function () {
+                
+                $('#offerpercentage').keyup(function () {
+                    
+                    checkdiscount()
+
+                })
+
+            })
+            function checkdiscount() {
+                let namevalue = $("#offerpercentage").val()
+                
+                let regex1 = /^[a-zA-Z.,;:|\\\/~!@#$%^&*_-{}\[\]()`"'<>?\s]+$/;
+                if (namevalue == "") {
+                    $('#error2').html('please enter discount price')
+                }
+                else if (namevalue.match(regex1)) {
+                    discount = false
+                    $('#error2').html('number Only')
+
+                } else if (namevalue > 80) {
+                    $('#error2').html('Enter only lessthan 80 %')
+                    discount = false
+                } else if (namevalue < 10) {
+                    $('#error2').html('Enter 10 % more')
+                    discount = false
+                } else {
+                    discount = true
+                    $('#error2').html('')
+                }
+
+            }
+            //====== date
+
+            $(document).ready(function () {
+                $('#expdate').keyup(function () {
+                    checkdate()
+
+                })
+
+            })
+            function checkdate() {
+                let namevalue = $("#expdate").val()
+
+                if (namevalue == "") {
+                    date = false
+                    $('#error3').html('Please select expiry date')
+                }
+                else {
+                    date = true
+                    $('#error3').html('')
+                }
+
+            }
+            
+
+
+                       var categoryName =false;
+                     var discount =false;
+                     var date=false
                     document.getElementById('addcoupan').onsubmit=e=>{
-                        
+                           if(categoryName && discount && date)
+                       {
                         e.preventDefault();
                         $.ajax({
                             url:"/admin/add-new-coupan",
@@ -147,6 +232,13 @@
                             }
                         })
 
+                    } else
+                       {
+                           e.preventDefault();
+                           checkcategoryName()
+                           checkdate();
+                           checkdiscount();
+                       }
                     }
                       function removeCoupan(id){
                              Swal.fire({

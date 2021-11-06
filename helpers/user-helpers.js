@@ -659,6 +659,7 @@ return new Promise((resolve,rejcet)=>{
 },
 
 changePaymentStatus:(orderId)=>{
+  console.log("change payment status")
 return new Promise((resolve,reject)=>{
   db.get.collection(collection.ORDER_COLLECTIONS).updateOne({_id:ObjectId(orderId)},{
     $set:{ status :'placed'}

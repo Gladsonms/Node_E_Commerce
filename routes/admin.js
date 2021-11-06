@@ -382,7 +382,7 @@ res.json({status:true})
    
     let oders=await productHelpers.getDeliveredReports()
     
-    res.render('admin/salereport',{admin:true,oders})
+    res.render('admin/salereport',{admin:true,oders,layout:null})
   })
 
   router.get("/banner",(req,res)=>{
