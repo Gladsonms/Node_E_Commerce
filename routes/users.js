@@ -225,8 +225,9 @@ router.get("/productdetails/:id",verifyLogin, async function (req, res, next) {
   let category=await productHelpers.getCategory()
   let products = await productHelpers.getProductDetails(req.params.id);
   let user=req.session.user._id
+  var cartCount = await userHelpers.getCartCount(req.session.user._id);
   
-  res.render("user/productDetails", { products,category,user });
+  res.render("user/productDetails", { products,category,user,cartCount });
 });
 
 //cart
@@ -579,6 +580,7 @@ router.get('/view-order-product/:id',async(req,res)=>{
   var cartCount = await userHelpers.getCartCount(req.session.user._id);
   
   
+  
   res.render('user/userorder',{user:req.session.user,products,cartCount})
 })
 router.post('/oders/cancelorder/:id',async(req,res)=>{
@@ -675,8 +677,8 @@ router.get('/contact',async (req,res)=>{
 router.get('/profile',verifyLogin,async(req,res)=>{
  let user = await userHelpers.getUserProfile(req.session.user._id)
  let useraddres = await userHelpers.getUserAddress(req.session.user._id)
- 
-  res.render('user/userProfile',{user,useraddres})
+ var cartCount = await userHelpers.getCartCount(req.session.user._id);
+  res.render('user/userProfile',{user,useraddres,cartCount})
 })
 router.post('/pay', (req, res) => {
   
@@ -711,9 +713,11 @@ userHelpers.CheckPassword(oldPass,userId,newPass).then(()=>{
 router.get("/category/:category",async(req, res)=>{
  
  let categoryProduct=await productHelpers.getCategoryProduct(req.params.category)
- 
+ let user=req.session.user 
+ var cartCount = await userHelpers.getCartCount(req.session.user._id);
 
-  res.render("user/CategoryProduct",{categoryProduct})
+
+  res.render("user/CategoryProduct",{categoryProduct,user,cartCount})
 })
 
 module.exports = router;

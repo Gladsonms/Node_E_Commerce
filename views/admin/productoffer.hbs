@@ -44,7 +44,7 @@
                                                         <option value="{{this.product}}">{{this.product}}</option>
                                                           {{/each}}
                                                         </select>
-                                                         <p class="text-danger" id="productError"></p>
+                                                         <p class="text-danger" id="error1"></p>
                                                 </div>
                                             </div>
                                             
@@ -52,10 +52,12 @@
                                                 <div class="form-group col-md-6">
                                                     <label for="inputZip">Offer percentage</label>
                                                     <input type="number" class="form-control" id="offerpercentage" name="offerpercentage" placeholder="percetage" maxlength="2">
+                                                    <p class="text-danger" id="error2"></p>
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label for="expdate">Offer Exiry Date</label>
                                                     <input type="date" class="form-control" id="expdate" name="expdate">
+                                                    <p class="text-danger" id="error3"></p>
                                                 </div>
                                                 
                                                 
@@ -126,9 +128,97 @@
                     $('#expdate').attr('min',today);
 
                    //add offer
+                   
+                 
+                  
+                   
+                       $(document).ready(function () {
+                $('#productname').change(function () {
+                    checkcategoryName()
+
+                })
+
+            })
+            function checkcategoryName() {
+                let namevalue = $("#productname").val()
+                
+                if (namevalue == "") {
+                    $('#error1').html('please select category name')
+                   
+                }
+                else {
+                    categoryName = true
+                    $('#error1').html('')
+
+                }
+
+            }
+            //  Discount
+            $(document).ready(function () {
+                $('#discount').keyup(function () {
+                    checkdiscount()
+
+                })
+
+            })
+            function checkdiscount() {
+                let namevalue = $("#offerpercentage").val()
+                let regex1 = /^[a-zA-Z.,;:|\\\/~!@#$%^&*_-{}\[\]()`"'<>?\s]+$/;
+                if (namevalue == "") {
+                    $('#error2').html('please enter discount price')
+                }
+                else if (namevalue.match(regex1)) {
+                    discount = false
+                    $('#error2').html('number Only')
+
+                } else if (namevalue > 80) {
+                    $('#error2').html('Enter only lessthan 80 %')
+                    discount = false
+                } else if (namevalue < 10) {
+                    $('#error2').html('Enter 10 % more')
+                    discount = false
+                } else {
+                    discount = true
+                    $('#error2').html('')
+                }
+
+            }
+            //====== date
+
+            $(document).ready(function () {
+                $('#expdate').keyup(function () {
+                    checkdate()
+
+                })
+
+            })
+            function checkdate() {
+                let namevalue = $("#expdate").val()
+
+                if (namevalue == "") {
+                    date = false
+                    $('#error3').html('Please select expiry date')
+                }
+                else {
+                    date = true
+                    $('#error3').html('')
+                }
+
+            }
+            
+           
+                      
+                      
+                     var categoryName =false;
+                     var discount =false;
+                     var date=false
+
+                  
                     document.getElementById('productOffer').onsubmit=e=>{
+                       if(categoryName && discount && date)
+                       {
                         e.preventDefault();
-                        
+                            
                         $.ajax({
                             url:"/admin/add-new-productoffer",
                             data:$('#productOffer').serialize(),
@@ -141,8 +231,18 @@
 
                             }
                         })
+                    }else{
+                               e.preventDefault();
+                           checkcategoryName()
+                           checkdate();
+                           checkdiscount();
+                           
                     }
 
+                    }
+                  
+                  
+                  
                     function deleteOffer(id){
                         Swal.fire({
   title: 'Are you sure?',
@@ -179,64 +279,6 @@
 
 </script>
 <script>
-                    //valiadtion
-                    var productField= document.getElementById('productname')
-      var validproduct=false;
-      productField.addEventListener('input',(e)=>{
-          console.log("got it")
-          console.log(e.target.value)
-          var product=productField.value
-          if(product.length==0)
-          {
-              text="please enter Product name",
-              productError.innerHTML =text
-              validproduct=false
-          }
-          else
-          {
-           validproduct=true;
-        productError.innerHTML=" ";
-          }
-      })
-
-                  var dateField= document.getElementById('expdate')
-      var validdate=false;
-      adteField.addEventListener('input',(e)=>{
-          console.log("got it")
-          console.log(e.target.value)
-          var date=dateField.value
-          if(date.length==0)
-          {
-              text="please enter Product name",
-              productError.innerHTML =text
-              dateproduct=false
-          }
-          else
-          {
-           validdate=true;
-        dateError.innerHTML=" ";
-          }
-      })
-
-                  var percentageFiled= document.getElementById('offerpercentage')
-      var validPercet=false;
-      percentageFiled.addEventListener('input',(e)=>{
-          console.log("got it")
-          console.log(e.target.value)
-          var percentage=percentageFiled.value
-          if(percentage.length==0)
-          {
-              text="please enter Product name",
-              percentageError.innerHTML =text
-              validPercet=false
-          }
-          else
-          {
-           validPercet=true;
-        percentageError.innerHTML=" ";
-          }
-      })
-
 
               
                     
