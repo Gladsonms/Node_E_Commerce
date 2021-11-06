@@ -20,8 +20,9 @@
 							<div class="block-title">
 								<h2 class="title"><span>Login</span></h2>
 							</div>
-						  <p class="text-danger">{{err}}</p>
-							<form action="/login" method="POST" id="loginform">
+						 
+							{{!-- <form action="/login" method="POST" id="loginform"> --}}
+							<form id="loginform">
 								<div class="form-group">
 									<label>Email</label>
 									<input type="email" value="" name="email" id="email"
@@ -33,11 +34,11 @@
 									<label>Password</label>
 									<input type="password" value="" name="password" id="password">
 								</div>
-                                
+                                <div class="align-items-center"><p class="text-danger align-center" id="LoginErr"></p></div> 
 								
 															
 								<div class="form-group text-center">
-									<input type="submit" class="btn btn-primary" value="Sign In">
+<button type="submit" class="btn btn-primary">Login</button>
 								</div>
 								<div class="form-group text-center">
 									<div class="g-signin2" data-onsuccess="onSignIn" style="margin-left: 16em; margin-top: 2em;"></div>
@@ -59,31 +60,10 @@
 			</div>
      
 
-          <script>
-			  	jQuery.validator.setDefaults({
-		debug: false,
-		sucess: function (label) {
-			label.attr('id', 'valid')
-		},
-	});
-	("#loginform").validate({
-		rules :{
-			 email:{
-				 required:true,
-			 },
-			 password:{
-				 required:true
-			 }
-       },
-	   messages:{
-		   email:{
-			   req
-		   }
-	   }
-	})
-		  </script>
 
 <script>
+
+		
 
   function onSignIn(googleUser) {
 	    var id_token = googleUser.getAuthResponse().id_token;
@@ -104,10 +84,12 @@
 
 </script>
 
-<script>
 
 
+
 <script>
+        
+
 	jQuery.validator.setDefaults({
 		debug: false,
 		sucess: function (label) {
@@ -139,5 +121,42 @@
 		}
 
 	});
+
+
+$('#loginform').on("submit",(e)=>{
+	e.preventDefault()
+	$.ajax({
+		url:"/login",
+		data:$("#loginform").serialize(),
+		method:'POST',
+		success:function(response){
+			console.log(response)
+            if(response.status)
+			{
+				 
+				if(response.newUserCart)
+				{
+					 
+					 
+                     window.location.href=`/add-to-cart/${response.newUserCart.proId}`
+			
+				}else{
+						window.location.href="/"
+				}
+				
+			}
+			
+			else{
+            document.getElementById('LoginErr').innerHTML="Invalid login credentials"
+			}
+		}
+
+		
+	})
+})
+
+
+       
+		
 	
 </script>
