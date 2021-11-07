@@ -152,21 +152,37 @@ router.get("/verifyotp", (req, res) => {
 });
 
 router.post("/verifyotp", (req, res) => {
-  let number = req.body.phone;
-
+  console.log(req.body);
+  let number = req.body.number;
+  console.log("number in req");
+  console.log(number
+    );
   req.session.number = number;
+  
+  userHelpers.checkNumber(number).then((response) => {
+    console.log(response);
+    if(response){
 
-  clientTwillo.verify
-    .services(serviceSSID)
-    .verifications.create({ to: `+91${number}`, channel: "sms" })
-    .then((verification) => console.log(verification.status));
+      clientTwillo.verify
+      .services(serviceSSID)
+      .verifications.create({ to: `+91${number}`, channel: "sms" })
+      .then((verification) => console.log(verification.status));
+       
+       res.json({number: true})
+    }else {
+           res.json({number: false})
+    }
 
-  res.redirect("/confirmotp");
+  
+  })
+  
+
+ 
 });
 
-router.get("/confirmotp", (req, res) => {
-  res.render("user/enterOtp");
-});
+// router.get("/confirmotp", (req, res) => {
+//   res.render("user/enterOtp");
+// });
 router.post("/enterOtp", (req, res) => {
   let otp = req.body.otp;
 
@@ -184,8 +200,9 @@ router.post("/enterOtp", (req, res) => {
     })
     .then((resp) => {
       req.session.loggedIn = true;
-
-      res.redirect("/");
+        res.json({resp})
+        console.log(resp)
+      // res.redirect("/");
     });
 });
 

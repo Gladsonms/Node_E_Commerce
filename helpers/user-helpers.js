@@ -426,12 +426,14 @@ module.exports = {
     });
   },
   checkNumber: (number) => {
+    
     return new Promise(async (resolve, reject) => {
       let userNumber = await db
         .get()
         .collection(collection.USER_COLLECTIONS)
         .findOne({ phone: number })
         .then((response) => {
+      
           resolve(response);
         });
     });
