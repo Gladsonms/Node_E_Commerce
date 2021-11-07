@@ -24,7 +24,7 @@
 
 				<div class="form-group">
 					{{!-- <label>Phone number</label> --}}
-					<input type="number" value="" name="phone" id="phone" maxlength="10" required
+					<input type="number" value="" name="phone" id="phone" maxlength="10" 
                         hidden>
 				</div>
 
@@ -102,6 +102,8 @@
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 
 <script>
+	
+let number;
 	jQuery.validator.setDefaults({
 		debug: false,
 		sucess: function (label) {
@@ -176,9 +178,8 @@
 
 
 
-
     function  SendOtp(){
-  let number=document.getElementById('input1').value;
+   number=document.getElementById('input1').value;
  					
 
         $.ajax({
@@ -223,8 +224,9 @@
                }
             }
         })
-		document.getelementById('phone').innerHTML=number
-			document.getelementById('phone').value=number
+		console.log(number)
+		document.getElementById('phone').innerHTML=number
+			document.getElementById('phone').value=number
     }
    
 
