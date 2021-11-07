@@ -278,6 +278,7 @@ router.get("/productdetails/:id", verifyLogin, async function (req, res, next) {
 
 //cart
 router.get("/cart", verifyLogin, async (req, res) => {
+  let category = await productHelpers.getCategory();
   var cartCount = await userHelpers.getCartCount(req.session.user._id);
   let products = await userHelpers.getCartProducts(req.session.user._id);
   if (products.length != 0) {
@@ -302,6 +303,7 @@ router.get("/cart", verifyLogin, async (req, res) => {
       totalAmount,
       totalPrice,
       cartCount,
+      category,
     });
   } else {
     res.render("user/cartempty");
@@ -405,6 +407,7 @@ router.get("/cart/checkout", verifyLogin, async (req, res) => {
   });
 });
 
+//remove item from cart
 router.post("/remove-item", verifyLogin, async (req, res) => {
   let cartId = req.body.cartId;
   let item = req.body.proId;
@@ -727,13 +730,31 @@ router.post("/change-password", (req, res) => {
   });
 });
 router.get("/category/:category", async (req, res) => {
+  let category = await productHelpers.getCategory();
   let categoryProduct = await productHelpers.getCategoryProduct(
     req.params.category
   );
   let user = req.session.user;
   var cartCount = await userHelpers.getCartCount(req.session.user._id);
 
-  res.render("user/CategoryProduct", { categoryProduct, user, cartCount });
+  res.render("user/CategoryProduct", { categoryProduct, categoryuser,category, cartCount });
 });
+
+router.post("/productsearch", (req, res)=>{
+  
+  let search=req.body.search;
+  console.log(search);
+  productHelpers.getSearchedProducts(search).then((result)=>{
+
+    console.log("product search");
+    console.log(result);
+    res.json({result});
+
+  })
+  
+
+
+  
+})
 
 module.exports = router;
