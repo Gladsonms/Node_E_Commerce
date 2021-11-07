@@ -152,11 +152,9 @@ router.get("/verifyotp", (req, res) => {
 });
 
 router.post("/verifyotp", (req, res) => {
-  console.log(req.body);
+  
   let number = req.body.number;
-  console.log("number in req");
-  console.log(number
-    );
+ 
   req.session.number = number;
   
   userHelpers.checkNumber(number).then((response) => {
@@ -205,6 +203,57 @@ router.post("/enterOtp", (req, res) => {
       // res.redirect("/");
     });
 });
+
+//signup page otp
+
+router.post('/sentOtp',(req, res) => {
+  let number = req.body.number;
+ 
+  req.session.number = number;
+  
+  userHelpers.checkNumber(number).then((response) => {
+    console.log(response);
+    if(!response){
+
+      clientTwillo.verify
+      .services(serviceSSID)
+      .verifications.create({ to: `+91${number}`, channel: "sms" })
+      .then((verification) => console.log(verification.status));
+       
+       res.json({number: true})
+    }else {
+           res.json({number: false})
+    }
+
+  
+  })
+})
+
+router.post('/submitOtp',(req, res)=>{
+  let otp = req.body.otp;
+
+  let number = req.session.number;
+
+  userHelpers.checkNumber(number).then((response) => {
+    req.session.user = response;
+    req.session.user_id = response._id;
+  });
+  clientTwillo.verify
+    .services(serviceSSID)
+    .verificationChecks.create({
+      to: `+91${number}`,
+      code: `${otp}`,
+    })
+    .then((resp) => {
+      console.log(resp);
+     if(resp.valid == true && resp.status == 'approved'){
+       res.json({login : true})
+     }
+     else {
+       res.json({login : false})
+     }
+    });
+})
 
 router.get("/logout", function (req, res, next) {
   req.session.user = null;
