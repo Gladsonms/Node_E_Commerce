@@ -47,10 +47,12 @@
                                                 <div class="form-group col-md-4">
                                                     <label for="inputZip">Max Purshase amount</label>
                                                     <input type="number" class="form-control" id="maxAmount" name="maxAmount" placeholder="maxAmount">
+                                                     <p class="text-danger" id="error4"></p>
                                                 </div>
                                                  <div class="form-group col-md-4">
                                                     <label for="inputZip">Min Purshase amount</label>
                                                     <input type="number" class="form-control" id="minAmount" name="minAmount" placeholder="minAmount">
+                                                     <p class="text-danger" id="error5"></p>
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label for="expdate">Offer Exiry Date</label>
@@ -93,7 +95,7 @@
                                                         <td>{{this.discount}}</td>
                                                         <td>{{this.minAmount}}</td>
                                                         <td>{{this.maxAmount}}</td>
-                                                        <td>{{this.expdate}}</td>
+                                                        <td>{{this.expireAt}}</td>
                                                         <td><span><button class="btn-sm btn-danger" onclick="removeCoupan('{{this._id}}')"><i class="fa fa-trash"></i></button></span></td>
                                                     </tr>
                                                     {{/each}}
@@ -134,7 +136,7 @@
 
 
                              $(document).ready(function () {
-                $('#categoryname').change(function () {
+                $('#categoryname').keyup(function () {
                     checkcategoryName()
 
                 })
@@ -144,7 +146,7 @@
                 let namevalue = $("#categoryname").val()
                 
                 if (namevalue == "") {
-                    $('#error1').html('please select category name')
+                    $('#error1').html('please enter coupon name')
                    
                 }
                 else {
@@ -187,6 +189,62 @@
                 }
 
             }
+           
+
+           //Min Amount
+           $(document).ready(function () {
+               $('maxAmount').keyup(function () {
+                   checkminamount()
+               })
+           })
+           function checkminamount() {
+               let namevalue = $("#minAmount").val()
+
+               let regex1 = /^[a-zA-Z.,;:|\\\/~!@#$%^&*_-{}\[\]()`"'<>?\s]+$/;
+                if (namevalue == "") {
+                    $('#error5').html('please enter minimum price')
+                }
+                else if (namevalue.match(regex1)) {
+                    minAmount = false
+                    $('#error5').html('number Only')
+
+                }
+                 else {
+                    minAmount = true
+                    $('#error5').html('')
+                }
+
+           }
+
+
+           ///Maximum amount
+             
+             $(document).ready(function () {
+               $('maxAmount').keyup(function () {
+                   checkmaxamount()
+               })
+           })
+           function checkmaxamount() {
+               let namevalue = $("#maxAmount").val()
+
+               let regex1 = /^[a-zA-Z.,;:|\\\/~!@#$%^&*_-{}\[\]()`"'<>?\s]+$/;
+                if (namevalue == "") {
+                    $('#error4').html('please enter maximum price')
+                }
+                else if (namevalue.match(regex1)) {
+                    maxAmount = false
+                    $('#error4').html('number Only')
+
+                }
+                 else {
+                    maxAmount = true
+                    $('#error4').html('')
+                }
+
+           }
+           
+           
+
             //====== date
 
             $(document).ready(function () {
@@ -215,6 +273,8 @@
                        var categoryName =false;
                      var discount =false;
                      var date=false
+                     var minAmount=false
+                     var maxAmount=false
                     document.getElementById('addcoupan').onsubmit=e=>{
                            if(categoryName && discount && date)
                        {
@@ -238,6 +298,9 @@
                            checkcategoryName()
                            checkdate();
                            checkdiscount();
+                           checkminamount();
+                           checkmaxamount();
+                           
                        }
                     }
                       function removeCoupan(id){

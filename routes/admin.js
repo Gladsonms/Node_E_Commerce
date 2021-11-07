@@ -91,15 +91,20 @@ router.get("/usermanagment", function (req, res) {
     .catch((err) => {});
 });
 
-router.post("/usermanagment/disableuser", async (req, res) => {
-  userHelpers.disableUser(req.body.id).then((response) => {
-    res.redirect("/admin/usermanagment");
+router.post("/usermanagment/disableuser/:id", async (req, res) => {
+ 
+  userHelpers.disableUser(req.params.id).then((response) => {
+    
+    res.json({response})
   });
 });
 
-router.post("/usermanagment/enableuser", async (req, res) => {
-  userHelpers.enableUser(req.query.id, req.body).then(() => {
-    res.redirect("/admin/usermanagment");
+router.post("/usermanagment/enableuser/:id", async (req, res) => {
+  
+  let userId = req.params.id;
+  
+  userHelpers.enableUser(userId).then((response) => {
+    res.json({response})
   });
 });
 
@@ -292,6 +297,7 @@ router.get("/category-offer", (req, res) => {
 
 router.get("/add-coupon", (req, res) => {
   productHelpers.getAllCoupons().then((coupon) => {
+    
     res.render("admin/coupon-mange", { admin: true, coupon });
   });
 });

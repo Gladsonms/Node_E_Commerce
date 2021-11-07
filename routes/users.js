@@ -92,7 +92,7 @@ router.post("/signup", function (req, res, next) {
 router.post("/login", function (req, res, next) {
   // console.log(req.body);
   userHelper.doLogin(req.body).then((response) => {
-    console.log("yess",response);
+    
     if (response.status) {
     
       req.session.loggedIn = true;
