@@ -341,6 +341,62 @@ router.get("/banner", (req, res) => {
   res.render("admin/banner", { admin: true });
 });
 
+router.post("/addbanner",(req,res)=>{
+ 
+ 
+  let image1 = req.body.image1_b64
+  let image2 = req.body.image2_b64
+  let image3 = req.body.image3_b64
+
+
+
+
+  let path1 = `./public/banner-images/banner1.jpg`
+  let path2 = `./public/banner-images/banner2.jpg`
+  let path3 = `./public/banner-images/banner3.jpg`
+
+
+
+  let img1 = image1.replace(/^data:([A-Za-z-+/]+);base64,/, "")
+  let img2 = image2.replace(/^data:([A-Za-z-+/]+);base64,/, "")
+  let img3 = image3.replace(/^data:([A-Za-z-+/]+);base64,/, "")
+  
+
+  if (img1 && img2 && img3) {
+
+
+    fs.writeFileSync(path1, img1, { encoding: 'base64' })
+    fs.writeFileSync(path2, img2, { encoding: 'base64' })
+    fs.writeFileSync(path3, img3, { encoding: 'base64' })
+  } else if (img1 && img2) {
+    fs.writeFileSync(path1, img1, { encoding: 'base64' })
+    fs.writeFileSync(path2, img2, { encoding: 'base64' })
+
+  } else if (img2 && img3) {
+    fs.writeFileSync(path2, img2, { encoding: 'base64' })
+    fs.writeFileSync(path3, img3, { encoding: 'base64' })
+
+  }
+  else if (img1 && img3) {
+    fs.writeFileSync(path1, img1, { encoding: 'base64' })
+    fs.writeFileSync(path3, img3, { encoding: 'base64' })
+
+  }
+  else if (img1) {
+    fs.writeFileSync(path1, img1, { encoding: 'base64' })
+
+  }
+  else if (img2) {
+    fs.writeFileSync(path2, img2, { encoding: 'base64' })
+
+
+  }
+  else if (img3) {
+    fs.writeFileSync(path3, img3, { encoding: 'base64' })
+  }
+
+  res.redirect('/admin/banner')
+})
 //salereport data from and to
 router.post("/datewisereport", async (req, res) => {
   startDate = req.body.start;
