@@ -215,6 +215,7 @@
 				success:(response)=>{
 					
 				   document.getElementById('allproducts').style.display ="none";
+				    
 				   
 				   let sercheditem;
 				    console.log(response.serach.length)
@@ -279,10 +280,12 @@
 													</div>
 												</div>`
                      							document.getElementById('selectedproduct').innerHTML +=	sercheditem
+												 
 											
 				   }
 				   if(response.serach.length ==0){
-					   document.getElementById('selectedproduct').innerHTML = "No products"
+					   document.getElementById('noproduct').innerHTML = "<h1>No products</h1>"
+					   document.getElementById('selectedproduct').style.display="none"
 				   }
 					
 				}
