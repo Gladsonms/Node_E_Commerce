@@ -583,7 +583,7 @@ getSearchedProducts:(data)=>{
         product.subCategory.toLowerCase().includes(data.toLowerCase()) 
         
     ))
-    console.log('newProducts----------------------------', result);
+    
     resolve(result)
     })
 }

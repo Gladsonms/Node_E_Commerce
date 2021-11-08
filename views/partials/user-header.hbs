@@ -206,7 +206,7 @@
             console.log('User signed out.');
         });
     }
-
+        
 		$('#searchproduct').on("submit",(e)=>{
 			e.preventDefault();
 			$.ajax({
@@ -214,6 +214,74 @@
 				method:"POST",
 				data:$("#searchproduct").serialize(),
 				success:(response)=>{
+					console.log(response);
+				   document.getElementById('allproducts').style.display ="none";
+				   
+				   let sercheditem;
+				    console.log(response.serach.length)
+				   for(i=0;i<response.serach.length;i++) {
+					   sercheditem=`<div class="col-md-3 col-sm-4 col-xs-12">
+													
+													<div class="product-item">
+														<div class="product-image">
+															<a href="/productdetails/${response.serach[i]._id}">
+																<img class="img-responsive" src="/product-images/product-image1/${response.serach[i]._id}.jpg" alt="Product Image" >
+															</a>
+														</div>
+														
+														<div class="product-title">
+															<a href="#">
+																${response.serach[i].product}
+															</a>
+														</div>
+														
+														<div class="product-rating">
+															<div class="star on"></div>
+															<div class="star on"></div>
+															<div class="star on "></div>
+															<div class="star on"></div>
+															<div class="star"></div>
+														</div>
+
+														{{#if this.productOffer}}
+															<div class="product-priccsczse">
+																<del class="sale-price">₹${response.serach[i].price}</del>
+																<span class="base-price">${response.serach[i].productofferprice}</span>
+															</div>
+
+														{{else}}
+														<div class="product-priccsczse">
+															<span class="base-price">₹${response.serach[i].price}</span>
+														</div>
+
+														{{/if}}
+														
+														
+														
+														<div class="product-buttoncnxlkc" style="margin-top: 1.3em;">
+												
+                                                                 
+                                                            <button class="btn btn-primary" onclick="addToCart('${response.serach[i]._id}')">
+																<i class="fa fa-shopping-basket" aria-hidden="true">Add to Cart</i>
+															</button>
+															
+															
+															
+															
+															{{!-- <a class="btn btn-primary" href="#">
+																<i class="fa fa-heart" aria-hidden="true"></i>
+															</a> --}}
+														</div>
+													
+														<div class="mt-2" style="margin-top: 0.8em;">
+															<a href="/cart/checkout?id={${response.serach[i]._id}" class="btn btn-primary">Buy now</a>
+														</div>
+													
+													</div>
+												</div>`
+                     							document.getElementById('selectedproduct').innerHTML +=	sercheditem
+											
+				   }
 					
 				}
 			})

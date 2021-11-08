@@ -746,9 +746,8 @@ router.post("/productsearch", (req, res)=>{
   console.log(search);
   productHelpers.getSearchedProducts(search).then((result)=>{
 
-    console.log("product search");
-    console.log(result);
-    res.json({result});
+    
+    res.json({serach:result});
 
   })
   
