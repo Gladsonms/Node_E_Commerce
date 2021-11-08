@@ -697,10 +697,10 @@ router.post("/apply-coupon", async (req, res) => {
 });
 
 router.get("/contact", async (req, res) => {
-  var cartCount = await userHelpers.getCartCount(req.session.user._id);
+ 
   let category = await productHelpers.getCategory();
   let user = req.session.user;
-  res.render("user/contact", { cartCount, user, category });
+  res.render("user/contact", {  user, category });
 });
 router.get("/profile", verifyLogin, async (req, res) => {
   let user = await userHelpers.getUserProfile(req.session.user._id);

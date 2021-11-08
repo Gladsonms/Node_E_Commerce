@@ -118,9 +118,9 @@
 				<div class="col-lg-5 col-md-5 col-sm-12 header-right d-flex justify-content-end align-items-center">
 					<!-- Search -->
 					<div class="form-search">
-						<form id="searchproduct">
+						<form onsubmit="return false" id="searchproduct">
 							<input type="text" class="form-input" placeholder="Search" name="search">
-							<button type="submit" class="fa fa-search"></button>
+							<button onclick="searchProduct()" class="fa fa-search"></button>
 						</form>
 					</div>
 
@@ -207,14 +207,13 @@
         });
     }
         
-		$('#searchproduct').on("submit",(e)=>{
-			e.preventDefault();
+		function searchProduct (){
 			$.ajax({
 				url:"/productsearch",
 				method:"POST",
 				data:$("#searchproduct").serialize(),
 				success:(response)=>{
-					console.log(response);
+					
 				   document.getElementById('allproducts').style.display ="none";
 				   
 				   let sercheditem;
@@ -282,10 +281,13 @@
                      							document.getElementById('selectedproduct').innerHTML +=	sercheditem
 											
 				   }
+				   if(response.serach.length ==0){
+					   document.getElementById('selectedproduct').innerHTML = "No products"
+				   }
 					
 				}
 			})
-		})
+		}
 		
 	</script>
 </header>

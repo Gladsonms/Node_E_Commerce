@@ -575,7 +575,7 @@ return new Promise(async (resolve, reject) => {
 getSearchedProducts:(data)=>{
     return new Promise(async(resolve,reject)=>{
     let products=  await db.get().collection(collection.PRODUCT_COLLECTIONS).find({}).toArray()
-    console.log(products);
+    
     let result ={}
      result = products.filter(product => (
         product.product.toLowerCase().includes(data.toLowerCase()) || 
