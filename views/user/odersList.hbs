@@ -39,15 +39,13 @@
                                                     <tr>
 
                                                         <td>{{this.date}}</td>
-                                                        {{!-- <td>{{this.address}}</td> --}}
+                                                      
                                                         <td>{{this.status}}</td>
                                                         <td>{{this.total}}</td>
                                                         <td>{{this.paymentMethod}}</td>
                                                         <td><a href="/view-order-product/{{this._id}}" class="btn btn-primary">View</a>
                                                           
-                                                          {{!-- {{#if_eq this.status "Cancel"}} --}}
-                                                        {{!-- <button></button> --}}
-                                                         {{!-- {{else}} --}}
+                                                        
                                                          
                                                          {{#if this.adminCancel }}
                                                         
@@ -89,7 +87,10 @@
                            method:"post",
                            data:{},
                            success:(respone)=>{
-                                      
+                                if(respone.status)
+                                {
+                                    window.location.reload()
+                                }
                            }
 
                        })

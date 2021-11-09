@@ -576,10 +576,11 @@ module.exports = {
         .updateOne(
           { _id: ObjectId(oderId) },
           { $set: { status: "Cancel", userCancel: true, adminCancel: false } }
-        );
-    }).then((res) => {
-      resolve(res);
-    });
+        ).then((res) => {
+          
+          resolve(res);
+        });
+    })
   },
   deleteAdddress: (uaddress, userId, addId, uname) => {
     return new Promise(async (resolve, reject) => {

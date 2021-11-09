@@ -629,8 +629,10 @@ router.get("/view-order-product/:id", async (req, res) => {
 });
 router.post("/oders/cancelorder/:id", async (req, res) => {
   let orderId = req.params.id;
+  
   await userHelpers.cancelOrder(orderId).then((response) => {
-    res.json(response);
+    
+    res.json({status:true});
   });
 });
 
