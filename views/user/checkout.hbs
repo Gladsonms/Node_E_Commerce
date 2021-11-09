@@ -666,7 +666,8 @@ placeField.addEventListener('input',(e)=>{
                          order
                        },
                        success:(response)=>{
-                         if(razorpaySuccess)
+                         console.log(response)
+                         if(response.data.razorpaySuccess==true)
                          {
 
                         location.href='/order-success'

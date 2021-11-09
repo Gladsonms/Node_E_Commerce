@@ -611,9 +611,7 @@ router.get("/orders", verifyLogin, async (req, res) => {
   let category = await productHelpers.getCategory();
 
   let orders = await userHelpers.getUserOrders(req.session.user._id);
-  //  let orderStatus=await userHelpers.getOrderStatus(req.session.user._id)
-  //  console.log("orderstatus");
-  //  console.log(orderStatus);
+   
   res.render("user/odersList", {
     user: req.session.user,
     orders,
@@ -624,6 +622,9 @@ router.get("/orders", verifyLogin, async (req, res) => {
 router.get("/view-order-product/:id", async (req, res) => {
   let products = await userHelpers.getOrderProducts(req.params.id);
   var cartCount = await userHelpers.getCartCount(req.session.user._id);
+  let orderStatus=await userHelpers.getOrderStatus(req.params.id)
+  console.log("orderstatus");
+  console.log(orderStatus);
 
   res.render("user/userorder", { user: req.session.user, products, cartCount });
 });

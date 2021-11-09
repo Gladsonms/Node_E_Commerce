@@ -2,8 +2,7 @@ var db = require("../config/connection");
 var collection = require("../config/collections");
 const bcyrpt = require("bcrypt");
 var ObjectId = require("mongodb").ObjectId;
-const { response } = require("express");
-const { get } = require("../routes/admin");
+ 
 const {
   USER_COLLECTIONS,
   CATEGORYOFFER_COLLECTIONS,
@@ -12,6 +11,7 @@ const moment = require("moment");
 const Razorpay = require("razorpay");
 const { resolve } = require("path");
 const { profileEnd } = require("console");
+const { log } = require("debug");
 //const { ObjectID, ObjectId } = require('bson')
 var instance = new Razorpay({
   key_id: "rzp_test_wof2EdLxFrX857",
@@ -618,26 +618,30 @@ module.exports = {
   },
   verifyPayment: (details) => {
     return new Promise((resolve, rejcet) => {
+      console.log(details);
       const crypto = require("crypto");
-      let hmca = createHmac("sha256", x8JE5ePxnOtxamNo5nXkXgJE);
-      hmca.update(
-        details["payment[razorpay_order_id]"] +
-          "|" +
-          details["payment[razorpay_payment_id]"]
-      );
-      hmca = hmca.digest("hex");
-      if (hmca == details["payment[razorpay_signature]"]) {
+      let hmac = crypto.createHmac("sha256", "x8JE5ePxnOtxamNo5nXkXgJE");
+      console.log("tyry");
+      hmac.update(
+        details["payment[razorpay_order_id]"] +  "|" +  details["payment[razorpay_payment_id]"]
+      )
+     
+      hmac = hmac.digest("hex");
+      console.log(hmac)
+      if (hmac == details["payment[razorpay_signature]"]) {
+        
         resolve();
       } else {
+       
         rejcet();
       }
     });
   },
 
   changePaymentStatus: (orderId) => {
-    console.log("change payment status");
+    
     return new Promise((resolve, reject) => {
-      db.get.collection(collection.ORDER_COLLECTIONS).updateOne(
+      db.get().collection(collection.ORDER_COLLECTIONS).updateOne(
         { _id: ObjectId(orderId) },
         {
           $set: { status: "placed" },
@@ -773,13 +777,21 @@ module.exports = {
       }
     });
   },
-  getOrderStatus: () => {
-    db.get()
-      .collection(collection.ORDER_COLLECTIONS)
-      .findOne({ $or: [{ status: "Cancel" }, { status: "pending" }] })
-      .then((data) => {
-        resolve(data);
-      });
+  getOrderStatus: (orderId) => {
+   return new Promise((resolve, reject) => {
+
+     db.get()
+       .collection(collection.ORDER_COLLECTIONS)
+       .findOne({ _id: ObjectId(orderId) })
+       .then((data) => {
+         if(data.status='pending')
+         {
+           resolve(data)
+         }
+         //resolve(data);
+         
+       });
+   })
   },
   //buynow
   buyNow: (proId) => {
