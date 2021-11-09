@@ -446,7 +446,7 @@ nameField.addEventListener('input', (e) => {
         validname=false;
     } 
     else if(name.length<5){
-        console.log(name.length);
+       
         nameError.innerHTML="Name should be more than 4 Characters"
         validname=false;
     }
@@ -582,7 +582,7 @@ placeField.addEventListener('input',(e)=>{
       var newCouponcode = document.getElementById("appliedCoupon").value;
       
      
-
+  
 	 
      
   
@@ -593,7 +593,7 @@ placeField.addEventListener('input',(e)=>{
   success:(response)=>
   { 
 	
-	console.log(response)
+	
    if(response.codSuccess)
    {
      
@@ -648,6 +648,7 @@ placeField.addEventListener('input',(e)=>{
 
         
         function verifyPayment(payment,order){
+         
                $.ajax({
                  url:'/verify-payment',
                  data:{
@@ -656,9 +657,10 @@ placeField.addEventListener('input',(e)=>{
                  },
                  method:"post",
                  success:(response)=>{
+                  
                    if(response.status){
                      //location.href='/order-success'
-                     alert("delete cart")
+                     
                      $.ajax({
                        url:"/delete-cart-product",
                        method:"post",
@@ -666,9 +668,10 @@ placeField.addEventListener('input',(e)=>{
                          order
                        },
                        success:(response)=>{
-                         console.log(response)
-                         if(response.data.razorpaySuccess==true)
+                        
+                         if(response)
                          {
+                          
 
                         location.href='/order-success'
                          }

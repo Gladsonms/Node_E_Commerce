@@ -266,9 +266,7 @@ module.exports = {
 
           
         })
-        // return new Promise((resolve,reject)=>{
-        //    let product= db.get().collection(collection.PRODUCT_COLLECTIONS)
-        // })
+     
       
     },
     addCoupan:(data)=>{
@@ -473,8 +471,7 @@ module.exports = {
      })
  },
  getSorrtedReport:(type)=>{
-     console.log("+++++++++++++++++++++++");
-     console.log(type);
+     
     const numberOfDays = type ===  'daily'? 1 : type === 'weekly' ? 7 : type === 'monthly' ? 30 : type === 'yearly' ? 365 : 0
     const dayOfYear = (date) =>
         Math.floor(

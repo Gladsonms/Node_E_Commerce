@@ -618,7 +618,7 @@ module.exports = {
   },
   verifyPayment: (details) => {
     return new Promise((resolve, rejcet) => {
-      console.log(details);
+     
       const crypto = require("crypto");
       let hmac = crypto.createHmac("sha256", "x8JE5ePxnOtxamNo5nXkXgJE");
       console.log("tyry");
@@ -646,10 +646,11 @@ module.exports = {
         {
           $set: { status: "placed" },
         }
-      );
-    }).then(() => {
-      resolve();
-    });
+      ).then((result) => {
+       
+        resolve(result);
+      });
+    })
   },
   getuserProfile: (userId) => {
     return new Promise(async (resolve, reject) => {

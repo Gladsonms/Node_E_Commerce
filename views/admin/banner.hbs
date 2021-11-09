@@ -91,7 +91,7 @@
                                         </div>
                                 </div>
                                 <div class="card-body">
-                                    <form action="/admin/addbanner" id="addbanner" onsubmit="return addBanner()" method="post" enctype="multipart/form-data">
+                                    <form action="/admin/addbanner" id="addbanner" method="post" enctype="multipart/form-data">
                                                        <div class="col-md-2 col-sm-2">
             <h4 class="title"> Image 1</h4>
             <div class="fileinput fileinput-new text-center">
@@ -157,6 +157,8 @@
                 </div>
                  <span id="error2"></span>
             </div>
+                 <div class="submit  "> <button class="btn btn-primary mb-3 ml-3  mt-2" type="submit"> Submit</button></div>
+
         </div>
 
      {{!-- item 3 end--}} 
@@ -272,7 +274,7 @@
 <!-- Modal  3 end-->
 
                                 </div>
-                            <div class="submit"> <button class="btn btn-primary mb-3 ml-3" type="submit"> Submit</button></div>
+                            
                             </div>
                         </div>
                         <!-- end row -->
@@ -461,16 +463,7 @@ document.getElementById("image2").onchange=e=>{
 
     })
 
-    function addBanner(){
-    if(imgformat1==true&& imgformat2==true && imgformat3==true ){
-        
-      return true;
-    }else
-    {
-        Swal("Please select all image formats")
-        return false;
-    }
-    }
+    
 
                 </script>
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>

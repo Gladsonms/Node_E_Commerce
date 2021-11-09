@@ -503,6 +503,7 @@ router.post("/place-order", async (req, res) => {
   userHelpers
     .PlaceOrder(user._id, req.body, product, totalPrice)
     .then((orderId) => {
+   
       if (req.body["payment"] == "cod") {
         res.json({ codSuccess: true });
         //RAXORPAY
@@ -510,6 +511,7 @@ router.post("/place-order", async (req, res) => {
         userHelpers
           .generateRazorPay(orderId, totalPrice, userId)
           .then((response) => {
+           
             res.json({ data: response, razorpaySuccess: true });
           });
       } else if (req.body["payment"] == "paypal") {
@@ -579,7 +581,8 @@ router.get("/success", (req, res) => {
   };
 
   userHelpers.deleteCartPaypal(req.session.user._id);
-
+ 
+  // userHelpers.changePaymentStatus()
   paypal.payment.execute(
     paymentId,
     execute_payment_json,
@@ -593,6 +596,8 @@ router.get("/success", (req, res) => {
       }
     }
   );
+  console.log("orderIDDD");
+  console.log(orderId);
 });
 
 router.get("/order-success", verifyLogin, (req, res) => {
@@ -623,8 +628,7 @@ router.get("/view-order-product/:id", async (req, res) => {
   let products = await userHelpers.getOrderProducts(req.params.id);
   var cartCount = await userHelpers.getCartCount(req.session.user._id);
   let orderStatus=await userHelpers.getOrderStatus(req.params.id)
-  console.log("orderstatus");
-  console.log(orderStatus);
+ 
 
   res.render("user/userorder", { user: req.session.user, products, cartCount });
 });
@@ -651,6 +655,7 @@ router.post("/oders/deleteaddress", (req, res) => {
 });
 
 router.post("/verify-payment", (req, res) => {
+ 
   userHelpers
     .verifyPayment(req.body)
     .then(() => {

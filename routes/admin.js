@@ -342,8 +342,9 @@ router.get("/banner", (req, res) => {
 });
 
 router.post("/addbanner",(req,res)=>{
- 
- 
+  
+  
+  
   let image1 = req.body.image1_b64
   let image2 = req.body.image2_b64
   let image3 = req.body.image3_b64
