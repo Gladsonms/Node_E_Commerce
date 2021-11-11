@@ -52,7 +52,7 @@ router.get("/home", async function (req, res) {
   let topSellingProducts = await productHelpers.gettopSellingProducts();
   let aTopProduct = topSellingProducts[0];
 
-  res.render("admin/home", {
+  res.render("admin/Home", {
     admin: true,
     userCount,
     orderCount,
