@@ -214,7 +214,7 @@ module.exports = {
 
       resolve(cartItems);
 
-      //console.log(total);
+      
     });
   },
   getCartCount: (userId) => {
@@ -597,7 +597,7 @@ module.exports = {
   },
 
   generateRazorPay: (orderId, totalAmount, userId) => {
-    console.log(totalAmount);
+    
     return new Promise((resolve, reject) => {
       var options = {
         amount: totalAmount * 100, // amount in the smallest currency unit
@@ -621,13 +621,13 @@ module.exports = {
      
       const crypto = require("crypto");
       let hmac = crypto.createHmac("sha256", "x8JE5ePxnOtxamNo5nXkXgJE");
-      console.log("tyry");
+      
       hmac.update(
         details["payment[razorpay_order_id]"] +  "|" +  details["payment[razorpay_payment_id]"]
       )
      
       hmac = hmac.digest("hex");
-      console.log(hmac)
+      
       if (hmac == details["payment[razorpay_signature]"]) {
         
         resolve();
@@ -706,7 +706,7 @@ module.exports = {
         if (status) {
           newPass = await bcyrpt.hash(newPass, 10);
 
-          //  console.log(newPass);
+          
           db.get()
             .collection(collection.USER_COLLECTIONS)
             .updateOne(

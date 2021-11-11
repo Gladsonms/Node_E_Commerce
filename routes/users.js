@@ -3,7 +3,7 @@ var express = require("express");
 var router = express.Router();
 var userHelper = require("../helpers/user-helpers");
 const productHelpers = require("../helpers/product-helpers");
-require("../helpers/auth");
+
 const passport = require("passport");
 
 //Google auth
@@ -90,7 +90,7 @@ router.post("/signup", function (req, res, next) {
   });
 });
 router.post("/login", function (req, res, next) {
-  // console.log(req.body);
+  
   userHelper.doLogin(req.body).then((response) => {
     
     if (response.status) {
@@ -158,7 +158,7 @@ router.post("/verifyotp", (req, res) => {
   req.session.number = number;
   
   userHelpers.checkNumber(number).then((response) => {
-    console.log(response);
+    
     if(response){
 
       clientTwillo.verify
@@ -199,7 +199,7 @@ router.post("/enterOtp", (req, res) => {
     .then((resp) => {
       req.session.loggedIn = true;
         res.json({resp})
-        console.log(resp)
+        
       // res.redirect("/");
     });
 });
@@ -212,7 +212,7 @@ router.post('/sentOtp',(req, res) => {
   req.session.number = number;
   
   userHelpers.checkNumber(number).then((response) => {
-    console.log(response);
+    
     if(!response){
 
       clientTwillo.verify
@@ -588,16 +588,15 @@ router.get("/success", (req, res) => {
     execute_payment_json,
     function (error, payment) {
       if (error) {
-        console.log(error.response);
+        
         throw error;
       } else {
-        console.log(JSON.stringify(payment));
+        
         res.send("Success");
       }
     }
   );
-  console.log("orderIDDD");
-  console.log(orderId);
+  
 });
 
 router.get("/order-success", verifyLogin, (req, res) => {
@@ -694,10 +693,7 @@ router.post("/apply-coupon", async (req, res) => {
         });
       }
 
-      // userHelpers.CheckUserCoupon(coupon,userId).then((response)=>{
-      //   console.log("check user coupon");
-      //   console.log(coupon);
-      // })
+      
     } else {
       res.json({ couponMessage2: true, Invalidmessage: "Coupon not  valid " });
     }

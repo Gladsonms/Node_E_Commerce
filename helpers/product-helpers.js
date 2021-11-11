@@ -186,15 +186,14 @@ module.exports = {
        
         let offerPercent=parseInt(offerData.offerpercentage)
         let expdate=offerData.expdate
-      ///  let offername=offerData.offername
+      
     
         return new Promise(async(resolve,reject)=>{
 
             let product=await db.get().collection(collection.PRODUCT_COLLECTIONS).findOne({product:productname})
             
             let offerPrice=Math.round(product.price-(product.price*offerPercent/100))
-            //Math.round(offerPrice)
-            //console.log(offerPrice);
+            
           
             db.get().collection(collection.PRODUCT_COLLECTIONS).updateOne({_id:product._id},{$set:{productOffer:offerPrice,expiryDate:expdate}}).then((response)=>{
                 resolve(response)
@@ -488,7 +487,7 @@ module.exports = {
 
 
         ]).toArray()
-        console.log(data);
+        
         resolve(data)
 
     })
@@ -520,54 +519,12 @@ return new Promise(async (resolve, reject) => {
             salesOfLastWeekData.push(0)
         }
     }
-    // console.log(salesOfLastWeekData);
+ 
     resolve(salesOfLastWeekData)
 
 })
  },
-//  getSearchedProducts:(data) =>{
-//      console.log("data in helpers");
-//      console.log(data);
-//     return new Promise(async (resolve, reject) => {
-//         //key = data.toUpperCase();
-//         //console.log("asdas",key);
-//         p_name=await db.get().collection(collection.PRODUCT_COLLECTIONS).find({ "product": data }).toArray()
-//          //console.log(p_name);
-//         cat=await db.get().collection(collection.PRODUCT_COLLECTIONS).find({ "category": data }).toArray()
-//          // console.log(cat);
-//          sub=await db.get().collection(collection.PRODUCT_COLLECTIONS).find({ "subCategory": data }).toArray()
-//          //console.log(sub);
-//          //console.log(p_name[0],cat[0],sub[0]);
-      
-//             if(p_name){
-//                 console.log("p_name");
-//                 console.log(p_name);
-//                 resolve(p_name)
-//             }
-//             else if(cat){
 
-//                 console.log("cat");
-//                      console.log(cat);
-
-//                 resolve(cat)
-//             }
-//             else if(sub){
-//                 console.log("sub");
-
-//             console.log(sub);
-//                 resolve(sub)
-//             }
-//             else{
-//                 console.log("false");
-
-//                 resolve(false)
-//             }
-
-       
-
-
-//     })
-//  }
 
 getSearchedProducts:(data)=>{
     return new Promise(async(resolve,reject)=>{

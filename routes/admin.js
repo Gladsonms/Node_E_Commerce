@@ -140,10 +140,7 @@ router.post("/productmanagmnet/editproduct/:id", (req, res) => {
     let image3 = req.body.image3_b64;
     let image4 = req.body.image4_b64;
 
-    //  console.log(image1);
-    //  console.log(image2);
-    //  console.log(image3);
-    //  console.log(image4);
+    
 
     const path1 = `./public/product-images/product-image1/${id}.jpg`;
     const path2 = `./public/product-images/product-image2/${id}.jpg`;
@@ -409,7 +406,7 @@ router.post("/datewisereport", async (req, res) => {
 });
 router.post("/getSorrtedReport", async (req, res) => {
   let type = req.body.date;
-  console.log(type);
+  
   let sorttedOrder = await productHelpers.getSorrtedReport(type);
 
   res.json({ sorttedOrder });
