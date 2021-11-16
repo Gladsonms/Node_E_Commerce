@@ -70,14 +70,14 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="inputProduct">Product Name</label>
-                            <input type="text" class="form-control" id="inputProduct" placeholder="product name" name="product" >
+                            <input type="text" class="form-control" id="inputProduct" placeholder="product name" name="product" required>
                             <p class="text-danger" id="productError"></p>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="CATEGORY">Category</label>
                             {{!-- <input type="password" class="form-control" id="inputPassword4"
                                 placeholder="Password"> --}}
-                            <select id="inputCategory" class="form-control" name="category" >
+                            <select id="inputCategory" class="form-control" name="category" required>
                                 <p class="text-danger" id="categoryError"></p>
                                  <option selected="">Select Category </option>
                                  {{#each category}}
@@ -94,7 +94,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-8">
                             <label for="subCategory">Sub Category</label>
-                            <select id="inputsubCategory" class="form-control" name="subCategory" >
+                            <select id="inputsubCategory" class="form-control" name="subCategory" required>
                                 <p class="text-danger" id="subCategoryError"></p>
                                 <option selected="">Select sub Category</option>
                                 
@@ -103,7 +103,7 @@
 
                         <div class="form-group col-md-2">
                             <label for="inputprice">Price</label>
-                            <input type="number" class="form-control" id="inputPrice" name="price" maxlength="4" >
+                            <input type="number" class="form-control" id="inputPrice" name="price" maxlength="4" required>
                             <p class="text-danger" id="priceError"></p>
                         </div>
                         <div class="form-group col-md-2">
@@ -116,7 +116,7 @@
 
                     <div class="form-group col-md-12">
                         <label for="exampleFormControlTextarea1">Description</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="description " ></textarea>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="description " required></textarea>
                         <p class="text-danger" id="descriptionError"></p>
                     </div>
                    </div>
@@ -129,14 +129,14 @@
             <div class="fileinput fileinput-new text-center">
                 <div class="fileinput-new thumbnail">
                     
-                    <img src="/assets/img/jpg.png" id="chekPreview1" alt="Upload image here">
+                    <img src="/assets/img/jpg.png" id="chekPreview1" alt="Upload image here" >
                     <p class="text-danger" id="image1Error"></p>
 
                 </div>
                 <div>
                     <span class="btn btn-rose btn-round btn-file">
                         <span class="fileinput-new">Select image</span>
-                        <input type="file" id="image1" accept="image/gif, image/jpeg, image/png" name="productimage1"    />
+                        <input type="file" id="image1" accept="image/gif, image/jpeg, image/png" name="productimage1"   required />
                         <textarea name="image1_b64" id="imageValue1" cols="30" rows="10" hidden></textarea>
                     </span>
                 </div>
@@ -159,7 +159,7 @@
                 <div>
                     <span class="btn btn-rose btn-round btn-file">
                         <span class="fileinput-new">Select image</span>
-                        <input type="file" id="image2" accept="image/gif, image/jpeg, image/png" name="productimage2"   />
+                        <input type="file" id="image2" accept="image/gif, image/jpeg, image/png" name="productimage2"  required  />
                         <p class="text-danger" id="image2rror"></p>
                         <textarea name="image2_b64" id="imageValue2" cols="30" rows="10" hidden></textarea>
                     </span>
@@ -182,7 +182,7 @@
                 <div>
                     <span class="btn btn-rose btn-round btn-file">
                         <span class="fileinput-new">Select image</span>
-                        <input type="file" id="image3" accept="image/gif, image/jpeg, image/png" name="productimage3"   />
+                        <input type="file" id="image3" accept="image/gif, image/jpeg, image/png" name="productimage3"   required/>
                         <p class="text-danger" id="image3Error"></p>
                         <textarea name="image3_b64" id="imageValue3" cols="30" rows="10" hidden></textarea>
                     </span>
@@ -206,7 +206,7 @@
                 <div>
                     <span class="btn btn-rose btn-round btn-file">
                         <span class="fileinput-new">Select image</span>
-                        <input type="file" id="image4" accept="image/gif, image/jpeg, image/png" name="productimage4"   />
+                        <input type="file" id="image4" accept="image/gif, image/jpeg, image/png" name="productimage4" required  />
                         <textarea name="image4_b64" id="imageValue4" cols="30" rows="10" hidden></textarea>
                     </span>
                 </div>
@@ -689,7 +689,7 @@ document.getElementById("image2").onchange=e=>{
       var subcategoryField=document.getElementById('inputsubCategory')
       var validsubcategory=false;
       subcategoryField.addEventListener('input',(e)=>{
-          console.log(e.target.value)
+         
           var subcategory=subcategoryField.value
           if(subcategory.length==0)
           {
@@ -777,7 +777,20 @@ document.getElementById("image2").onchange=e=>{
     
 
     function addProduct(){
-         if( validproduct==true &&  validcategory==true &&  validquantity==true && validdescription==true  && imgformat1==true && imgformat2==true && imgformat3==true && imgformat4==true){
+        //e.prevantDeafault();
+        console.log(validproduct)
+        console.log(validcategory)
+        console.log(validsubcategory)
+
+        console.log(validdescription)
+   
+        console.log(validquantity)
+        console.log(imgformat1)
+        console.log(imgformat2)
+        console.log(imgformat3)
+        console.log(imgformat4)
+         if( validproduct==true &&  validcategory==true &&  validsubcategory==true && validquantity==true && validdescription==true  && imgformat1==true && imgformat2==true && imgformat3==true && imgformat4==true){
+             
             // let image1=document.getElementById('image1')
              
              return true

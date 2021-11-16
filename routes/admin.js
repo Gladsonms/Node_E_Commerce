@@ -131,31 +131,44 @@ router.get("/productmangmnet/editproduct/:id", async (req, res) => {
   });
 });
 router.post("/productmanagmnet/editproduct/:id", (req, res) => {
-  let id = req.params.id;
-
+  let proId = req.params.id;
+  let id=req.params.id
+   console.log(proId);
   productHelpers.updateProducts(req.params.id, req.body).then((data) => {
     let id = "" + data;
-    let image1 = req.body.image1_b64;
-    let image2 = req.body.image2_b64;
-    let image3 = req.body.image3_b64;
-    let image4 = req.body.image4_b64;
+    if(req.body.image1_b64)
+    {
+     
+      let image1 = req.body.image1_b64;
+      const path1 = `./public/product-images/product-image1/${proId}.jpg`;
+      const base64Data1 = image1.replace(/^data:([A-Za-z-+/]+);base64,/, "");
+       
+      fs.writeFileSync(path1, base64Data1, { encoding: "base64" });
+    }
+    if(req.body.image2_b64)
+    {
 
-    
+      let image2 = req.body.image2_b64;
+      const path2 = `./public/product-images/product-image2/${proId}.jpg`;
+      const base64Data2 = image2.replace(/^data:([A-Za-z-+/]+);base64,/, "");
+      fs.writeFileSync(path2, base64Data2, { encoding: "base64" });
+    }
+    if(req.body.image3_b64)
+    {
 
-    const path1 = `./public/product-images/product-image1/${id}.jpg`;
-    const path2 = `./public/product-images/product-image2/${id}.jpg`;
-    const path3 = `./public/product-images/product-image3/${id}.jpg`;
-    const path4 = `./public/product-images/product-image4/${id}.jpg`;
+      let image3 = req.body.image3_b64;
+      const path3 = `./public/product-images/product-image3/${iproIdd}.jpg`;
+      const base64Data3 = image3.replace(/^data:([A-Za-z-+/]+);base64,/, "");
+      fs.writeFileSync(path3, base64Data3, { encoding: "base64" });
+    }
+   if(req.body.image4_b64)
+   {
 
-    const base64Data1 = image1.replace(/^data:([A-Za-z-+/]+);base64,/, "");
-    const base64Data2 = image2.replace(/^data:([A-Za-z-+/]+);base64,/, "");
-    const base64Data3 = image3.replace(/^data:([A-Za-z-+/]+);base64,/, "");
-    const base64Data4 = image4.replace(/^data:([A-Za-z-+/]+);base64,/, "");
-
-    fs.writeFileSync(path1, base64Data1, { encoding: "base64" });
-    fs.writeFileSync(path2, base64Data2, { encoding: "base64" });
-    fs.writeFileSync(path3, base64Data3, { encoding: "base64" });
-    fs.writeFileSync(path4, base64Data4, { encoding: "base64" });
+     let image4 = req.body.image4_b64;
+     const path4 = `./public/product-images/product-image4/${proId}.jpg`;
+     const base64Data4 = image4.replace(/^data:([A-Za-z-+/]+);base64,/, "");
+     fs.writeFileSync(path4, base64Data4, { encoding: "base64" });
+   }
     res.redirect("/admin/productmanagment");
   });
 });
