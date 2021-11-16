@@ -157,7 +157,7 @@ router.post("/productmanagmnet/editproduct/:id", (req, res) => {
     {
 
       let image3 = req.body.image3_b64;
-      const path3 = `./public/product-images/product-image3/${iproIdd}.jpg`;
+      const path3 = `./public/product-images/product-image3/${proId}.jpg`;
       const base64Data3 = image3.replace(/^data:([A-Za-z-+/]+);base64,/, "");
       fs.writeFileSync(path3, base64Data3, { encoding: "base64" });
     }
