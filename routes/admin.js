@@ -179,6 +179,7 @@ router.get("/productmanagment/adddproduct", function (req, res) {
   });
 });
 router.post("/productmanagmnet/addproduct", function (req, res) {
+  
   productHelpers.addProduct(req.body).then((data) => {
     let id = "" + data;
     let image1 = req.body.image1_b64;
@@ -358,6 +359,7 @@ router.post("/addbanner",(req,res)=>{
   let image1 = req.body.image1_b64
   let image2 = req.body.image2_b64
   let image3 = req.body.image3_b64
+  
 
 
 
@@ -365,6 +367,7 @@ router.post("/addbanner",(req,res)=>{
   let path1 = `./public/banner-images/banner1.jpg`
   let path2 = `./public/banner-images/banner2.jpg`
   let path3 = `./public/banner-images/banner3.jpg`
+  console.log(path1);
 
 
 
@@ -372,6 +375,7 @@ router.post("/addbanner",(req,res)=>{
   let img2 = image2.replace(/^data:([A-Za-z-+/]+);base64,/, "")
   let img3 = image3.replace(/^data:([A-Za-z-+/]+);base64,/, "")
   
+ 
 
   if (img1 && img2 && img3) {
 
@@ -394,6 +398,7 @@ router.post("/addbanner",(req,res)=>{
 
   }
   else if (img1) {
+    
     fs.writeFileSync(path1, img1, { encoding: 'base64' })
 
   }

@@ -16,6 +16,7 @@ module.exports = {
             quantity:parseInt(productDetails.quantity)
 
         }
+      
         return new Promise(async (resolve, reject) => {
 
             let id = await db.get().collection(collection.PRODUCT_COLLECTIONS).insertOne(productDetails)

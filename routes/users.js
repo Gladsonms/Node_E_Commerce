@@ -522,9 +522,11 @@ if(req.body.address&&req.body.payment){
             payment_method: "paypal",
           },
           redirect_urls: {
-            return_url: "http://localhost:3000/order-success",
+            return_url: "https://ecom.gladsonms.tech/order-success",
+            //return_url: "http://localhost:3000/order-success",
             // "return_url": "http://localhost:3000/success",
-            cancel_url: "http://localhost:3000/cancel",
+            // cancel_url: "http://localhost:3000/cancel",
+            cancel_url: "https://ecom.gladsonms.tech/cancel",
           },
           transactions: [
             {

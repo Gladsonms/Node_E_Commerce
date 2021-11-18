@@ -133,7 +133,7 @@
                                 <!-- begin page title -->
                                 <div class="d-block d-sm-flex flex-nowrap align-items-center">
                                     <div class="page-title mb-2 mb-sm-0">
-                                        <h1>Export Table</h1>
+                                        <h1>Sales Table</h1>
                                     </div>
                                     <div class="ml-auto d-flex align-items-center">
                                        
@@ -282,7 +282,7 @@
       
       $.ajax({
           url:"/admin/datewisereport",
-          data:$("#dateReport").serialize(),
+          data:$("#start").serialize(),
           method:"POST",
           
           success:(response)=>{
@@ -339,6 +339,26 @@
           }
       })
   }
+
+           
+
+                    //diable next date
+                    var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0');
+  var yyyy = today.getFullYear();
+
+  today = yyyy + '-' + mm + '-' + dd;
+  $('#start').attr('max', today);
+  $('#end').attr('max', today);
+  document.getElementById('start').onchange=e=>{
+    value=e.target.value
+ 
+    $('#end').attr('min', value);
+  }
+                    
+
+
   function getSorrtedReport(date){
      
       $.ajax({
