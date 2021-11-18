@@ -346,25 +346,26 @@ router.get("/add-item-cart/:id",(req, res)=>{
 })
 
 //changeProductQauntity
-
 router.post("/change-product-quantity", verifyLogin, (req, res, next) => {
   userHelpers.changeProductQauntity(req.body).then(async (response) => {
     let totalAmount = await userHelpers.getTottalAmount(req.session.user._id);
 
+  
     let totalPrice = 0;
     let subtotal = 0;
 
     for (var i in totalAmount) {
       totalPrice = totalPrice + totalAmount[i].subtotal;
+
     }
     for (var i in totalAmount) {
       subtotal = totalAmount[i].subtotal;
+    
     }
-
-    response.total = totalPrice;
-    response.subtotal = subtotal;
-
-    res.json(response);
+    
+   
+   
+  res.json({response,data:totalAmount,total:totalPrice});
   });
 });
 

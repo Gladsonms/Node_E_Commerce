@@ -66,7 +66,7 @@
 												</div>
 											</div>
 									 </td>
-										<td> <span id="subtotal">{{this.product.subtotal}}</span> </td> 
+										<td> <p id="1{{this.product._id}}">{{this.product.subtotal}}</p> </td> 
 
 										
 								
@@ -227,8 +227,7 @@ function changeQuantity(cartId,proId,count){
 						   						 method:'post',
 
 						   						success:(response=>{
-							 
-							
+													  
 							 						  if(response.removeProduct)
 							   								{
 								   				//swal("Product Removed From cart")
@@ -240,7 +239,10 @@ function changeQuantity(cartId,proId,count){
 								       // window.location.reload()
 								  								 document.getElementById(proId).value=quantity+count
 								  								 document.getElementById('total5').innerHTML=response.total
-								   								document.getElementById('subtotal').innerHTML=response.subtotal
+								   								for(var i=0;i<response.data.length;i++){
+																
+																	 document.getElementById(`1${response.data[i].item}`).innerHTML = response.data[i].subtotal 
+																   }
 							   										}
 						   										})
 					  										 })
