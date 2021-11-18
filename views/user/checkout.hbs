@@ -276,7 +276,7 @@
                         value="cod"
                       />
                       <label class="form-check-label" for="flexRadioDefault1">
-                        Cash on deleviery
+                        Cash on delivery
                       </label>
                     </div>
                     <div class="form-check">
@@ -313,6 +313,7 @@
               </div>
 
               <div class="pull-right mt-4">
+              <div class="text-danger align-items-center" id="errorPlaceorder"></div>
                 <input
                   type="submit"
                   value="Place Order"
@@ -592,7 +593,8 @@ placeField.addEventListener('input',(e)=>{
     data:$('#placeorderform').serialize()+"&couponCode="+newCouponcode,
   success:(response)=>
   { 
-	
+	 console.log(response.nodata)
+   console.log(response)
 	
    if(response.codSuccess)
    {
@@ -604,6 +606,13 @@ placeField.addEventListener('input',(e)=>{
      razorPayPayment(response.data)
      // location.href='/order-success'
 
+   }
+   
+   else if(response.nodata)
+   {
+  
+     document.getElementById('errorPlaceorder').innerHTML="Please enter address and payment Method"
+     
    }
    
 

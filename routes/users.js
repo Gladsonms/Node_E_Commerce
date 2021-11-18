@@ -499,7 +499,8 @@ router.post("/place-order", async (req, res) => {
   } else {
     totalPrice = newPrice;
   }
-
+console.log(req.body);
+if(req.body.address&&req.body.payment){
   userHelpers
     .PlaceOrder(user._id, req.body, product, totalPrice)
     .then((orderId) => {
@@ -562,6 +563,10 @@ router.post("/place-order", async (req, res) => {
       // res.redirect("/order-success")
     })
     .catch((err) => console.log(err));
+  }else{
+    console.log("noaddress");
+    res.json({nodata:true})
+  }
 });
 
 router.get("/success", (req, res) => {
