@@ -858,7 +858,16 @@
 			success:(respone)=>{
 				
 				if(respone.status)
+
 				{
+					Swal.fire({
+  position: 'top-end',
+  icon: 'success',
+  title: 'Item added to cart',
+  showConfirmButton: false,
+  timer: 1500
+})
+
 					let count=$('#addcount').html()
 					count=parseInt(count)
 					count++;

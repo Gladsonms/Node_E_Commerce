@@ -195,10 +195,11 @@ function changeQuantity(cartId,proId,count){
 
 						   						success:(response=>{
 							 
-							
-							 						  if(response.removeProduct)
+							                             
+							 						  if(response.response.removeProduct)
 							   								{
 								   				//swal("Product Removed From cart")
+												   
 														window.location.reload()
 							
 							   									}
