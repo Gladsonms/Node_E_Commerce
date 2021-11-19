@@ -465,7 +465,14 @@ module.exports = {
 
   PlaceOrder: (user, order, products, total) => {
     return new Promise(async (resolve, reject) => {
-      let status = order.payment == "cod" ? "placed" : "pending";
+      let status;
+      if (order.payment=='cod'){
+         status='placed'
+      }else if(order.payment=='paypal'){
+         status='placed'
+      }else{
+         status='pending'
+      }
       let orderObj = {
         userId: order.userId[0],
         address: order.address,
@@ -725,12 +732,17 @@ module.exports = {
     });
   },
   deleteCartPaypal: (user) => {
-    db.get()
+    console.log("--------------------");
+    return new Promise(async (resolve,reject)=>{
+      db.get()
       .collection(collection.CART_COLLECTIONS)
       .deleteOne({ user: ObjectId(user) })
       .then((response) => {
+        console.log(response);
         resolve(response);
       });
+    })
+  
   },
   addUsersCoupon: (caupon, userId) => {
     return new Promise(async (resolve, reject) => {

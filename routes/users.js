@@ -500,7 +500,7 @@ router.post("/place-order", async (req, res) => {
   } else {
     totalPrice = newPrice;
   }
-console.log(req.body);
+
 if(req.body.address&&req.body.payment){
   userHelpers
     .PlaceOrder(user._id, req.body, product, totalPrice)
@@ -525,9 +525,9 @@ if(req.body.address&&req.body.payment){
           redirect_urls: {
             return_url: "https://ecom.gladsonms.tech/order-success",
             //return_url: "http://localhost:3000/order-success",
-            // "return_url": "http://localhost:3000/success",
-            // cancel_url: "http://localhost:3000/cancel",
-            cancel_url: "https://ecom.gladsonms.tech/cancel",
+            //return_url: "http://localhost:3000/success",
+             //cancel_url: "http://localhost:3000/",
+            cancel_url: "https://ecom.gladsonms.tech/",
           },
           transactions: [
             {
@@ -600,7 +600,7 @@ router.get("/success", (req, res) => {
         throw error;
       } else {
         
-        res.send("Success");
+        res.render("user/order-success", { user: req.session.user });
       }
     }
   );
