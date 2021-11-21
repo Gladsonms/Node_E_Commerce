@@ -300,9 +300,12 @@ router.post("/add-new-productoffer", (req, res) => {
 });
 
 router.get("/category-offer", (req, res) => {
-  let categoryOffer = productHelpers.getCategoryOffers();
-  productHelpers.getCategory().then((category) => {
-    res.render("admin/categoryOffer", { admin: true, category, categoryOffer });
+  let categoryOffer = productHelpers.getTheCategoryOffer().then((categoryOffer)=>{
+
+    console.log("categoryoffer",categoryOffer);
+    productHelpers.getCategory().then((category) => {
+      res.render("admin/categoryOffer", { admin: true, category, categoryOffer });
+  })
   });
 });
 

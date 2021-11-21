@@ -623,12 +623,18 @@ router.get("/orders", verifyLogin, async (req, res) => {
   let category = await productHelpers.getCategory();
 
   let orders = await userHelpers.getUserOrders(req.session.user._id);
-   
+  let newOrders = orders.map((order, index) => {
+    order.isCancelled = order.status === "Cancel";
+    order.isDeleviered = order.status === "Deliverd";
+    return order;
+  });
+  
   res.render("user/odersList", {
     user: req.session.user,
     orders,
     cartCount,
     category,
+    newOrders
   });
 });
 router.get("/view-order-product/:id", async (req, res) => {

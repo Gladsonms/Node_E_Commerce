@@ -235,6 +235,15 @@ module.exports = {
           })
       }) 
     },
+    getTheCategoryOffer:()=>{
+        return new Promise(async(resolve,reject)=>{
+        await  db.get().collection(collection.CATEGORYOFFER_COLLECTIONS).find({}).toArray().then((response)=>{
+            
+            resolve(response)
+            })
+
+        })
+    },
     //category offer adding
     addCategoryOffer:(data)=>{
         
@@ -242,9 +251,11 @@ module.exports = {
         let offerpercentage=data.offerpercentage
         let catExpdate=data.expdate
         let categoryOffer=Math.round()
-        
+         
         return new Promise(async(resolve,reject)=>{
-        //    db.get().collection(collection.CATEGORYOFFER_COLLECTIONS).insertOne({category:categoryname,discount:offerpercentage,expdate:catExpdate})
+      
+            
+          db.get().collection(collection.CATEGORYOFFER_COLLECTIONS).insertOne({category:categoryname,discount:offerpercentage,expdate:catExpdate})
             let category=await db.get().collection(collection.PRODUCT_COLLECTIONS).find({category:categoryname}).toArray()
             
             for(var i in category){

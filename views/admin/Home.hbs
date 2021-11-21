@@ -123,7 +123,7 @@
                                             <h4 class="card-title">Top selling products</h4>
                                         </div>
                                         <div class="dropdown">
-                                            <a class="btn btn-xs" href="#!">Export <i class="zmdi zmdi-download pl-1"></i> </a>
+                                           
                                         </div>
                                     </div>
                                     <div class="card-body scrollbar scroll_dark pt-0" style="max-height: 350px;">
@@ -231,7 +231,7 @@
                                             <h4 class="card-title">Invoices Status</h4>
                                         </div>
                                         <div class="dropdown">
-                                            <input type="text" class="form-control form-control-sm" placeholder="Search Invoice" />
+                                           
                                         </div>
                                     </div>
                                     <div class="card-body scrollbar scroll_dark" style="max-height: 420px;">
@@ -241,7 +241,7 @@
                                                 <h1>{{totalSalesAmount.revenue}}</h1>
                                             </div>
                                             <div class="mb-3 mb-sm-0 ml-auto">
-                                                <button class="btn btn-primary btn-xs">View All Invoices</button>
+                                               
                                             </div>
                                         </div>
                                         {{!-- <div class="d-none d-sm-flex progress m-t-20 m-b-0" style="height: 5px;">
@@ -275,7 +275,7 @@
                                                         <th>date</th>
                                                         <th>Payment method</th> 
                                                         <th>Status</th>
-                                                        <th>tottal</th>
+                                                        {{!-- <th>tottal</th> --}}
                                                        
                                                     </tr>
                                                 </thead>
@@ -285,9 +285,9 @@
                                                         <td>{{this.date}}</td>
                                                         <td>{{this.paymentMethod}}</td>
                                                         <td>{{this.status}}</td>
-                                                        <td>{{this.tottal}}</td>
+                                                        {{!-- <td>{{this.tottal}}</td> --}}
                                                         <td>
-                                                            <label class="badge mb-0 badge-primary-inverse"> Overdue</label>
+                                                          
                                                         </td>
                                                     </tr>
                                                     {{/each}}

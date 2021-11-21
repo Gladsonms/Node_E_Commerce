@@ -72,25 +72,26 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            {{!-- <table class="table table-borderless mb-0">
+                                            <table class="table table-borderless mb-0">
                                                 <thead>
                                                     <tr>
                                                         <th scope="col">Category</th>
                                                         <th scope="col">Discount</th>
                                                         <th scope="col">Expiry Date</th>
-                                                        <th scope="col">Options</th>
+                                                       
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    {{#each categoryOffer}}
                                                     <tr>
-                                                        <th scope="row"></th>
-                                                        <td>Mark</td>
-                                                        <td>Otto</td>
-                                                        <td>@mdo</td>
+                                                        
+                                                        <td>{{this.category}}</td>
+                                                        <td>{{this.discount}}</td>
+                                                        <td>{{this.expdate}}</td>
                                                     </tr>
-                                                   
+                                                   {{/each}}
                                                 </tbody>
-                                            </table> --}}
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
