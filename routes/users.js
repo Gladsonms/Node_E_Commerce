@@ -426,12 +426,12 @@ router.post("/cart/checkout/addAddress", (req, res) => {
     res.redirect("/cart/checkout");
   });
 });
-router.post("/delete-cart-product", (req, res) => {
-  userId = req.session.user._id;
-  userHelpers.deleteFinalCart(userId).then((response) => {
-    res.json({ response: true });
-  });
-});
+// router.post("/delete-cart-product", (req, res) => {
+//   userId = req.session.user._id;
+//   userHelpers.deleteFinalCart(userId).then((response) => {
+//     res.json({ response: true });
+//   });
+// });
 
 router.post("/place-order", async (req, res) => {
   let coupon = req.body.couponCode;
@@ -588,7 +588,7 @@ router.get("/success", (req, res) => {
     ],
   };
 
-  userHelpers.deleteCartPaypal(req.session.user._id);
+  // userHelpers.deleteCartPaypal(req.session.user._id);
  
   // userHelpers.changePaymentStatus()
   paypal.payment.execute(
@@ -611,6 +611,8 @@ router.get("/order-success", verifyLogin, (req, res) => {
   if (req.session.buyNow) {
     //delete session in buynow product
     delete req.session.buyNow;
+  }else{
+   userHelpers.deleteCartItem(req.session.user._id)
   }
   res.render("user/order-success", { user: req.session.user });
 });
@@ -703,7 +705,7 @@ router.post("/apply-coupon", async (req, res) => {
       } else {
         res.json({
           couponMessage1: true,
-          Amessage: "Coupon   valid for this purshase above" + minAmount,
+          Amessage: "Coupon   valid for this purshase above  : " + minAmount,
         });
       }
 

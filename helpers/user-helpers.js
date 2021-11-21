@@ -491,28 +491,35 @@ module.exports = {
         .insertOne(orderObj)
         .then((response) => {
           resolve(response.insertedId);
-
-          if (order.payment == "cod") {
-            db.get()
-              .collection(collection.CART_COLLECTIONS)
-              .deleteOne({ user: ObjectId(user) });
-          }
         })
         .catch((err) => {
           reject(err);
         });
     });
   },
-  deleteFinalCart: (user) => {
-    return new Promise((resolve, reject) => {
-      db.get()
-        .collection(collection.CART_COLLECTIONS)
-        .deleteOne({ user: ObjectId(user) })
-        .then((response) => {
-          resolve();
-        });
-    });
+  deleteCartItem:(userId)=>{
+    return new Promise((resolve,reject)=>{
+   
+        db.get()
+          .collection(collection.CART_COLLECTIONS)
+          .deleteOne({ user: ObjectId(userId) });
+      
+    })
   },
+
+  
+
+  
+  // deleteFinalCart: (user) => {
+  //   return new Promise((resolve, reject) => {
+  //     db.get()
+  //       .collection(collection.CART_COLLECTIONS)
+  //       .deleteOne({ user: ObjectId(user) })
+  //       .then((response) => {
+  //         resolve();
+  //       });
+  //   });
+  // },
   getUserOrders: (userId) => {
     return new Promise(async (resolve, reject) => {
       let oders = await db
