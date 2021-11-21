@@ -3,11 +3,12 @@
     margin-left: 357px;
     padding-bottom: 31px;
 ">
-    <form action="/admin/categorymangament/addcategory" method="POST">
+    <form action="/admin/categorymangament/addcategory" method="POST" onsubmit="return addCategory()">
       <h3 class="text-center">Category</h3>
   <div class="form-group col-md-6">
     <label for="inputCategory">Category</label>
-    <input type="text" class="form-control" id="inputCategory" name="category" required>
+    <input type="text" class="form-control" id="inputCategory" name="category" >
+    <p class="text-danger" id="error1"></p>
   </div>
   {{!-- <div class="form-group col-md-4">
     <label for="inputSubcategory">Sub category</label>
@@ -74,6 +75,46 @@
     $(document).ready( function () {
     $('#table_id').DataTable();
 } );
+
+//valiadtion
+
+          $(document).ready(function () {
+                $('#inputCategory').change(function () {
+                    checkcategoryName()
+
+                })
+
+            })
+            function checkcategoryName() {
+                let namevalue = $("#inputCategory").val()
+                
+                if (namevalue == "") {
+                    $('#error1').html('please select category name')
+                   
+                }
+                else {
+                    categoryName = true
+                    $('#error1').html('')
+
+                }
+
+            }
+             var categoryName =false;
+             function addCategory(){
+                   if(categoryName)
+                   {
+                     return true
+                   }
+                   else
+                   {
+                     document.getElementById("error1").innerHTML="Please enter the category name"
+                     return false
+                   }
+                      }
+
+
+
+
 function deleteCategory(categoryId){
   Swal.fire({
   title: 'Are you sure ?',
