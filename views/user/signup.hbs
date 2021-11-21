@@ -67,9 +67,10 @@
                 <h6>Please enter Your number<br> </h6>
                 
                 <div><p class="text-center text-danger" id="numberError"></p></div >
+					<div id="error-phone" class="text-danger mt-2"></div>
                  
                 <div id="otp" class="inputs d-flex flex-row justify-content-center mt-2"> 
-					<input class="m-2 text-center form-control rounded" type="text" id="input1" v-on:keyup="inputenter(1)" maxlength="10" name="phone" style="width: 30em"/ required>
+					<input class="m-2 text-center form-control rounded" type="text" id="input1" v-on:keyup="inputenter(1)" maxlength="10" name="phone" style="width: 30em" required/>
 					</div>
                 
                 <div class="mt-4"> <button class="btn btn-danger px-4 validate" onclick="SendOtp()" >Submit</button> </div>
@@ -178,9 +179,33 @@ let number;
 
 
 
+let submitphone;
+    $('#input1').on('input', function () {
+        this.value = this.value.replace(/[^0-9]/, '').replace(/(\..*)\./, '$1');
+        var phone = $(this).val()
+        if (phone.length < 10) {
+            submitphone = false;
+            $("#error-phone").html("Invalid Number");
+
+        } else {
+            submitphone = true;
+            $("#error-phone").html(" ");
+
+        }
+    })
+
+
+
+
+
+
+
+
     function  SendOtp(){
    number=document.getElementById('input1').value;
- 					
+ 			if(submitphone){
+
+			 
 
         $.ajax({
             url:"/sentOtp",
@@ -227,6 +252,10 @@ let number;
 		console.log(number)
 		document.getElementById('phone').innerHTML=number
 			document.getElementById('phone').value=number
+
+	}else{
+		document.getElementById('error-phone').innerHTML="Enter a valid number"
+	}
     }
    
 
