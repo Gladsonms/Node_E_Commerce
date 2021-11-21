@@ -483,7 +483,7 @@ module.exports = {
         date: moment().format("dddd, MMMM Do YYYY, h:mm:ss a"),
         createdAt: new Date(),
       };
-
+       
       let userId = order.userId[0];
 
       db.get()
@@ -525,7 +525,7 @@ module.exports = {
       let oders = await db
         .get()
         .collection(collection.ORDER_COLLECTIONS)
-        .find({ userId: userId })
+        .find({ userId: userId }).sort({"createdAt":-1})
         .toArray();
 
       resolve(oders);

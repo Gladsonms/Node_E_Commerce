@@ -154,7 +154,7 @@ module.exports = {
     },
     getAllUserOrder:()=>{
            return new Promise((resolve,reject)=>{
-             let userOders=  db.get().collection(collection.ORDER_COLLECTIONS).find({}).toArray()
+             let userOders=  db.get().collection(collection.ORDER_COLLECTIONS).find({}).sort({"createdAt":-1}).toArray()
                    resolve(userOders)
            })
     },

@@ -612,6 +612,7 @@ router.get("/order-success", verifyLogin, (req, res) => {
     //delete session in buynow product
     delete req.session.buyNow;
   }else{
+   
    userHelpers.deleteCartItem(req.session.user._id)
   }
   res.render("user/order-success", { user: req.session.user });
