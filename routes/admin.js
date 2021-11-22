@@ -10,9 +10,9 @@ const { resolve } = require("path");
 
 const checkAuth = (req, res, next) => {
   if (req.session.isLoggedIn) {
-    res.render("admin/home", { admin: true });
+    next()
   } else {
-    next();
+    res.redirect("/admin")
   }
 };
 
@@ -20,8 +20,13 @@ var adminUsername = "admin";
 var adminPassword = "admin";
 
 //login
-router.get("/", checkAuth, function (req, res, next) {
-  res.render("admin/adminlogin", { rejectHeader: true });
+router.get("/", function (req, res, next) {
+  if(req.session.isLoggedIn){
+    res.redirect("/admin/home");
+  }else{
+    res.render("admin/adminlogin", { rejectHeader: true });
+  }
+ 
 });
 router.post("/adminLogin", function (req, res, next) {
   if (
@@ -42,7 +47,7 @@ router.post("/adminLogin", function (req, res, next) {
 });
 
 //home
-router.get("/home", async function (req, res) {
+router.get("/home",checkAuth, async function (req, res) {
   let userCount = await userHelpers.getUserCount();
   let productCount = await productHelpers.getProductCount();
   let orderCount = await productHelpers.getOrderCount();
@@ -82,7 +87,7 @@ router.post("/home", async (req, res) => {
 });
 
 //usermangment
-router.get("/usermanagment", function (req, res) {
+router.get("/usermanagment", checkAuth,function (req, res) {
   userHelpers
     .getUserDetails()
     .then((users) => {
@@ -109,7 +114,7 @@ router.post("/usermanagment/enableuser/:id", async (req, res) => {
 });
 
 //product mangment
-router.get("/productmanagment", function (req, res, next) {
+router.get("/productmanagment",checkAuth, function (req, res, next) {
   productHelpers.getAllProducts().then((products) => {
     res.render("admin/productsManagment", { admin: true, products });
   });
@@ -124,7 +129,7 @@ router.post("/productmangment/deleteproduct", function (req, res, next) {
     res.json(response);
   });
 });
-router.get("/productmangmnet/editproduct/:id", async (req, res) => {
+router.get("/productmangmnet/editproduct/:id",checkAuth, async (req, res) => {
   let products = await productHelpers.getProductDetails(req.params.id);
   productHelpers.getCategory().then((category) => {
     res.render("admin/editProduct", { admin: true, products, category });
@@ -173,7 +178,7 @@ router.post("/productmanagmnet/editproduct/:id", (req, res) => {
   });
 });
 
-router.get("/productmanagment/adddproduct", function (req, res) {
+router.get("/productmanagment/adddproduct",checkAuth, function (req, res) {
   productHelpers.getCategory().then((category) => {
     res.render("admin/addProducts", { admin: true, category });
   });
@@ -214,7 +219,7 @@ router.post("/getCategory", (req, res) => {
 
 //category mangmnet
 
-router.get("/categorymangament", function (req, res) {
+router.get("/categorymangament",checkAuth, function (req, res) {
   productHelpers.getCategory().then((category) => {
     res.render("admin/categoryManagment", { admin: true, category });
   });
@@ -233,7 +238,7 @@ router.post("/categorymangament/addcategory", (req, res) => {
   });
 });
 
-router.get("/subcategorymangament", async (req, res) => {
+router.get("/subcategorymangament", checkAuth,async (req, res) => {
   await productHelpers.getCategory().then((category) => {
     res.render("admin/subcategoryManagment", { admin: true, category });
   });
@@ -261,7 +266,7 @@ router.post("/subcategorymangament/delete-category", (req, res) => {
 });
 
 //order Manngment
-router.get("/ordermangment", async (req, res) => {
+router.get("/ordermangment",checkAuth, async (req, res) => {
   await productHelpers.getAllUserOrder().then((oders) => {
     let newOrders = oders.map((order, index) => {
       order.isCancelled = order.status === "Cancel";
@@ -284,7 +289,7 @@ router.post("/changeorderstatus/:id", (req, res) => {
   //productHelpers.changeOrderStatus()
 });
 ///Offer mnagmaent
-router.get("/product-offer", async (req, res) => {
+router.get("/product-offer",checkAuth, async (req, res) => {
   let product = productHelpers.getAllProducts().then((product) => {
     let offerProduct = productHelpers.getOfferProduct().then((offerProduct) => {
       res.render("admin/productoffer", { admin: true, product, offerProduct });
@@ -299,7 +304,7 @@ router.post("/add-new-productoffer", (req, res) => {
   });
 });
 
-router.get("/category-offer", (req, res) => {
+router.get("/category-offer", checkAuth,(req, res) => {
   let categoryOffer = productHelpers.getTheCategoryOffer().then((categoryOffer)=>{
 
     
@@ -309,7 +314,7 @@ router.get("/category-offer", (req, res) => {
   });
 });
 
-router.get("/add-coupon", (req, res) => {
+router.get("/add-coupon",checkAuth, (req, res) => {
   productHelpers.getAllCoupons().then((coupon) => {
     
     res.render("admin/coupon-mange", { admin: true, coupon });
@@ -345,13 +350,13 @@ router.post("/delete-coupon-admin", (req, res) => {
 });
 
 //sales Report
-router.get("/salereport", async (req, res) => {
+router.get("/salereport",checkAuth, async (req, res) => {
   let oders = await productHelpers.getDeliveredReports();
 
   res.render("admin/salereport", { admin: true, oders, layout: null });
 });
 
-router.get("/banner", (req, res) => {
+router.get("/banner",checkAuth, (req, res) => {
   res.render("admin/banner", { admin: true });
 });
 
@@ -434,8 +439,8 @@ router.post("/getSorrtedReport", async (req, res) => {
 });
 
 //logout
-router.get("/logout", function (req, res) {
-  req.session.isLoggedIn = false;
+router.get("/logout",checkAuth, function (req, res) {
+   delete req.session.isLoggedIn
 
   res.redirect("/admin");
 });
