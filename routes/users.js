@@ -264,7 +264,7 @@ router.get("/logout", function (req, res, next) {
 
 router.get("/about", async function (req, res, next) {
   let category = await productHelpers.getCategory();
-  res.render("user/aboutus", { category });
+  res.render("user/aboutus", { category,user:req.session.user });
 });
 
 router.get("/productdetails/:id", verifyLogin, async function (req, res, next) {
@@ -306,7 +306,8 @@ router.get("/cart", verifyLogin, async (req, res) => {
       category,
     });
   } else {
-    res.render("user/cartempty");
+    
+    res.render("user/cartempty",{user:req.session.user});
   }
 });
 
@@ -756,7 +757,7 @@ router.get("/category/:category", async (req, res) => {
   let user = req.session.user;
   if(user){  
     var cartCount = await userHelpers.getCartCount(req.session.user._id);
-    res.render("user/CategoryProduct", { categoryProduct,user ,category, cartCount });
+    res.render("user/CategoryProduct", { categoryProduct,user:req.session.user ,category, cartCount });
   }
   res.render("user/CategoryProduct", { categoryProduct ,category });
 
