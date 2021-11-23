@@ -58,9 +58,9 @@
 														<input type="text" id="{{this.product._id}}" name="qty" value="{{this.quantity}}" data-min="1">
 														
 														<span class="adjust-qty">
-															<button class="adjust-btn plus" onclick="changeQuantity('{{this._id}}','{{this.product._id}}',1);">+</button>
+															<button class="adjust-btn plus" id="plusBtn" onclick="changeQuantity('{{this._id}}','{{this.product._id}}',1);">+</button>
 															{{!-- <p>{{this.quantity}}</p> --}}
-															<button class="adjust-btn minus" onclick="changeQuantity('{{this._id}}','{{this.product._id}}',-1);">-</button>
+															<button class="adjust-btn minus" id="minusBtn" onclick="changeQuantity('{{this._id}}','{{this.product._id}}',-1);">-</button>
 														</span>
 													</div>
 												</div>
@@ -161,9 +161,16 @@
 
 			<script>
 function changeQuantity(cartId,proId,count){
-	          console.log(proId)
 			   let quantity=parseInt(document.getElementById(proId).value)
-			   console.log(quantity)
+	if(quantity==1&&count==-1)
+	{
+       document.getElementById('plusBtn').disabled=false;
+	document.getElementById('minusBtn').disabled=false;
+	}else{
+	document.getElementById('plusBtn').disabled=true;
+	document.getElementById('minusBtn').disabled=true;
+	}
+	      
  
 				
 				
@@ -228,6 +235,8 @@ function changeQuantity(cartId,proId,count){
 						   						 method:'post',
 
 						   						success:(response=>{
+													   document.getElementById('plusBtn').disabled=false;
+														document.getElementById('minusBtn').disabled=false;
 													  
 							 						  if(response.removeProduct)
 							   								{
