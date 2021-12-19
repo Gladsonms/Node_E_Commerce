@@ -1,16 +1,15 @@
 var express = require("express");
- 
+
 var router = express.Router();
 var userHelper = require("../helpers/user-helpers");
 const productHelpers = require("../helpers/product-helpers");
-
+const dotenv = require("dotenv").config();
 const passport = require("passport");
 
 //Google auth
-const { OAuth2Client } = require("google-auth-library");
-const CLIENT_ID =
-  "367337184905-5g58ji2bdun23ep367986hqrnonn7tfm.apps.googleusercontent.com";
-const client = new OAuth2Client(CLIENT_ID);
+// const { OAuth2Client } = require("google-auth-library");
+// const CLIENT_ID = process.dotenv.GOOGLE_CLIENT_ID;
+// const client = new OAuth2Client(CLIENT_ID);
 
 const userHelpers = require("../helpers/user-helpers");
 const { session } = require("passport");
@@ -20,16 +19,14 @@ const { Router, response } = require("express");
 var paypal = require("paypal-rest-sdk");
 paypal.configure({
   mode: "sandbox", //sandbox or live
-  client_id:
-    "AWp1ywqyrlAJ8UAwiDeqJRu77Mr80YUAoKV862hKJ8gLsLmMk1BNhTB-BwrSzEJcfZJiZ3Z4Bla9rghu",
-  client_secret:
-    "EH9c4LHAFuIlIuciPsDhOUhpaRdwHsYV7kcj3andfpPlgARK0jw6-uJ4vp7Xibwf4dNX2akfeoImPyw_",
+  client_id: process.env.PAYPAL_CLIENT_ID,
+  client_secret: process.env.PAYPAL_CLIENT_SECERT,
 });
 
 //Twillo otp login
-const serviceSSID = "VAaaa09725d9a25b6fa22c1e395362b716";
-const accountSSID = "ACebbf9a771b4b998c20ba75f79b99372c";
-const authToken = "61193b2f815c88755989d1e8050a2094";
+const serviceSSID = process.env.TWILLO_SERVICE_SSID;
+const accountSSID = process.env.TWILLO_ACCOUNT_SSID;
+const authToken = process.env.TWILLO_AUTH_TOKEN;
 const clientTwillo = require("twilio")(accountSSID, authToken);
 
 const checkUserAuth = (req, res, next) => {
@@ -90,25 +87,19 @@ router.post("/signup", function (req, res, next) {
   });
 });
 router.post("/login", function (req, res, next) {
-  
   userHelper.doLogin(req.body).then((response) => {
-    
     if (response.status) {
-    
       req.session.loggedIn = true;
       req.session.user = response.user;
       req.session.user_id = response._id;
       let newUserCart;
-      if(req.session.noUserCart)
-        {
-          
-          newUserCart =req.session.noUserCart
-        }
-       
-        res.json({status:true,newUserCart})
+      if (req.session.noUserCart) {
+        newUserCart = req.session.noUserCart;
+      }
 
+      res.json({ status: true, newUserCart });
     } else {
-      res.json({ status:false });
+      res.json({ status: false });
     }
   });
 });
@@ -152,30 +143,22 @@ router.get("/verifyotp", (req, res) => {
 });
 
 router.post("/verifyotp", (req, res) => {
-  
   let number = req.body.number;
- 
+
   req.session.number = number;
-  
+
   userHelpers.checkNumber(number).then((response) => {
-    
-    if(response){
-
+    if (response) {
       clientTwillo.verify
-      .services(serviceSSID)
-      .verifications.create({ to: `+91${number}`, channel: "sms" })
-      .then((verification) => console.log(verification.status));
-       
-       res.json({number: true})
-    }else {
-           res.json({number: false})
+        .services(serviceSSID)
+        .verifications.create({ to: `+91${number}`, channel: "sms" })
+        .then((verification) => console.log(verification.status));
+
+      res.json({ number: true });
+    } else {
+      res.json({ number: false });
     }
-
-  
-  })
-  
-
- 
+  });
 });
 
 // router.get("/confirmotp", (req, res) => {
@@ -198,38 +181,34 @@ router.post("/enterOtp", (req, res) => {
     })
     .then((resp) => {
       req.session.loggedIn = true;
-        res.json({resp})
-        
+      res.json({ resp });
+
       // res.redirect("/");
     });
 });
 
 //signup page otp
 
-router.post('/sentOtp',(req, res) => {
+router.post("/sentOtp", (req, res) => {
   let number = req.body.number;
- 
+
   req.session.number = number;
-  
+
   userHelpers.checkNumber(number).then((response) => {
-    
-    if(!response){
-
+    if (!response) {
       clientTwillo.verify
-      .services(serviceSSID)
-      .verifications.create({ to: `+91${number}`, channel: "sms" })
-      .then((verification) => console.log(verification.status));
-       
-       res.json({number: true})
-    }else {
-           res.json({number: false})
+        .services(serviceSSID)
+        .verifications.create({ to: `+91${number}`, channel: "sms" })
+        .then((verification) => console.log(verification.status));
+
+      res.json({ number: true });
+    } else {
+      res.json({ number: false });
     }
+  });
+});
 
-  
-  })
-})
-
-router.post('/submitOtp',(req, res)=>{
+router.post("/submitOtp", (req, res) => {
   let otp = req.body.otp;
 
   let number = req.session.number;
@@ -246,14 +225,13 @@ router.post('/submitOtp',(req, res)=>{
     })
     .then((resp) => {
       console.log(resp);
-     if(resp.valid == true && resp.status == 'approved'){
-       res.json({login : true})
-     }
-     else {
-       res.json({login : false})
-     }
+      if (resp.valid == true && resp.status == "approved") {
+        res.json({ login: true });
+      } else {
+        res.json({ login: false });
+      }
     });
-})
+});
 
 router.get("/logout", function (req, res, next) {
   req.session.user = null;
@@ -264,7 +242,7 @@ router.get("/logout", function (req, res, next) {
 
 router.get("/about", async function (req, res, next) {
   let category = await productHelpers.getCategory();
-  res.render("user/aboutus", { category,user:req.session.user });
+  res.render("user/aboutus", { category, user: req.session.user });
 });
 
 router.get("/productdetails/:id", verifyLogin, async function (req, res, next) {
@@ -306,25 +284,21 @@ router.get("/cart", verifyLogin, async (req, res) => {
       category,
     });
   } else {
-    
-    res.render("user/cartempty",{user:req.session.user});
+    res.render("user/cartempty", { user: req.session.user });
   }
 });
 
 //add to cart after login
 
 router.get("/add-to-cart/:id", (req, res) => {
-  
   if (req.session.user) {
     userHelpers.addToCart(req.params.id, req.session.user._id).then(() => {
-      
-      if(req.session.noUserCart){
-        delete req.session.noUserCart
-        res.redirect("/cart")
-      }else{
+      if (req.session.noUserCart) {
+        delete req.session.noUserCart;
+        res.redirect("/cart");
+      } else {
         res.json({ status: true });
       }
-      
     });
   } else {
     res.json({ status: false });
@@ -333,40 +307,32 @@ router.get("/add-to-cart/:id", (req, res) => {
 
 //add to cart without logged_in
 
-router.get("/add-item-cart/:id",(req, res)=>{
-
-   if(req.session.user)
-  {
-    res.redirect(`/add-to-cart/${req.params.id}`)
-  }else{
-    let data={proId:req.params.id}
-    req.session.noUserCart=data
-   res.redirect('/login')
+router.get("/add-item-cart/:id", (req, res) => {
+  if (req.session.user) {
+    res.redirect(`/add-to-cart/${req.params.id}`);
+  } else {
+    let data = { proId: req.params.id };
+    req.session.noUserCart = data;
+    res.redirect("/login");
   }
-
-})
+});
 
 //changeProductQauntity
 router.post("/change-product-quantity", verifyLogin, (req, res, next) => {
   userHelpers.changeProductQauntity(req.body).then(async (response) => {
     let totalAmount = await userHelpers.getTottalAmount(req.session.user._id);
 
-  
     let totalPrice = 0;
     let subtotal = 0;
 
     for (var i in totalAmount) {
       totalPrice = totalPrice + totalAmount[i].subtotal;
-
     }
     for (var i in totalAmount) {
       subtotal = totalAmount[i].subtotal;
-    
     }
-    
-   
-   
-  res.json({response,data:totalAmount,total:totalPrice});
+
+    res.json({ response, data: totalAmount, total: totalPrice });
   });
 });
 
@@ -502,74 +468,72 @@ router.post("/place-order", async (req, res) => {
     totalPrice = newPrice;
   }
 
-if(req.body.address&&req.body.payment){
-  userHelpers
-    .PlaceOrder(user._id, req.body, product, totalPrice)
-    .then((orderId) => {
-   
-      if (req.body["payment"] == "cod") {
-        res.json({ codSuccess: true });
-        //RAXORPAY
-      } else if (req.body["payment"] == "razorpay") {
-        userHelpers
-          .generateRazorPay(orderId, totalPrice, userId)
-          .then((response) => {
-           
-            res.json({ data: response, razorpaySuccess: true });
-          });
-      } else if (req.body["payment"] == "paypal") {
-        const create_payment_json = {
-          intent: "sale",
-          payer: {
-            payment_method: "paypal",
-          },
-          redirect_urls: {
-            return_url: "https://ecom.gladsonms.tech/order-success",
-            //return_url: "http://localhost:3000/order-success",
-            //return_url: "http://localhost:3000/success",
-             //cancel_url: "http://localhost:3000/",
-            cancel_url: "https://ecom.gladsonms.tech/",
-          },
-          transactions: [
-            {
-              item_list: {
-                items: [
-                  {
-                    name: "Red Sox Hat",
-                    sku: "001",
-                    price: totalPrice,
-                    currency: "USD",
-                    quantity: 1,
-                  },
-                ],
-              },
-              amount: {
-                currency: "USD",
-                total: totalPrice,
-              },
-              description: "Hat for the best team ever",
+  if (req.body.address && req.body.payment) {
+    userHelpers
+      .PlaceOrder(user._id, req.body, product, totalPrice)
+      .then((orderId) => {
+        if (req.body["payment"] == "cod") {
+          res.json({ codSuccess: true });
+          //RAXORPAY
+        } else if (req.body["payment"] == "razorpay") {
+          userHelpers
+            .generateRazorPay(orderId, totalPrice, userId)
+            .then((response) => {
+              res.json({ data: response, razorpaySuccess: true });
+            });
+        } else if (req.body["payment"] == "paypal") {
+          const create_payment_json = {
+            intent: "sale",
+            payer: {
+              payment_method: "paypal",
             },
-          ],
-        };
+            redirect_urls: {
+              // return_url: "https://ecom.gladsonms.tech/order-success",
+              return_url: "http://localhost:3000/order-success",
+              //return_url: "http://localhost:3000/success",
+              cancel_url: "http://localhost:3000/",
+              //cancel_url: "https://ecom.gladsonms.tech/",
+            },
+            transactions: [
+              {
+                item_list: {
+                  items: [
+                    {
+                      name: "Red Sox Hat",
+                      sku: "001",
+                      price: totalPrice,
+                      currency: "USD",
+                      quantity: 1,
+                    },
+                  ],
+                },
+                amount: {
+                  currency: "USD",
+                  total: totalPrice,
+                },
+                description: "Hat for the best team ever",
+              },
+            ],
+          };
 
-        paypal.payment.create(create_payment_json, function (error, payment) {
-          if (error) {
-            throw error;
-          } else {
-            for (let i = 0; i < payment.links.length; i++) {
-              if (payment.links[i].rel === "approval_url") {
-                res.json(payment.links[i].href);
+          paypal.payment.create(create_payment_json, function (error, payment) {
+            if (error) {
+              throw error;
+            } else {
+              for (let i = 0; i < payment.links.length; i++) {
+                if (payment.links[i].rel === "approval_url") {
+                  res.json(payment.links[i].href);
+                }
               }
             }
-          }
-        });
-      }
-      // res.redirect("/order-success")
-    })
-    .catch((err) => console.log(err));
-  }else{
+          });
+        }
+        // res.redirect("/order-success")
+      })
+      .catch((err) => console.log(err));
+  } else {
     console.log("noaddress");
-    res.json({nodata:true})
+    res.json({ nodata: true });
   }
 });
 
@@ -590,31 +554,27 @@ router.get("/success", (req, res) => {
   };
 
   // userHelpers.deleteCartPaypal(req.session.user._id);
- 
+
   // userHelpers.changePaymentStatus()
   paypal.payment.execute(
     paymentId,
     execute_payment_json,
     function (error, payment) {
       if (error) {
-        
         throw error;
       } else {
-        
         res.render("user/order-success", { user: req.session.user });
       }
     }
   );
-  
 });
 
 router.get("/order-success", verifyLogin, (req, res) => {
   if (req.session.buyNow) {
     //delete session in buynow product
     delete req.session.buyNow;
-  }else{
-   
-   userHelpers.deleteCartItem(req.session.user._id)
+  } else {
+    userHelpers.deleteCartItem(req.session.user._id);
   }
   res.render("user/order-success", { user: req.session.user });
 });
@@ -632,29 +592,27 @@ router.get("/orders", verifyLogin, async (req, res) => {
     order.isDeleviered = order.status === "Deliverd";
     return order;
   });
-  
+
   res.render("user/odersList", {
     user: req.session.user,
     orders,
     cartCount,
     category,
-    newOrders
+    newOrders,
   });
 });
 router.get("/view-order-product/:id", async (req, res) => {
   let products = await userHelpers.getOrderProducts(req.params.id);
   var cartCount = await userHelpers.getCartCount(req.session.user._id);
-  let orderStatus=await userHelpers.getOrderStatus(req.params.id)
- 
+  let orderStatus = await userHelpers.getOrderStatus(req.params.id);
 
   res.render("user/userorder", { user: req.session.user, products, cartCount });
 });
 router.post("/oders/cancelorder/:id", async (req, res) => {
   let orderId = req.params.id;
-  
+
   await userHelpers.cancelOrder(orderId).then((response) => {
-    
-    res.json({status:true});
+    res.json({ status: true });
   });
 });
 
@@ -672,7 +630,6 @@ router.post("/oders/deleteaddress", (req, res) => {
 });
 
 router.post("/verify-payment", (req, res) => {
- 
   userHelpers
     .verifyPayment(req.body)
     .then(() => {
@@ -710,8 +667,6 @@ router.post("/apply-coupon", async (req, res) => {
           Amessage: "Coupon   valid for this purshase above  : " + minAmount,
         });
       }
-
-      
     } else {
       res.json({ couponMessage2: true, Invalidmessage: "Coupon not  valid " });
     }
@@ -719,10 +674,9 @@ router.post("/apply-coupon", async (req, res) => {
 });
 
 router.get("/contact", async (req, res) => {
- 
   let category = await productHelpers.getCategory();
   let user = req.session.user;
-  res.render("user/contact", {  user, category });
+  res.render("user/contact", { user, category });
 });
 router.get("/profile", verifyLogin, async (req, res) => {
   let user = await userHelpers.getUserProfile(req.session.user._id);
@@ -753,31 +707,28 @@ router.post("/change-password", (req, res) => {
 });
 router.get("/category/:category", async (req, res) => {
   let category = await productHelpers.getCategory();
-  let categoryProduct = await productHelpers.getCategoryProduct(req.params.category);
+  let categoryProduct = await productHelpers.getCategoryProduct(
+    req.params.category
+  );
   let user = req.session.user;
-  if(user){  
+  if (user) {
     var cartCount = await userHelpers.getCartCount(req.session.user._id);
-    res.render("user/CategoryProduct", { categoryProduct,user:req.session.user ,category, cartCount });
+    res.render("user/CategoryProduct", {
+      categoryProduct,
+      user: req.session.user,
+      category,
+      cartCount,
+    });
   }
-  res.render("user/CategoryProduct", { categoryProduct ,category });
-
- 
+  res.render("user/CategoryProduct", { categoryProduct, category });
 });
 
-router.post("/productsearch", (req, res)=>{
-  
-  let search=req.body.search;
-  
-  productHelpers.getSearchedProducts(search).then((result)=>{
+router.post("/productsearch", (req, res) => {
+  let search = req.body.search;
 
-    
-    res.json({serach:result});
-
-  })
-  
-
-
-  
-})
+  productHelpers.getSearchedProducts(search).then((result) => {
+    res.json({ serach: result });
+  });
+});
 
 module.exports = router;

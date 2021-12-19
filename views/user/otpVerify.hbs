@@ -6,7 +6,7 @@
                 {{!-- <div> <span> sent to</span> <small>+1******4343</small> </div> --}}
                 {{!-- <form action="/verifyotp" method="post" id="verifyotp"> --}}
                 <div><p class="text-center text-danger" id="numberError"></p></div >
-                 
+                 <div id="error-phone" class="text-danger mt-2"></div>
                 <div id="otp" class="inputs d-flex flex-row justify-content-center mt-2"> <input class="m-2 text-center form-control rounded" type="text" id="input1" v-on:keyup="inputenter(1)" maxlength="10" name="phone" /></div>
                 
                 <div class="mt-4"> <button class="btn btn-danger px-4 validate" onclick="SendOtp()" >Submit</button> </div>
@@ -97,10 +97,30 @@ input[type=number]::-webkit-outer-spin-button {
 
 
 
+       
+let submitphone;
+    $('#input1').on('input', function () {
+        this.value = this.value.replace(/[^0-9]/, '').replace(/(\..*)\./, '$1');
+        var phone = $(this).val()
+        if (phone.length < 10) {
+            submitphone = false;
+            $("#error-phone").html("Invalid Number");
+
+        } else {
+            submitphone = true;
+            $("#error-phone").html(" ");
+
+        }
+    })
+   
+
 
     function  SendOtp(){
   let number=document.getElementById('input1').value;
+       if(submitphone)
+       {
 
+       
 
         $.ajax({
             url:"/verifyotp",
@@ -144,6 +164,11 @@ input[type=number]::-webkit-outer-spin-button {
                }
             }
         })
+       }
+       else
+       {
+           document.getElementById('error-phone').innerHTML="Enter a valid number"
+       }
     }
    
 
